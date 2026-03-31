@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台股加權指數 (^TWII) 盤後分析 – 2026/03/31</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── Header ── */
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1e3d6e 60%, #1a5276 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 900px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 2rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-header h1 span.ticker {
+      font-size: 1.1rem; font-weight: 400; color: #90b8d8;
+      margin-left: 10px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90b8d8; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── Price Pill ── */
+    .price-banner {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-top: 16px;
+      display: inline-flex; align-items: baseline; gap: 12px;
+    }
+    .price-banner .price { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    .price-banner .change-up { color: #4ade80; font-weight: 600; }
+    .price-banner .change-down { color: #f87171; font-weight: 600; }
+
+    /* ── Main Container ── */
+    .report-body { max-width: 900px; margin: 0 auto; padding: 32px 20px 0; }
+
+    /* ── Section Cards ── */
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #0f2744; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 {
+      font-size: 0.9rem; font-weight: 600;
+      color: #334155; margin: 18px 0 10px;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.75; margin-bottom: 10px; }
+    .section-card ul, .section-card ol {
+      padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.85;
+    }
+    .section-card li { margin-bottom: 4px; }
+
+    /* ── Data Table ── */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .data-table td strong { color: #1a2332; }
+
+    /* ── Scenario Table ── */
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.15rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+
+    /* ── Tags ── */
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+
+    /* ── Key Metric Cards ── */
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; margin: 12px 0;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .metric-value.down { color: #dc2626; }
+    .metric-value.up { color: #16a34a; }
+
+    /* ── Blockquote / Disclaimer ── */
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+
+    /* ── Alert Box ── */
+    .alert-box {
+      background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid #ef4444;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.85rem; color: #991b1b; margin: 12px 0;
+    }
+
+    /* ── Highlight Box ── */
+    .highlight-box {
+      background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #3b82f6;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.85rem; color: #1e40af; margin: 12px 0;
+    }
+
+    hr { border: none; border-top: 1px solid #e8edf4; margin: 16px 0; }
+
+    .sources {
+      font-size: 0.8rem; color: #64748b; margin-top: 8px;
+    }
+    .sources a { color: #2563eb; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    .report-footer {
+      max-width: 900px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+    .report-footer a { color: #64748b; text-decoration: none; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .report-header { background: #0f2744 !important; -webkit-print-color-adjust: exact; }
+      .section-card { box-shadow: none; border: 1px solid #dde4ef; }
+      .report-footer { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.4rem; }
+      .section-card { padding: 20px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════ HEADER -->
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">台股指數 · 盤後分析</div>
+    <h1>台股加權指數<span class="ticker">^TWII</span></h1>
+    <div class="report-meta">
+      <span>📅 2026/03/31</span>
+      <span>🌐 臺灣證券交易所</span>
+      <span>⚡ 盤後數據</span>
+    </div>
+    <div class="price-banner">
+      <span class="price">31,722.99</span>
+      <span class="change-down">▼ 795.17 (−2.45%)</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════ BODY -->
+<main class="report-body">
+
+  <!-- 市場概覽 -->
+  <div class="section-card">
+    <h2>📊 市場概覽</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">收盤價</div>
+        <div class="metric-value down">31,722.99</div>
+        <div class="metric-note">TWD</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">漲跌點</div>
+        <div class="metric-value down">-795.17</div>
+        <div class="metric-note">-2.45%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">成交金額</div>
+        <div class="metric-value">7,924.5 億</div>
+        <div class="metric-note">TWD</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">開盤</div>
+        <div class="metric-value">32,419</div>
+        <div class="metric-note">跳空開低</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">最高</div>
+        <div class="metric-value">32,453</div>
+        <div class="metric-note">盤初</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">最低</div>
+        <div class="metric-value down">31,706</div>
+        <div class="metric-note">跌破季線</div>
+      </div>
+    </div>
+    <div class="alert-box">
+      <strong>⚠ 歷史紀錄：</strong>本日為台股史上第 12 大單日跌點。三月單月下跌 3,691.5 點 (-10.42%)，創史上最大單月跌幅紀錄。
+    </div>
+  </div>
+
+  <!-- 下跌原因 -->
+  <div class="section-card">
+    <h2>🔻 下跌原因分析</h2>
+    <h3>1. 美股半導體崩跌引爆恐慌</h3>
+    <ul>
+      <li>費城半導體指數 (SOX) 單日暴跌 <strong>4.23%</strong> 至 7,142 點</li>
+      <li>美光 (MU) 領跌 <strong>-9.92%</strong>，市值蒸發逾 100 億美元</li>
+      <li>台積電 ADR (TSM) 下跌 <strong>-3.13%</strong> 至 316.50 美元</li>
+      <li>MARVELL -7.45%、ASML -3.72%</li>
+    </ul>
+    <h3>2. 川普關稅政策 4 月生效在即</h3>
+    <ul>
+      <li>市場預期 4 月初新一輪關稅措施將實施，台灣被列入課稅名單</li>
+      <li>半導體設備與記憶體廠商被視為直接受害者</li>
+      <li>資金搶在政策落地前大舉撤離硬體供應鏈股</li>
+    </ul>
+    <h3>3. 中東地緣政治風險升溫</h3>
+    <ul>
+      <li>美伊談判進度令市場失望，避險情緒持續升溫</li>
+      <li>能源市場波動加劇投資人不安</li>
+    </ul>
+    <h3>4. 台股內部結構弱勢</h3>
+    <ul>
+      <li>DRAM 族群全線崩跌：旺宏 -8%、南亞科 -7%</li>
+      <li>台積電盤中一度翻紅，但尾盤仍收跌 1.12%</li>
+      <li>國家隊盤中進場護盤，金控翻紅，但力道不足以扭轉頹勢</li>
+    </ul>
+  </div>
+
+  <!-- 三大法人動態 -->
+  <div class="section-card">
+    <h2>🏦 三大法人動態</h2>
+    <table class="data-table">
+      <thead>
+        <tr><th>法人</th><th>買進</th><th>賣出</th><th>買賣超</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>外資</strong></td>
+          <td>2,271.82 億</td>
+          <td>2,911.19 億</td>
+          <td><strong style="color:#dc2626;">-639.37 億</strong></td>
+        </tr>
+        <tr>
+          <td><strong>投信</strong></td>
+          <td>105.01 億</td>
+          <td>72.94 億</td>
+          <td><strong style="color:#16a34a;">+32.07 億</strong></td>
+        </tr>
+        <tr>
+          <td><strong>自營商</strong></td>
+          <td>315.97 億</td>
+          <td>449.96 億</td>
+          <td><strong style="color:#dc2626;">-133.99 億</strong></td>
+        </tr>
+        <tr style="background:#f1f5fb;">
+          <td><strong>合計</strong></td>
+          <td>—</td>
+          <td>—</td>
+          <td><strong style="color:#dc2626;">-741.29 億</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>外資大幅賣超近 640 億，為近期單日最大賣壓之一。投信逆勢買超 32 億，扮演市場穩定角色。整體法人合計賣超超過 741 億，避險意圖強烈。</p>
+  </div>
+
+  <!-- 類股表現 -->
+  <div class="section-card">
+    <h2>📈 類股表現</h2>
+    <table class="data-table">
+      <thead>
+        <tr><th>類股</th><th>表現</th><th>代表個股</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>半導體</strong></td>
+          <td><span class="tag tag-red">重挫</span></td>
+          <td>台積電 1,760 (-1.12%)、聯發科下跌</td>
+        </tr>
+        <tr>
+          <td><strong>DRAM/記憶體</strong></td>
+          <td><span class="tag tag-red">崩跌</span></td>
+          <td>旺宏 -8%、南亞科 -7%</td>
+        </tr>
+        <tr>
+          <td><strong>電子權值</strong></td>
+          <td><span class="tag tag-red">大跌</span></td>
+          <td>台達電 1,380 (-7.07%)、鴻海 187.5 (-3.35%)</td>
+        </tr>
+        <tr>
+          <td><strong>塑化</strong></td>
+          <td><span class="tag tag-green">逆勢走強</span></td>
+          <td>台聚、台達化漲停</td>
+        </tr>
+        <tr>
+          <td><strong>造紙</strong></td>
+          <td><span class="tag tag-green">續強</span></td>
+          <td>華紙、寶隆攻漲停</td>
+        </tr>
+        <tr>
+          <td><strong>金融</strong></td>
+          <td><span class="tag tag-yellow">先跌後穩</span></td>
+          <td>國家隊點火，金控翻紅</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 技術面分析 -->
+  <div class="section-card">
+    <h2>📐 技術面分析</h2>
+    <h3>趨勢研判</h3>
+    <ul>
+      <li><strong>短期趨勢：</strong>明確空頭。指數跌破季線 (60MA ≈ 32,181)，短均線全面下彎形成空頭排列</li>
+      <li><strong>中期趨勢：</strong>轉弱。從年初高點 35,579 回落逾 10%，正式進入修正區間</li>
+      <li><strong>長期趨勢：</strong>仍在 120MA / 240MA 之上，長線架構未破但承壓</li>
+    </ul>
+
+    <h3>關鍵價位</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>類型</th><th>價位</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="tag tag-green">強支撐</span></td><td><strong>30,500</strong></td><td>前波修正低點區域</td></tr>
+        <tr><td><span class="tag tag-green">支撐 1</span></td><td><strong>31,000</strong></td><td>心理關卡 + 前波整理區</td></tr>
+        <tr><td><span class="tag tag-blue">支撐 2</span></td><td><strong>31,706</strong></td><td>今日盤中最低點</td></tr>
+        <tr><td><span class="tag tag-yellow">壓力 1</span></td><td><strong>32,000</strong></td><td>心理關卡</td></tr>
+        <tr><td><span class="tag tag-red">壓力 2</span></td><td><strong>32,181</strong></td><td>季線 (60MA)</td></tr>
+        <tr><td><span class="tag tag-red">強壓力</span></td><td><strong>32,518</strong></td><td>前日收盤價</td></tr>
+      </tbody>
+    </table>
+
+    <h3>技術指標推估</h3>
+    <ul>
+      <li><strong>RSI：</strong>日 RSI 預估接近或低於 30，進入超賣區間</li>
+      <li><strong>KD：</strong>K 值與 D 值預估在 20 以下低檔鈍化，短線超賣</li>
+      <li><strong>MACD：</strong>DIF 與 MACD 線均在零軸下方，柱狀體持續放大，空方動能強勁</li>
+      <li><strong>布林通道：</strong>指數跌穿下軌，顯示短線超跌</li>
+    </ul>
+  </div>
+
+  <!-- 籌碼面觀察 -->
+  <div class="section-card">
+    <h2>🔍 籌碼面觀察</h2>
+    <ul>
+      <li><strong>外資連續賣超：</strong>今日單日賣超近 640 億，反映國際資金避險撤離態勢明確</li>
+      <li><strong>投信逆勢加碼：</strong>連續買超，低接具基本面支撐之個股</li>
+      <li><strong>國家隊進場跡象：</strong>盤中台積電與金控翻紅，疑似國安基金或官股券商進場護盤</li>
+      <li><strong>融資斷頭壓力：</strong>急速下跌可能觸發融資維持率不足的斷頭賣壓，需留意後續融資餘額變化</li>
+    </ul>
+  </div>
+
+  <!-- 目標區間 -->
+  <div class="section-card">
+    <h2>🎯 短期目標區間 (1-2 週)</h2>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">🐻 熊市</span></td>
+          <td><span class="scenario-target">30,000 – 30,500</span></td>
+          <td>關稅利空超預期 + 外資持續大幅出逃 + 季線反壓確立</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">📊 基本</span></td>
+          <td><span class="scenario-target">31,000 – 32,000</span></td>
+          <td>超跌反彈 + 國家隊護盤 + 關稅利空已部分反映</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">🐂 牛市</span></td>
+          <td><span class="scenario-target">32,200 – 32,800</span></td>
+          <td>關稅影響低於預期 + 外資回補 + 台積電強勢帶動反攻季線</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 投資建議 -->
+  <div class="section-card">
+    <h2>💡 投資建議</h2>
+    <h3>短線操作 (1-2 週)</h3>
+    <ul>
+      <li><strong>保守者：</strong>暫時觀望，等待量縮止穩訊號。觀察重點：(1) 日成交量是否萎縮至 3,000 億以下、(2) 外資賣超是否收斂、(3) 31,000 點支撐是否有效</li>
+      <li><strong>積極者：</strong>可分批布局超跌且基本面佳之個股，但需嚴設停損 (如跌破 31,000)</li>
+      <li><strong>空手者：</strong>不急於搶反彈，等待 4/2 美國關稅政策正式落地後再評估</li>
+    </ul>
+    <h3>中線策略 (1-3 個月)</h3>
+    <ul>
+      <li>關稅政策落地後，「利空出盡」反彈機率不低</li>
+      <li>台積電等 AI 主力股若跌深，中線具佈局價值</li>
+      <li>避開高度依賴中國市場或受關稅直接衝擊之個股</li>
+      <li>可關注防禦型類股：塑化、造紙等傳產族群短線具避風港效果</li>
+    </ul>
+
+    <h3>風險因子</h3>
+    <div class="alert-box">
+      <ul style="margin:0;padding-left:16px;">
+        <li>4 月初川普關稅正式實施，稅率與範圍仍有不確定性</li>
+        <li>中東局勢若進一步惡化，油價飆升將衝擊全球經濟前景</li>
+        <li>外資持續大幅賣超若未收斂，指數可能繼續下探</li>
+        <li>融資斷頭賣壓可能在指數加速下跌時形成連鎖效應</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 美股連動 -->
+  <div class="section-card">
+    <h2>🌐 美股連動 (3/30 收盤)</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">道瓊工業</div>
+        <div class="metric-value up">45,216</div>
+        <div class="metric-note">+0.11%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">NASDAQ</div>
+        <div class="metric-value down">20,794</div>
+        <div class="metric-note">-0.73%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">S&P 500</div>
+        <div class="metric-value down">6,343</div>
+        <div class="metric-note">-0.39%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">費半指數</div>
+        <div class="metric-value down">7,142</div>
+        <div class="metric-note">-4.23%</div>
+      </div>
+    </div>
+    <p>美股呈現明顯分化：道瓊微漲，但科技股與半導體遭受重創。費城半導體指數暴跌 4.23%，美光 -9.92% 領跌，市場在關稅政策生效前呈現「去風險」行為，資金從硬體供應鏈轉向軟體與平台類股 (Meta +2.03%, Microsoft +0.61%)。</p>
+  </div>
+
+  <!-- 資料來源 -->
+  <div class="section-card">
+    <h2>📋 資料來源</h2>
+    <div class="sources">
+      <ul>
+        <li><a href="https://tw.stock.yahoo.com/quote/%5ETWII" target="_blank">Yahoo 台灣股市 — 加權指數</a></li>
+        <li><a href="https://tw.stock.yahoo.com/institutional-trading" target="_blank">Yahoo 台灣股市 — 法人進出</a></li>
+        <li><a href="https://www.twse.com.tw/" target="_blank">臺灣證券交易所 (TWSE)</a></li>
+        <li><a href="https://cmnews.com.tw/article/cmoneyairesearcher-3207e99f-2cac-11f1-9c7f-6eb317afa0a1" target="_blank">CMoney 研究員 — 美股盤勢分析 (2026.03.31)</a></li>
+        <li><a href="https://news.cnyes.com/" target="_blank">鉅亨網</a></li>
+        <li><a href="https://www.sinotrade.com.tw/richclub/" target="_blank">豐雲學堂</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 免責聲明 -->
+  <div class="section-card">
+    <div class="disclaimer">
+      ⚠️ <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議或要約。
+      投資市場存在風險，過去表現不代表未來績效，請自行評估風險承受能力並諮詢專業理財顧問後再做決策。
+      技術指標為根據已知數據推估，實際數值請以券商系統為準。
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════════════════════════════════════════ FOOTER -->
+<footer class="report-footer">
+  <span>🤖 Generated by Market Analyst · Claude Code</span>
+  <span>最後更新：2026/03/31 14:30</span>
+</footer>
+
+</body>
+</html>

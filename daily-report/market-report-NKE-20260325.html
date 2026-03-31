@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nike, Inc. (NKE) Analysis – 2026/03/25</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1e3d6e 60%, #1a5276 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 900px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 6px; }
+    .report-header h1 span.ticker { font-size: 1.1rem; font-weight: 400; color: #90b8d8; margin-left: 10px; }
+    .report-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 13px; color: #90b8d8; margin-top: 12px; }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+    .price-banner {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px; padding: 12px 20px; margin-top: 16px;
+      display: inline-flex; align-items: baseline; gap: 12px;
+    }
+    .price-banner .price { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    .price-banner .change-up { color: #4ade80; font-weight: 600; }
+    .price-banner .change-down { color: #f87171; font-weight: 600; }
+
+    .report-body { max-width: 900px; margin: 0 auto; padding: 32px 20px 0; }
+
+    .section-card {
+      background: #fff; border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px; margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700; color: #0f2744;
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 { font-size: 0.9rem; font-weight: 600; color: #334155; margin: 18px 0 10px; }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.75; margin-bottom: 10px; }
+    .section-card ul, .section-card ol { padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.85; }
+    .section-card li { margin-bottom: 4px; }
+
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 8px 0; }
+    .data-table th { background: #f1f5fb; color: #334155; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px; text-align: left; padding: 10px 14px; border-bottom: 2px solid #dde4ef; }
+    .data-table td { padding: 10px 14px; border-bottom: 1px solid #edf0f7; color: #374151; vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .data-table td strong { color: #1a2332; }
+
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th { background: #f1f5fb; padding: 10px 16px; text-align: left; font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px; border-bottom: 2px solid #dde4ef; }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.15rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+
+    .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; margin: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-orange { background: #fed7aa; color: #9a3412; }
+
+    .metric-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 12px; margin: 12px 0; }
+    .metric-card { background: #f8faff; border: 1px solid #e2e8f4; border-radius: 10px; padding: 14px 16px; }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+    .alert-box { background: #fef3c7; border: 1px solid #f59e0b; border-radius: 10px; padding: 14px 18px; font-size: 0.88rem; color: #78350f; margin: 12px 0; }
+    .alert-box strong { color: #92400e; }
+
+    .catalyst-box { background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px; padding: 14px 18px; font-size: 0.88rem; color: #14532d; margin: 12px 0; }
+
+    .risk-box { background: #fff1f2; border: 1px solid #fca5a5; border-radius: 10px; padding: 14px 18px; font-size: 0.88rem; color: #7f1d1d; margin: 12px 0; }
+
+    .disclaimer { background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; padding: 14px 18px; font-size: 0.82rem; color: #78350f; margin-top: 10px; }
+
+    .sources { font-size: 0.8rem; color: #64748b; margin-top: 12px; padding-top: 10px; border-top: 1px solid #e8edf4; }
+    .sources a { color: #2563eb; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    .highlight-row td { background: #fef9c3 !important; font-weight: 600; }
+    .down { color: #dc2626; } .up { color: #16a34a; }
+
+    .report-footer { max-width: 900px; margin: 32px auto 0; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12px; color: #94a3b8; }
+
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.4rem; }
+      .section-card { padding: 20px 18px; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">US Stock · 美股個股分析</div>
+    <h1>Nike, Inc.<span class="ticker">NYSE: NKE</span></h1>
+    <div class="report-meta">
+      <span>📅 2026/03/25</span>
+      <span>🌐 NYSE（紐約證券交易所）</span>
+      <span>⚡ 財報日：2026/03/31</span>
+    </div>
+    <div class="price-banner">
+      <span class="price">$53.49</span>
+      <span class="change-up">▲ $0.78 (+1.48%)</span>
+      &nbsp;&nbsp;
+      <span style="color:#90b8d8;font-size:0.9rem;">52週低：$52.18</span>
+      <span class="tag tag-yellow">近52週低</span>
+    </div>
+  </div>
+</header>
+
+<main class="report-body">
+
+  <!-- 基本資料 -->
+  <div class="section-card">
+    <h2>🔹 基本資料</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">現價</div>
+        <div class="metric-value">$53.49</div>
+        <div class="metric-note up">▲ +1.48%（3/24）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">52週區間</div>
+        <div class="metric-value" style="font-size:0.95rem;">$52.18–$80.17</div>
+        <div class="metric-note">現價接近低點</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">市值</div>
+        <div class="metric-value">$792億</div>
+        <div class="metric-note">USD</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">股息殖利率</div>
+        <div class="metric-value" style="color:#16a34a;">3.07%</div>
+        <div class="metric-note">$1.64/年（近23年連升）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">TTM P/E</div>
+        <div class="metric-value">31.36x</div>
+        <div class="metric-note">EPS $1.71</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">遠期 P/E</div>
+        <div class="metric-value">~22.6x</div>
+        <div class="metric-note">FY2027 EPS $2.37</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">分析師評級</div>
+        <div class="metric-value" style="color:#16a34a;">買進</div>
+        <div class="metric-note">18買 / 12持 / 0賣</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">目標均值</div>
+        <div class="metric-value" style="color:#2563eb;">$75.54</div>
+        <div class="metric-note">潛在漲幅 +41%</div>
+      </div>
+    </div>
+
+    <div class="alert-box">
+      <strong>🚨 近期重大事件：</strong> Q3 FY2026 財報將於 <strong>2026年3月31日</strong>（6天後）盤後公布。分析師預估 EPS $0.32、營收 $11.23B。毛利率走向是最關鍵觀察指標。
+    </div>
+  </div>
+
+  <!-- 財務表現 -->
+  <div class="section-card">
+    <h2>🔹 財務表現趨勢</h2>
+    <h3>年度財務（Nike 財年 = 5月結算）</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>財年</th>
+          <th class="num">營收</th>
+          <th class="num">毛利率</th>
+          <th class="num">營業利益率</th>
+          <th class="num">EPS（稀釋）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>FY2022</td>
+          <td class="num">$46.7B</td>
+          <td class="num"><strong>45.98%</strong></td>
+          <td class="num">14.29%</td>
+          <td class="num">$3.75</td>
+        </tr>
+        <tr>
+          <td>FY2023</td>
+          <td class="num">$51.2B</td>
+          <td class="num">43.52%</td>
+          <td class="num">11.55%</td>
+          <td class="num">$3.23</td>
+        </tr>
+        <tr>
+          <td>FY2024</td>
+          <td class="num">$51.4B</td>
+          <td class="num">44.56%</td>
+          <td class="num">12.29%</td>
+          <td class="num">$3.73</td>
+        </tr>
+        <tr class="highlight-row">
+          <td><strong>FY2025 ▼</strong></td>
+          <td class="num down"><strong>$46.3B (-9.8%)</strong></td>
+          <td class="num down"><strong>42.73%</strong></td>
+          <td class="num down"><strong>7.99%</strong></td>
+          <td class="num down"><strong>$2.16 (-42%)</strong></td>
+        </tr>
+        <tr>
+          <td>TTM（至今）</td>
+          <td class="num">$46.5B (-5%)</td>
+          <td class="num down">~40.6%</td>
+          <td class="num">~6-7%</td>
+          <td class="num down">$1.71 (-47%)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Q2 FY2026（截至 2025/11/30）</h3>
+    <table class="data-table">
+      <thead><tr><th>指標</th><th>數值</th><th>年增率</th></tr></thead>
+      <tbody>
+        <tr><td>營收</td><td class="num"><strong>$12.43B</strong></td><td class="num up">+1%（轉正！）</td></tr>
+        <tr><td>EPS（稀釋）</td><td class="num">$0.53</td><td class="num down">-32%</td></tr>
+        <tr><td>毛利率</td><td class="num down"><strong>40.6%</strong></td><td class="num down">-300bps</td></tr>
+        <tr><td>非GAAP淨利</td><td class="num">$0.99B</td><td class="num down">-29%</td></tr>
+      </tbody>
+    </table>
+
+    <h3>分析師前瞻預估</h3>
+    <table class="data-table">
+      <thead><tr><th>財年</th><th class="num">EPS 預估</th><th class="num">年增率</th><th class="num">營收預估</th></tr></thead>
+      <tbody>
+        <tr><td>FY2026</td><td class="num down">$1.59</td><td class="num down">-26%</td><td class="num">$47.17B (+1.9%)</td></tr>
+        <tr><td><strong>FY2027</strong></td><td class="num up"><strong>$2.37</strong></td><td class="num up"><strong>+48.9%</strong></td><td class="num">$48.95B (+3.8%)</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.82rem;color:#64748b;margin-top:8px;">3年營收 CAGR：~4% | 3年營業利益 CAGR：~14%（Elliott Hill 重組效益逐步釋放）</p>
+  </div>
+
+  <!-- 估值分析 -->
+  <div class="section-card">
+    <h2>🔹 估值分析</h2>
+
+    <h3>多情境本益比評估</h3>
+    <table class="data-table">
+      <thead><tr><th>估值基礎</th><th class="num">EPS</th><th class="num">P/E</th><th class="num">隱含目標價</th></tr></thead>
+      <tbody>
+        <tr><td>TTM（目前）</td><td class="num">$1.71</td><td class="num">31.4x</td><td class="num">$53.49（現價）</td></tr>
+        <tr><td>FY2026 預估</td><td class="num">$1.59</td><td class="num">33.6x</td><td class="num down">偏貴（底部期）</td></tr>
+        <tr><td>FY2027 預估</td><td class="num up">$2.37</td><td class="num">22.6x</td><td class="num">合理（歷史均值附近）</td></tr>
+        <tr><td>FY2028 正常化</td><td class="num up">~$3.00-3.50</td><td class="num">~20x</td><td class="num up">$60–70（保守回歸）</td></tr>
+        <tr><td>歷史高峰（FY2022 水準）</td><td class="num">$3.75</td><td class="num">25x</td><td class="num up">$94（充分恢復）</td></tr>
+      </tbody>
+    </table>
+
+    <h3>同業比較</h3>
+    <table class="data-table">
+      <thead><tr><th>公司</th><th class="num">遠期 P/E</th><th class="num">毛利率</th><th>競爭態勢</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row">
+          <td><strong>Nike（NKE）</strong></td>
+          <td class="num">~22.6x</td>
+          <td class="num down">40.6%（↓）</td>
+          <td><span class="tag tag-yellow">轉型中</span></td>
+        </tr>
+        <tr>
+          <td>Adidas（ADDYY）</td>
+          <td class="num">~20x</td>
+          <td class="num">~49%</td>
+          <td><span class="tag tag-blue">反彈中</span></td>
+        </tr>
+        <tr>
+          <td>On Holding（ONON）</td>
+          <td class="num">~35x</td>
+          <td class="num up">~60%</td>
+          <td><span class="tag tag-green">高速成長</span></td>
+        </tr>
+        <tr>
+          <td>Deckers/HOKA</td>
+          <td class="num">~18x</td>
+          <td class="num up">~57%</td>
+          <td><span class="tag tag-green">強勢崛起</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Nike 的毛利率壓力與同業相比處於明顯劣勢，這是市場給予折價的核心原因。然而其 $46B+ 的規模和全球品牌護城河是對手短期無法複製的資產。</p>
+  </div>
+
+  <!-- 目標價 -->
+  <div class="section-card">
+    <h2>🔹 目標價情境分析</h2>
+    <p>基於 FY2027 EPS $2.37 × 不同本益比情境（現價 $53.49）：</p>
+
+    <table class="scenario-table">
+      <thead>
+        <tr><th>情境</th><th>目標價</th><th>關鍵假設</th></tr>
+      </thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">🐻 熊市</span></td>
+          <td><span class="scenario-target">$38–$45</span></td>
+          <td>Q3/Q4財報持續失望、毛利率跌破40%、中國市場進一步惡化、$300M重組費用超支；FY2026 EPS下修至$1.40 × 28-32x；較現價 -16% ~ -29%</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">📊 基本</span></td>
+          <td><span class="scenario-target">$68–$78</span></td>
+          <td>Elliott Hill轉型有效推進、FY2027 EPS $2.37 × 28-33x；毛利率逐步回升至43-44%；符合分析師均值$75.54；較現價 +27% ~ +46%</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">🐂 牛市</span></td>
+          <td><span class="scenario-target">$90–$100</span></td>
+          <td>中國市場強力反彈+毛利率回升至45%+EPS超預期達$3.00（FY2028）+P/E擴張至33-35x；較現價 +68% ~ +87%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top:12px;font-size:0.85rem;color:#64748b;">分析師目標區間：低 $38 ～ 高 $100（均值 $75.54）｜Barclays 升評至買進，目標 $73（3/11）｜Deutsche Bank 持有，目標下調至 $54（3/23）</p>
+  </div>
+
+  <!-- 催化劑與風險 -->
+  <div class="section-card">
+    <h2>🔹 催化劑 &amp; 風險</h2>
+
+    <h3>✅ 正面催化劑</h3>
+    <ul>
+      <li><strong>3/31 Q3財報超預期：</strong>若毛利率止跌回升（>41%）或北美加速回暖，股價可望強勢反彈至 $60–65</li>
+      <li><strong>CEO Elliott Hill「Win Now」戰略：</strong>親自買入 $100萬股票顯示信心；$3億重組費用已提列，FY2027 成本改善空間大</li>
+      <li><strong>中國市場回暖：</strong>若 2026下半年中國消費復甦，Nike（全球第二大市場）受益最深</li>
+      <li><strong>股息 3%+ 防禦性：</strong>近 23年連續提升股息，長線投資人在歷史低位獲得可觀殖利率支撐</li>
+      <li><strong>運動鞋服大趨勢：</strong>全球運動消費市場維持 4-5% 結構性成長，Nike 仍是最高知名度品牌</li>
+      <li><strong>機構法人建倉：</strong>多家機構在 Q3 財報前積極建立 NKE 部位，顯示大資金預期觸底</li>
+    </ul>
+
+    <h3>❌ 主要風險</h3>
+    <ul>
+      <li><strong>3/31財報地雷（6天後）：</strong>若 EPS $0.32 及 $11.23B 營收雙雙不及預期，可能跌破 $52 支撐，測試 $48–50</li>
+      <li><strong>毛利率持續惡化：</strong>FY2022 的 45.98% → 目前 40.6%，若 Q3 再壓縮，將動搖整個恢復故事</li>
+      <li><strong>中國持續疲軟：</strong>反西方情緒 + 李寧、安踏、ANTA 本土品牌持續搶占市場</li>
+      <li><strong>競爭加劇（最結構性風險）：</strong>On Running（+50%年增）、HOKA 在跑步鞋核心市場快速侵蝕 Nike 份額</li>
+      <li><strong>關稅風險：</strong>Nike 主要在越南/印尼生產；若美國對亞洲進口提高關稅，每股成本可能增加 $0.30–0.50</li>
+      <li><strong>Converse 品牌疲軟：</strong>Nike 旗下 Converse 銷售持續下滑，形成額外拖累</li>
+    </ul>
+  </div>
+
+  <!-- 結論 -->
+  <div class="section-card">
+    <h2>🔹 結論與操作建議</h2>
+
+    <p><strong>整體評級：⚖️ 中性偏正面（Neutral+）｜持有觀望至 Q3 財報</strong></p>
+
+    <p>Nike 是一個<strong>高風險/高回報的轉型故事</strong>。現價 $53.49 幾乎貼近 52週低點 $52.18，意味著市場已充分悲觀定價。分析師均值目標 $75.54（+41%）反映市場相信 Elliott Hill 的轉型計劃能在 FY2027 實現盈利反彈。</p>
+
+    <p><strong>核心問題：</strong>這是「價值陷阱」還是「逆向機會」？答案將在 3月31日的Q3財報後初步揭曉——特別是毛利率能否止跌是最關鍵指標。</p>
+
+    <h3>📋 操作建議</h3>
+    <ul>
+      <li><strong>積極型投資者：</strong>可在 $52–54 分批建立 5–10% 部位，停損設 $48（跌破52週低點視為訊號改變）；等待3/31財報確認後加碼</li>
+      <li><strong>保守型投資者：</strong>等待 3/31 財報後再決策——若毛利率 &gt;41% 且管理層上調指引，則確認底部；若進一步下修，繼續觀望至 $45–48</li>
+      <li><strong>長線投資人（3年+）：</strong>3.07% 股息 + 全球品牌護城河 + Elliott Hill 轉型，$53 附近長期持有風險報酬比具吸引力；參照歷史，Nike 上次在 $50 附近（2017年）是極佳的長線買點</li>
+    </ul>
+
+    <div class="disclaimer">
+      ⚠️ <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議。3/31 財報為重大近期催化劑，請謹慎評估倉位規模與風險承受能力。
+    </div>
+
+    <div class="sources">
+      📊 資料來源：
+      <a href="https://stockanalysis.com/stocks/nke/financials/" target="_blank">StockAnalysis NKE 財務數據</a> ·
+      <a href="https://stockanalysis.com/stocks/nke/forecast/" target="_blank">StockAnalysis 分析師預測</a> ·
+      <a href="https://www.ibtimes.com.au/nike-stock-climbs-modestly-amid-turnaround-hopes-q3-earnings-loom-1864327" target="_blank">IBTimes Nike Q3 展望</a> ·
+      <a href="https://www.marketbeat.com/stocks/NYSE/NKE/earnings/" target="_blank">MarketBeat NKE 財報</a> ·
+      數據截至 2026/03/24
+    </div>
+  </div>
+
+</main>
+
+<footer class="report-footer">
+  <span>🤖 Generated by Market Analyst · Claude Code</span>
+  <span>最後更新：2026/03/25 09:30</span>
+</footer>
+
+</body>
+</html>

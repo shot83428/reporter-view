@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>美股市場綜合分析 – 2026/03/30</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── Header ── */
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1e3d6e 60%, #1a5276 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 900px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 2rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-header h1 span.ticker {
+      font-size: 1.1rem; font-weight: 400; color: #90b8d8;
+      margin-left: 10px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90b8d8; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── Price Pill ── */
+    .price-banner {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-top: 16px;
+      display: inline-flex; align-items: baseline; gap: 12px;
+    }
+    .price-banner .price { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    .price-banner .change-up { color: #4ade80; font-weight: 600; }
+    .price-banner .change-down { color: #f87171; font-weight: 600; }
+
+    /* ── Main Container ── */
+    .report-body { max-width: 900px; margin: 0 auto; padding: 32px 20px 0; }
+
+    /* ── Section Cards ── */
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #0f2744; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 {
+      font-size: 0.9rem; font-weight: 600;
+      color: #334155; margin: 18px 0 10px;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.75; margin-bottom: 10px; }
+    .section-card ul, .section-card ol {
+      padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.85;
+    }
+    .section-card li { margin-bottom: 4px; }
+
+    /* ── Data Table ── */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .data-table td strong { color: #1a2332; }
+
+    /* ── Scenario Table ── */
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.15rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+
+    /* ── Tags ── */
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+
+    /* ── Metric Cards ── */
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; margin: 12px 0;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-value.up { color: #16a34a; }
+    .metric-value.down { color: #dc2626; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+
+    hr { border: none; border-top: 1px solid #e8edf4; margin: 16px 0; }
+
+    /* ── Sources ── */
+    .sources { font-size: 0.8rem; color: #64748b; margin-top: 8px; }
+    .sources a { color: #2563eb; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    .report-footer {
+      max-width: 900px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+
+    /* ── Sector Bar ── */
+    .sector-bar {
+      display: flex; align-items: center; gap: 10px; margin: 6px 0;
+      font-size: 0.85rem;
+    }
+    .sector-bar .name { width: 110px; font-weight: 600; color: #334155; }
+    .sector-bar .bar-wrap { flex: 1; height: 22px; background: #f1f5fb; border-radius: 6px; position: relative; overflow: hidden; }
+    .sector-bar .bar { height: 100%; border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; font-size: 11px; font-weight: 700; color: #fff; min-width: 40px; }
+    .sector-bar .bar.green { background: linear-gradient(90deg, #22c55e, #16a34a); }
+    .sector-bar .bar.red { background: linear-gradient(90deg, #ef4444, #dc2626); }
+
+    /* ── Alert Box ── */
+    .alert-box {
+      background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px;
+      padding: 16px 20px; margin: 12px 0;
+    }
+    .alert-box.warning { background: #fffbeb; border-color: #fed7aa; }
+    .alert-box.info { background: #eff6ff; border-color: #bfdbfe; }
+    .alert-box .alert-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 6px; }
+    .alert-box ul { padding-left: 18px; font-size: 0.85rem; line-height: 1.7; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .report-header { background: #0f2744 !important; -webkit-print-color-adjust: exact; }
+      .section-card { box-shadow: none; border: 1px solid #dde4ef; }
+      .report-footer { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.4rem; }
+      .section-card { padding: 20px 18px; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">US Market Overview</div>
+    <h1>美股市場綜合分析<span class="ticker">DJIA / S&amp;P 500 / NASDAQ</span></h1>
+    <div class="report-meta">
+      <span>&#x1F4C5; 2026/03/30</span>
+      <span>&#x1F30D; NYSE / NASDAQ</span>
+      <span>&#x26A1; Real-time Data</span>
+    </div>
+    <div class="price-banner">
+      <span class="price">S&amp;P 500: 6,343.72</span>
+      <span class="change-down">&#x25BC; 25.13 (&minus;0.39%)</span>
+    </div>
+  </div>
+</header>
+
+<main class="report-body">
+
+  <div class="section-card">
+    <h2>&#x1F4CA; 三大指數收盤</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">道瓊工業 (DJIA)</div>
+        <div class="metric-value up">45,216.14</div>
+        <div class="metric-note">+49.50 (+0.11%)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">S&amp;P 500</div>
+        <div class="metric-value down">6,343.72</div>
+        <div class="metric-note">-25.13 (-0.39%)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">NASDAQ 綜合</div>
+        <div class="metric-value down">20,794.64</div>
+        <div class="metric-note">-153.72 (-0.73%)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Russell 2000</div>
+        <div class="metric-value down">2,414.01</div>
+        <div class="metric-note">-1.46%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2>&#x1F5A5;&#xFE0F; 關鍵市場指標</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">VIX 恐慌指數</div>
+        <div class="metric-value down">30.61</div>
+        <div class="metric-note">-1.42% (仍處高檔)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">WTI 原油</div>
+        <div class="metric-value up">$104.91</div>
+        <div class="metric-note">+5.29% (突破 $100)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">10Y 美債殖利率</div>
+        <div class="metric-value">4.35%</div>
+        <div class="metric-note">-8 bps (盤中低至 3.92%)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">美元指數 (DXY)</div>
+        <div class="metric-value up">100.54</div>
+        <div class="metric-note">連5漲 創10個月新高</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">黃金 (XAU/USD)</div>
+        <div class="metric-value up">$4,568.71</div>
+        <div class="metric-note">站穩 $4,500+</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">SMH 半導體 ETF</div>
+        <div class="metric-value down">-3.12%</div>
+        <div class="metric-note">獲利出貨壓力</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2>&#x1F3AF; 板塊表現</h2>
+    <h3>領漲板塊</h3>
+    <div class="sector-bar">
+      <span class="name">公用事業</span>
+      <div class="bar-wrap"><div class="bar green" style="width: 62%;">+1.23%</div></div>
+    </div>
+    <div class="sector-bar">
+      <span class="name">金融 (XLF)</span>
+      <div class="bar-wrap"><div class="bar green" style="width: 57%;">+1.14%</div></div>
+    </div>
+    <div class="sector-bar">
+      <span class="name">能源</span>
+      <div class="bar-wrap"><div class="bar green" style="width: 54%;">+0.82%</div></div>
+    </div>
+    <h3>領跌板塊</h3>
+    <div class="sector-bar">
+      <span class="name">科技</span>
+      <div class="bar-wrap"><div class="bar red" style="width: 55%;">-1.0%+</div></div>
+    </div>
+    <div class="sector-bar">
+      <span class="name">半導體 (SMH)</span>
+      <div class="bar-wrap"><div class="bar red" style="width: 78%;">-3.12%</div></div>
+    </div>
+    <div class="sector-bar">
+      <span class="name">小型股 (R2K)</span>
+      <div class="bar-wrap"><div class="bar red" style="width: 73%;">-1.46%</div></div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2>&#x1F4F0; 市場面分析</h2>
+    <h3>主導敘事：地緣政治風暴 + 能源衝擊</h3>
+    <p>3/30 美股呈現明顯的「分裂」格局 &mdash; 能源商品暴漲與科技股賣壓形成兩極化走勢。</p>
+
+    <div class="alert-box">
+      <div class="alert-title">&#x1F6A8; 核心驅動因素</div>
+      <ul>
+        <li><strong>中東局勢升溫：</strong>伊朗衝突持續擴大，荷姆茲海峽封鎖風險推升原油突破 $100，WTI 單日暴漲 5.29% 至 $104.91</li>
+        <li><strong>Fed 主席 Powell 發言：</strong>Powell 在哈佛大學演講中表示通膨預期仍「錨定」，不認為有升息必要。市場對年底前升息預期降至僅 2.2%</li>
+        <li><strong>資金大規模避險輪動：</strong>國債走強（殖利率盤中觸及 3.92%）、黃金站穩 $4,500+，資金從科技流向公用事業/能源/金融</li>
+        <li><strong>NASDAQ 正式進入修正領域：</strong>自 Q1 高點 ~23,000 已下跌超過 10%，Magnificent 7 年初至今平均下跌 13.38%</li>
+      </ul>
+    </div>
+
+    <div class="alert-box warning">
+      <div class="alert-title">&#x26A0;&#xFE0F; VIX 維持 30+ 高檔</div>
+      <p style="font-size:0.85rem; color:#78350f; margin:0;">雖較前一交易日微降 1.42%，但 30.61 的水準顯示市場仍處於高度恐慌狀態，接近 2025 年以來罕見水平。歷史上 VIX 持續高於 30 通常對應重大市場調整期。</p>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2>&#x1F4C8; 技術面分析</h2>
+
+    <h3>S&amp;P 500 技術面</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>指標</th><th>數值</th><th>訊號</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>現價</strong></td><td>6,343</td><td><span class="tag tag-red">低於所有短中期均線</span></td></tr>
+        <tr><td>20 日均線</td><td>6,720~6,800</td><td>壓力（高於現價 6%+）</td></tr>
+        <tr><td>50 日均線</td><td>~6,500</td><td>近期關鍵壓力</td></tr>
+        <tr><td>100 日均線</td><td>~6,080</td><td>中期支撐</td></tr>
+        <tr><td>200 日均線</td><td>~5,450</td><td>長期多空分界（仍在上方）</td></tr>
+        <tr><td>RSI</td><td>&lt; 50</td><td><span class="tag tag-yellow">買方動能不足</span></td></tr>
+        <tr><td>MACD</td><td>零線以下</td><td><span class="tag tag-red">短線下降趨勢</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>S&amp;P 500 關鍵價位</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>類型</th><th>價位</th><th>說明</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>即時支撐</strong></td><td class="num">6,350</td><td>當前交易區間下緣</td></tr>
+        <tr><td><strong>關鍵支撐</strong></td><td class="num">6,200</td><td>結構性支撐位</td></tr>
+        <tr><td><strong>中期支撐</strong></td><td class="num">6,080</td><td>100 日均線</td></tr>
+        <tr><td><strong>深度支撐</strong></td><td class="num">5,800</td><td>Q2 牛方必守</td></tr>
+        <tr><td><strong>即時壓力</strong></td><td class="num">6,450</td><td>短線反彈目標</td></tr>
+        <tr><td><strong>關鍵壓力</strong></td><td class="num">6,500</td><td>50 日均線</td></tr>
+        <tr><td><strong>主要壓力</strong></td><td class="num">6,700~6,800</td><td>20 日均線區域</td></tr>
+      </tbody>
+    </table>
+
+    <h3>NASDAQ 技術面</h3>
+    <ul>
+      <li>RSI 逼近 30 超賣區域，有短線反彈機會但壓力沉重</li>
+      <li>跌破 21,000 支撐，下方關注 20,500~20,700 及心理關卡 20,000</li>
+      <li><strong>NASDAQ-100 出現「死亡交叉」</strong>（50 日均線跌破 200 日均線）&mdash; 中長期偏空訊號</li>
+      <li>反彈壓力區：21,500~22,000</li>
+    </ul>
+  </div>
+
+  <div class="section-card">
+    <h2>&#x1F31F; Magnificent 7 觀察</h2>
+    <table class="data-table">
+      <thead>
+        <tr><th>個股</th><th>年初至今</th><th>備註</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Mag 7 整體</strong></td><td class="num" style="color:#dc2626;">-13.38%</td><td>大幅落後 S&amp;P 500</td></tr>
+        <tr><td>Microsoft (MSFT)</td><td class="num" style="color:#dc2626;">-17.4%</td><td>表現最差</td></tr>
+        <tr><td>Tesla (TSLA)</td><td class="num" style="color:#dc2626;">-11.3%</td><td>受能源轉型敘事衝擊</td></tr>
+        <tr><td>NVIDIA (NVDA)</td><td class="num" style="color:#dc2626;">下跌中</td><td>AI 支出質疑 + 半導體賣壓</td></tr>
+      </tbody>
+    </table>
+    <p>Mag 7 佔 S&amp;P 500 市值約 33.3%，其集體疲弱是拖累大盤的核心因素。但部分分析師指出，依歷史估值指標，其中部分個股已接近價值浮現區間。</p>
+  </div>
+
+  <div class="section-card">
+    <h2>&#x1F3AF; Q2 目標區間</h2>
+
+    <h3>S&amp;P 500</h3>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">&#x1F43B; 熊市</span></td>
+          <td><span class="scenario-target">5,800~6,000</span></td>
+          <td>地緣政治惡化、油價持續飆升、Fed 被迫轉鷹</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">&#x1F4CA; 基本</span></td>
+          <td><span class="scenario-target">6,200~6,500</span></td>
+          <td>油價回穩至 $85~95、Fed 維持不動、企業獲利撐住</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">&#x1F402; 牛市</span></td>
+          <td><span class="scenario-target">6,700~7,000</span></td>
+          <td>中東衝突降溫、油價回落、AI 支出重新加速</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>NASDAQ</h3>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">&#x1F43B; 熊市</span></td>
+          <td><span class="scenario-target">19,000~20,000</span></td>
+          <td>死亡交叉確認、殖利率持續走高</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">&#x1F4CA; 基本</span></td>
+          <td><span class="scenario-target">20,500~21,500</span></td>
+          <td>超賣反彈但缺乏突破動能</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">&#x1F402; 牛市</span></td>
+          <td><span class="scenario-target">22,000~23,000</span></td>
+          <td>地緣風險降溫 + Q1 財報優於預期</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-card">
+    <h2>&#x26A1; 催化劑 &amp; 風險</h2>
+
+    <div class="alert-box info">
+      <div class="alert-title" style="color:#1e40af;">&#x1F4C8; 潛在催化劑（正面）</div>
+      <ul style="color:#1e3a5f;">
+        <li>中東停火或外交突破 &rarr; 油價大幅回落</li>
+        <li>Q1 財報季即將開始，若企業獲利優於預期可提振信心</li>
+        <li>RSI 超賣 &rarr; 技術性反彈動能積累</li>
+        <li>Powell 鴿派立場 &rarr; 降息預期重燃</li>
+        <li>2026 年 AI 資本支出結構性增加 $7,000 億提供基本面支撐</li>
+      </ul>
+    </div>
+
+    <div class="alert-box">
+      <div class="alert-title" style="color:#991b1b;">&#x1F6A8; 主要風險（負面）</div>
+      <ul style="color:#7f1d1d;">
+        <li>荷姆茲海峽封鎖 &rarr; 油價持續飆升至 $120+</li>
+        <li>通膨預期脫錨 &rarr; Fed 被迫升息</li>
+        <li>NASDAQ 死亡交叉引發系統性賣壓</li>
+        <li>科技股估值持續重估（AI 疲勞症候群）</li>
+        <li>關稅政策餘波與全球貿易摩擦</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <h2>&#x1F4A1; 投資建議</h2>
+
+    <h3>短線操作（1~4 週）</h3>
+    <ul>
+      <li><strong>謹慎觀望為主</strong> &mdash; VIX 仍高於 30，市場處高波動環境，不宜重倉追漲殺跌</li>
+      <li>S&amp;P 500 若回測 6,200 支撐不破，可小幅佈局 SPY/VOO；停損設在 6,080 以下</li>
+      <li>科技股 RSI 逼近超賣，但死亡交叉壓制反彈空間 &mdash; 搶反彈應嚴設停損</li>
+    </ul>
+
+    <h3>中線配置（1~3 個月）</h3>
+    <ul>
+      <li><strong>防禦性板塊加碼：</strong>公用事業 (XLU)、醫療保健 (XLV) &mdash; 油價衝擊 + 經濟放緩環境中具相對優勢</li>
+      <li><strong>能源曝險：</strong>油價短線已漲多但趨勢仍強，可透過 XLE 或大型石油股參與</li>
+      <li><strong>道瓊價值股：</strong>道瓊已成為「價值避風港」，45,244 附近有強力支撐</li>
+      <li><strong>黃金配置：</strong>$4,500+ 的黃金在地緣風險環境中仍有上行空間</li>
+    </ul>
+
+    <h3>應避免</h3>
+    <ul>
+      <li>過度集中科技/半導體多頭部位</li>
+      <li>在 VIX &gt; 28 環境中使用過高槓桿</li>
+      <li>忽視停損紀律</li>
+    </ul>
+  </div>
+
+  <div class="section-card">
+    <h2>&#x1F4DD; 結論</h2>
+    <p>3/30 美股延續近期分裂格局 &mdash; 道瓊微漲撐場面，但 S&amp;P 500、NASDAQ 及小型股持續承壓。中東地緣政治風險與油價破百是壓倒性主題，科技板塊成為最大犧牲者。Powell 的鴿派發言短暫穩住市場情緒，但無法逆轉結構性賣壓。</p>
+    <p>技術面上，NASDAQ 的死亡交叉與 S&amp;P 500 低於所有短中期均線的事實，預示短線偏空格局可能延續。但 RSI 逼近超賣及 Powell 排除升息的立場，為反彈提供潛在契機。</p>
+    <p><strong>核心觀點：目前是「選擇性佈局」的時期，而非全面做多或做空。</strong>防禦性配置（公用事業、黃金、能源）應佔投資組合較高比重，靜待地緣風險明朗化後再加碼成長股。</p>
+  </div>
+
+  <div class="section-card">
+    <h2>&#x1F4D6; 資料來源</h2>
+    <div class="sources">
+      <ul>
+        <li><a href="https://www.cnbc.com/2026/03/30/stock-market-today-live-updates.html" target="_blank">CNBC: Stock market today live updates (3/30)</a></li>
+        <li><a href="https://stockmarketwatch.com/live/stock-market-today/" target="_blank">StockMarketWatch: Tech Slump and Surging Energy Prices</a></li>
+        <li><a href="https://tiomarkets.com/article/sp500-forecast-for-the-week-of-30th-march-2026" target="_blank">TIOMarkets: S&amp;P 500 Forecast Week of March 30</a></li>
+        <li><a href="https://www.marketpulse.com/markets/q2-2026-us-indices-dow-jones-sp-500-nasdaq-100-outlook-resilience-or-retracement/" target="_blank">MarketPulse: Q2 2026 US Indices Outlook</a></li>
+        <li><a href="https://www.cnbc.com/2026/03/30/powell-sees-inflation-outlook-in-check-no-wider-crisis-yet-in-private-credit.html" target="_blank">CNBC: Powell sees inflation outlook in check</a></li>
+        <li><a href="https://www.cnn.com/2026/03/30/economy/jerome-powell-harvard-us-economy-iran" target="_blank">CNN: Powell on inflation expectations</a></li>
+        <li><a href="https://www.fool.com/investing/2026/03/28/nasdaq-correction-stock-market-do-next-shock/" target="_blank">Motley Fool: Nasdaq correction territory</a></li>
+        <li><a href="https://www.fxstreet.com/news/gold-price-forecast-xau-usds-recovery-might-extend-to-the-5-000-area-202603301107" target="_blank">FXStreet: Gold price forecast</a></li>
+        <li><a href="https://www.schwab.com/learn/story/stock-market-update-open" target="_blank">Schwab: Stocks with yields down, oil above $100</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="disclaimer">
+      &#x26A0;&#xFE0F; <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議或要約。
+      投資市場存在風險，過去表現不代表未來績效，請自行評估風險承受能力並諮詢專業理財顧問後再做決策。
+    </div>
+  </div>
+
+</main>
+
+<footer class="report-footer">
+  <span>&#x1F916; Generated by Market Analyst &middot; Claude Code</span>
+  <span>最後更新：2026/03/31 09:00</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>美股精選 10 檔成長股 分析報告 – 2026/03/25</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1e3d6e 60%, #1a5276 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 960px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 2rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90b8d8; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+
+    .report-body { max-width: 960px; margin: 0 auto; padding: 32px 20px 0; }
+
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #0f2744; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+    }
+    .section-card h3 {
+      font-size: 0.95rem; font-weight: 700;
+      color: #1e3d6e; margin: 20px 0 10px;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.75; margin-bottom: 10px; }
+    .section-card ul { padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.9; }
+    .section-card li { margin-bottom: 4px; }
+
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .data-table td strong { color: #1a2332; font-weight: 700; }
+
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.15rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+    .tag-purple { background: #f3e8ff; color: #6b21a8; }
+    .tag-orange { background: #ffedd5; color: #9a3412; }
+
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px; margin: 12px 0;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.05rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .metric-up { color: #16a34a; }
+    .metric-down { color: #dc2626; }
+
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+
+    .sources { font-size: 0.8rem; color: #64748b; margin-top: 12px; }
+
+    /* 個股卡片 */
+    .stock-card {
+      border: 1px solid #e2e8f4;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      background: #fafbff;
+    }
+    .stock-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .stock-ticker {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #0f2744;
+    }
+    .stock-name {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .stock-price {
+      text-align: right;
+    }
+    .stock-price .current { font-size: 1.4rem; font-weight: 700; color: #1a2332; }
+    .stock-price .target { font-size: 0.85rem; color: #64748b; }
+    .stock-price .upside { font-size: 0.95rem; font-weight: 700; }
+    .upside-positive { color: #16a34a; }
+    .upside-neutral { color: #2563eb; }
+
+    /* 技術進度條 */
+    .tech-bar-wrap {
+      margin: 10px 0 6px;
+    }
+    .tech-bar-label {
+      font-size: 11px; color: #64748b; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .tech-bar-track {
+      background: #e2e8f4;
+      border-radius: 4px;
+      height: 8px;
+      position: relative;
+    }
+    .tech-bar-fill {
+      height: 8px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #22c55e, #3b82f6);
+    }
+    .tech-bar-fill.high { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+    .tech-bar-fill.mid { background: linear-gradient(90deg, #22c55e, #3b82f6); }
+    .tech-bar-fill.low { background: linear-gradient(90deg, #3b82f6, #22c55e); }
+    .tech-bar-ends {
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: #94a3b8; margin-top: 3px;
+    }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .analysis-block { font-size: 0.875rem; color: #374151; line-height: 1.8; }
+    .analysis-block strong { color: #0f2744; }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .portfolio-item {
+      background: #f8faff;
+      border: 1px solid #e2e8f4;
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .portfolio-item .pi-title { font-weight: 700; font-size: 0.95rem; color: #0f2744; margin-bottom: 6px; }
+    .portfolio-item .pi-stocks { font-size: 0.82rem; color: #374151; }
+
+    .risk-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      margin: 12px 0;
+    }
+    .risk-item {
+      background: #fff8f8;
+      border-left: 4px solid #ef4444;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 14px;
+      font-size: 0.875rem;
+      color: #374151;
+    }
+    .risk-item strong { color: #991b1b; display: block; margin-bottom: 4px; }
+
+    hr { border: none; border-top: 1px solid #e8edf4; margin: 16px 0; }
+
+    .report-footer {
+      max-width: 960px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.4rem; }
+      .section-card { padding: 20px 18px; }
+      .two-col { grid-template-columns: 1fr; }
+      .risk-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">US Stock · 精選投資組合</div>
+    <h1>美股精選 10 檔成長股</h1>
+    <div class="report-meta">
+      <span>📅 2026/03/25</span>
+      <span>🌐 NASDAQ / NYSE</span>
+      <span>⚡ 即時數據</span>
+      <span>🤖 AI 分析師</span>
+    </div>
+  </div>
+</header>
+
+<main class="report-body">
+
+  <!-- ═══ 選股邏輯 ═══ -->
+  <div class="section-card">
+    <h2>🔹 選股邏輯與主題分佈</h2>
+    <p>本份報告從<strong>市場面（基本面 + 催化劑）</strong>與<strong>技術面（52 週位置 + 趨勢）</strong>兩個維度，精選 10 檔具有未來成長潛力的美股。選股橫跨 4 大長線結構性主題：</p>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:12px; margin:16px 0;">
+      <div class="metric-card">
+        <div class="metric-label">🤖 AI 基礎建設</div>
+        <div class="metric-value" style="font-size:0.9rem;">NVDA · AVGO · TSM</div>
+        <div class="metric-note">算力供給瓶頸，需求持續外溢</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">☁️ AI 軟體平台</div>
+        <div class="metric-value" style="font-size:0.9rem;">MSFT · GOOGL · AMZN · PLTR · CRWD</div>
+        <div class="metric-note">企業 AI 採用加速，護城河深厚</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">💊 生技革命</div>
+        <div class="metric-value" style="font-size:0.9rem;">LLY</div>
+        <div class="metric-note">GLP-1 市場滲透初期，TAM 兆元</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">🎬 消費平台轉型</div>
+        <div class="metric-value" style="font-size:0.9rem;">NFLX</div>
+        <div class="metric-note">廣告收入+直播，利潤率快速擴張</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 總覽比較表 ═══ -->
+  <div class="section-card">
+    <h2>🔹 10 檔精選股票總覽</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>代碼</th>
+          <th>股價</th>
+          <th>市值</th>
+          <th>P/E</th>
+          <th>營收增率</th>
+          <th>分析師目標價</th>
+          <th>上漲空間</th>
+          <th>評級</th>
+          <th>52週技術位置</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>NVDA</strong></td>
+          <td class="num">$175.20</td>
+          <td class="num">$4.26T</td>
+          <td class="num">35.8x</td>
+          <td class="num"><span style="color:#16a34a;font-weight:600;">+65.5%</span></td>
+          <td class="num">$265.97</td>
+          <td class="num"><strong style="color:#16a34a;">+51.8%</strong></td>
+          <td><span class="tag tag-green">Strong Buy</span></td>
+          <td>52% 中段</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>MSFT</strong></td>
+          <td class="num">$372.74</td>
+          <td class="num">$2.77T</td>
+          <td class="num">23.3x</td>
+          <td class="num"><span style="color:#16a34a;font-weight:600;">+16.7%</span></td>
+          <td class="num">$599.63</td>
+          <td class="num"><strong style="color:#16a34a;">+60.9% ⭐</strong></td>
+          <td><span class="tag tag-green">Strong Buy</span></td>
+          <td>13% 底部 ⚠️</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>AMZN</strong></td>
+          <td class="num">$207.24</td>
+          <td class="num">$2.22T</td>
+          <td class="num">28.9x</td>
+          <td class="num"><span style="color:#16a34a;font-weight:600;">+12.4%</span></td>
+          <td class="num">$278.69</td>
+          <td class="num"><strong style="color:#16a34a;">+34.5%</strong></td>
+          <td><span class="tag tag-green">Strong Buy</span></td>
+          <td>47% 中段</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>CRWD</strong></td>
+          <td class="num">$392.99</td>
+          <td class="num">$99.67B</td>
+          <td class="num">N/A</td>
+          <td class="num"><span style="color:#16a34a;font-weight:600;">+21.7%</span></td>
+          <td class="num">$507.20</td>
+          <td class="num"><strong style="color:#16a34a;">+29.1%</strong></td>
+          <td><span class="tag tag-blue">Buy</span></td>
+          <td>35% 下段</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>AVGO</strong></td>
+          <td class="num">$318.29</td>
+          <td class="num">$1.51T</td>
+          <td class="num">62.0x</td>
+          <td class="num"><span style="color:#16a34a;font-weight:600;">+25.2%</span></td>
+          <td class="num">$431.24</td>
+          <td class="num"><strong style="color:#16a34a;">+35.5%</strong></td>
+          <td><span class="tag tag-green">Strong Buy</span></td>
+          <td>66% 上段</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>LLY</strong></td>
+          <td class="num">$903.02</td>
+          <td class="num">$806.72B</td>
+          <td class="num">39.4x</td>
+          <td class="num"><span style="color:#16a34a;font-weight:600;">+44.7%</span></td>
+          <td class="num">$1,182.42</td>
+          <td class="num"><strong style="color:#16a34a;">+30.9%</strong></td>
+          <td><span class="tag tag-blue">Buy</span></td>
+          <td>54% 中段</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>GOOGL</strong></td>
+          <td class="num">$290.44</td>
+          <td class="num">$3.51T</td>
+          <td class="num">26.9x</td>
+          <td class="num"><span style="color:#16a34a;font-weight:600;">+15.1%</span></td>
+          <td class="num">$351.82</td>
+          <td class="num"><strong style="color:#16a34a;">+21.1%</strong></td>
+          <td><span class="tag tag-green">Strong Buy</span></td>
+          <td>72% 上段</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td><strong>PLTR</strong></td>
+          <td class="num">$154.78</td>
+          <td class="num">$370.18B</td>
+          <td class="num">245.7x</td>
+          <td class="num"><span style="color:#16a34a;font-weight:600;">+56.2%</span></td>
+          <td class="num">$196.43</td>
+          <td class="num"><strong style="color:#16a34a;">+26.9%</strong></td>
+          <td><span class="tag tag-blue">Buy</span></td>
+          <td>62% 上段</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td><strong>NFLX</strong></td>
+          <td class="num">$90.92*</td>
+          <td class="num">$383.88B</td>
+          <td class="num">35.9x</td>
+          <td class="num"><span style="color:#16a34a;font-weight:600;">+15.9%</span></td>
+          <td class="num">$118.49</td>
+          <td class="num"><strong style="color:#16a34a;">+30.3%</strong></td>
+          <td><span class="tag tag-blue">Buy</span></td>
+          <td>27% 下段</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><strong>TSM</strong></td>
+          <td class="num">$343.25</td>
+          <td class="num">$1.78T</td>
+          <td class="num">32.5x</td>
+          <td class="num"><span style="color:#16a34a;font-weight:600;">+31.6%</span></td>
+          <td class="num">$401.67</td>
+          <td class="num"><strong style="color:#16a34a;">+17.0%</strong></td>
+          <td><span class="tag tag-blue">Buy</span></td>
+          <td>82% 高段</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sources">* NFLX 數據推估已反映股票分割（市值 $383.88B 不變）。數據來源：StockAnalysis.com，截至 2026/03/24。</div>
+  </div>
+
+  <!-- ═══ 個股分析 ═══ -->
+  <div class="section-card">
+    <h2>🔹 個股深度分析</h2>
+
+    <!-- NVDA -->
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <div>
+          <div class="stock-ticker">NVDA <span class="tag tag-green">Strong Buy</span> <span class="tag tag-blue">AI 基礎建設</span></div>
+          <div class="stock-name">NVIDIA Corporation</div>
+        </div>
+        <div class="stock-price">
+          <div class="current">$175.20</div>
+          <div class="target">目標價 <strong>$265.97</strong></div>
+          <div class="upside upside-positive">▲ +51.8% 上漲空間</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">市值</div><div class="metric-value">$4.26T</div></div>
+        <div class="metric-card"><div class="metric-label">P/E</div><div class="metric-value">35.8x</div></div>
+        <div class="metric-card"><div class="metric-label">EPS 增率</div><div class="metric-value metric-up">+66.7%</div></div>
+        <div class="metric-card"><div class="metric-label">營收增率</div><div class="metric-value metric-up">+65.5%</div></div>
+        <div class="metric-card"><div class="metric-label">52週高/低</div><div class="metric-value" style="font-size:0.85rem;">$212 / $86</div></div>
+        <div class="metric-card"><div class="metric-label">分析師人數</div><div class="metric-value">38 位</div><div class="metric-note">一致 Strong Buy</div></div>
+      </div>
+      <div class="tech-bar-wrap">
+        <div class="tech-bar-label">52 週技術位置 — 52%（中段）</div>
+        <div class="tech-bar-track"><div class="tech-bar-fill mid" style="width:52%"></div></div>
+        <div class="tech-bar-ends"><span>$86.62（52週低）</span><span>$212.19（52週高）</span></div>
+      </div>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="analysis-block">
+          <strong>📈 市場面（看多）</strong><br>
+          GTC 2026 宣布 AI 晶片市場 2027 年達「兆美元」規模；Blackwell + Vera Rubin 架構技術領先競爭者 2 個世代。每家超大型雲端業者持續砸數百億美元採購，NVDA 是唯一短期可替代選項。P/E 35.8x 在高速成長下屬合理估值。
+        </div>
+        <div class="analysis-block">
+          <strong>⚠️ 主要風險</strong><br>
+          AMD MI400、自研 AI 晶片（Google TPU、AWS Trainium）逐漸追近；中國出口管制影響約 15-20% 潛在市場。技術面：$150 為關鍵支撐，若失守恐觸發大幅度回調。
+        </div>
+      </div>
+    </div>
+
+    <!-- MSFT -->
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <div>
+          <div class="stock-ticker">MSFT <span class="tag tag-green">Strong Buy</span> <span class="tag tag-blue">AI 軟體平台</span> <span class="tag tag-orange">最高上漲空間 ⭐</span></div>
+          <div class="stock-name">Microsoft Corporation</div>
+        </div>
+        <div class="stock-price">
+          <div class="current">$372.74</div>
+          <div class="target">目標價 <strong>$599.63</strong></div>
+          <div class="upside upside-positive">▲ +60.9% 上漲空間</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">市值</div><div class="metric-value">$2.77T</div></div>
+        <div class="metric-card"><div class="metric-label">P/E（Forward）</div><div class="metric-value" style="color:#16a34a;">23.3x</div><div class="metric-note">5大科技最低估</div></div>
+        <div class="metric-card"><div class="metric-label">EPS 增率</div><div class="metric-value metric-up">+28.8%</div></div>
+        <div class="metric-card"><div class="metric-label">營收增率</div><div class="metric-value metric-up">+16.7%</div></div>
+        <div class="metric-card"><div class="metric-label">52週高/低</div><div class="metric-value" style="font-size:0.85rem;">$555 / $344</div></div>
+        <div class="metric-card"><div class="metric-label">52週底部位置</div><div class="metric-value metric-down">僅 13%</div><div class="metric-note">疑似超賣</div></div>
+      </div>
+      <div class="tech-bar-wrap">
+        <div class="tech-bar-label">52 週技術位置 — 13%（底部附近，疑似超賣）</div>
+        <div class="tech-bar-track"><div class="tech-bar-fill low" style="width:13%"></div></div>
+        <div class="tech-bar-ends"><span>$344.79（52週低）</span><span>$555.45（52週高）</span></div>
+      </div>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="analysis-block">
+          <strong>📈 市場面（看多）</strong><br>
+          Azure AI + Microsoft 365 Copilot 商業化爆發，Forward P/E 僅 21.2x 是 5 大科技股最便宜。德州大型資料中心建設展現持續資本投入決心。Microsoft 365 E7 套裝擴大企業用戶 ARPU。後量子加密與政府安全合約是隱性收入催化劑。
+        </div>
+        <div class="analysis-block">
+          <strong>⚠️ 主要風險</strong><br>
+          股價從 52 週高點 $555 大幅下跌至 $372，技術面跌破多個關鍵支撐，需確認底部成型。反壟斷調查可能延伸至 AI 領域；歐盟市場監管壓力持續。
+        </div>
+      </div>
+    </div>
+
+    <!-- AMZN -->
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <div>
+          <div class="stock-ticker">AMZN <span class="tag tag-green">Strong Buy</span> <span class="tag tag-blue">AI 軟體平台</span></div>
+          <div class="stock-name">Amazon.com, Inc.</div>
+        </div>
+        <div class="stock-price">
+          <div class="current">$207.24</div>
+          <div class="target">目標價 <strong>$278.69</strong></div>
+          <div class="upside upside-positive">▲ +34.5% 上漲空間</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">市值</div><div class="metric-value">$2.22T</div></div>
+        <div class="metric-card"><div class="metric-label">P/E</div><div class="metric-value">28.9x</div></div>
+        <div class="metric-card"><div class="metric-label">EPS 增率</div><div class="metric-value metric-up">+29.7%</div></div>
+        <div class="metric-card"><div class="metric-label">營收增率</div><div class="metric-value metric-up">+12.4%</div></div>
+        <div class="metric-card"><div class="metric-label">52週高/低</div><div class="metric-value" style="font-size:0.85rem;">$258 / $161</div></div>
+        <div class="metric-card"><div class="metric-label">分析師人數</div><div class="metric-value">45 位</div><div class="metric-note">最多分析師覆蓋</div></div>
+      </div>
+      <div class="tech-bar-wrap">
+        <div class="tech-bar-label">52 週技術位置 — 47%（中段，走勢平穩）</div>
+        <div class="tech-bar-track"><div class="tech-bar-fill mid" style="width:47%"></div></div>
+        <div class="tech-bar-ends"><span>$161.38（52週低）</span><span>$258.60（52週高）</span></div>
+      </div>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="analysis-block">
+          <strong>📈 市場面（看多）</strong><br>
+          AWS 雲端佔公司營業利益約 60%，AI 需求帶動雲端成長加速。廣告業務雙位數成長，毛利率媲美純軟體公司。收購 Fauna Robotics、Zoox 自駕車擴展布局，開啟下一個十年增長引擎。分析師稱 P/E 28.9x 為「2008 年以來最便宜」。
+        </div>
+        <div class="analysis-block">
+          <strong>⚠️ 主要風險</strong><br>
+          電商毛利薄，物流成本難以進一步壓縮。機器人與自駕投資短期虧損拖累整體利潤。反壟斷：DOJ 對 AWS 市場主導地位調查持續。
+        </div>
+      </div>
+    </div>
+
+    <!-- CRWD -->
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <div>
+          <div class="stock-ticker">CRWD <span class="tag tag-blue">Buy</span> <span class="tag tag-blue">AI 資安</span></div>
+          <div class="stock-name">CrowdStrike Holdings, Inc.</div>
+        </div>
+        <div class="stock-price">
+          <div class="current">$392.99</div>
+          <div class="target">目標價 <strong>$507.20</strong></div>
+          <div class="upside upside-positive">▲ +29.1% 上漲空間</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">市值</div><div class="metric-value">$99.67B</div></div>
+        <div class="metric-card"><div class="metric-label">P/E</div><div class="metric-value">N/A</div><div class="metric-note">尚未穩定盈利</div></div>
+        <div class="metric-card"><div class="metric-label">ARR 增率</div><div class="metric-value metric-up">+21.7%</div></div>
+        <div class="metric-card"><div class="metric-label">分析師人數</div><div class="metric-value">47 位</div><div class="metric-note">最多資安覆蓋</div></div>
+        <div class="metric-card"><div class="metric-label">52週高/低</div><div class="metric-value" style="font-size:0.85rem;">$566 / $298</div></div>
+        <div class="metric-card"><div class="metric-label">52週技術位</div><div class="metric-value">35%</div><div class="metric-note">下段，整理中</div></div>
+      </div>
+      <div class="tech-bar-wrap">
+        <div class="tech-bar-label">52 週技術位置 — 35%（下段，正常高成長股整理）</div>
+        <div class="tech-bar-track"><div class="tech-bar-fill low" style="width:35%"></div></div>
+        <div class="tech-bar-ends"><span>$298.00（52週低）</span><span>$566.90（52週高）</span></div>
+      </div>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="analysis-block">
+          <strong>📈 市場面（看多）</strong><br>
+          AI 擴張是 CRWD「意外紅利」—— AI 帶來更多攻擊面，資安需求正比增長。Falcon 平台生態系黏性極高，與 NVIDIA、EY、Perplexity 建立 AI 安全基礎設施合作。RSA 2026 推出 Agentic MDR 等 AI 資安產品。
+        </div>
+        <div class="analysis-block">
+          <strong>⚠️ 主要風險</strong><br>
+          尚未穩定盈利（淨虧損 $162.5M）；2024 年全球 IT 當機事件的聲譽修復尚未完全。高成長股在利率敏感環境下估值波動大。
+        </div>
+      </div>
+    </div>
+
+    <!-- AVGO -->
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <div>
+          <div class="stock-ticker">AVGO <span class="tag tag-green">Strong Buy</span> <span class="tag tag-blue">AI 晶片</span></div>
+          <div class="stock-name">Broadcom Inc.</div>
+        </div>
+        <div class="stock-price">
+          <div class="current">$318.29</div>
+          <div class="target">目標價 <strong>$431.24</strong></div>
+          <div class="upside upside-positive">▲ +35.5% 上漲空間</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">市值</div><div class="metric-value">$1.51T</div></div>
+        <div class="metric-card"><div class="metric-label">P/E</div><div class="metric-value">62.0x</div></div>
+        <div class="metric-card"><div class="metric-label">EPS 增率</div><div class="metric-value metric-up">+145.1% 🔥</div></div>
+        <div class="metric-card"><div class="metric-label">EBITDA 利潤率</div><div class="metric-value" style="color:#16a34a;">68%</div></div>
+        <div class="metric-card"><div class="metric-label">AI 半導體 Q1</div><div class="metric-value metric-up">+140% YoY</div></div>
+        <div class="metric-card"><div class="metric-label">52週技術位</div><div class="metric-value">66%</div><div class="metric-note">上段，強勢</div></div>
+      </div>
+      <div class="tech-bar-wrap">
+        <div class="tech-bar-label">52 週技術位置 — 66%（上段，機構持續增持）</div>
+        <div class="tech-bar-track"><div class="tech-bar-fill high" style="width:66%"></div></div>
+        <div class="tech-bar-ends"><span>$138.10（52週低）</span><span>$414.61（52週高）</span></div>
+      </div>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="analysis-block">
+          <strong>📈 市場面（看多）</strong><br>
+          AI 客製化晶片（XPU）爆發，Q1 AI 半導體營收 $84 億年增 140%。Google、Meta 優先選擇 AVGO XPU 以降低對 NVIDIA 依賴——AVGO 兩頭吃。Tomahawk 6 交換器推出（全球首款 102.4 Tbps）鞏固資料中心互聯龍頭地位。EBITDA 利潤率 68% 是產業頂尖水準。
+        </div>
+        <div class="analysis-block">
+          <strong>⚠️ 主要風險</strong><br>
+          P/E 62x 相對偏高；若 AI 資本支出熱度退燒，估值首當其衝。已警告 TSMC 產能接近瓶頸，可能影響出貨時程。VMware 整合成本尚未完全消化。
+        </div>
+      </div>
+    </div>
+
+    <!-- LLY -->
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <div>
+          <div class="stock-ticker">LLY <span class="tag tag-blue">Buy</span> <span class="tag tag-purple">生技革命</span></div>
+          <div class="stock-name">Eli Lilly and Company</div>
+        </div>
+        <div class="stock-price">
+          <div class="current">$903.02</div>
+          <div class="target">目標價 <strong>$1,182.42</strong></div>
+          <div class="upside upside-positive">▲ +30.9% 上漲空間</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">市值</div><div class="metric-value">$806.72B</div></div>
+        <div class="metric-card"><div class="metric-label">P/E</div><div class="metric-value">39.4x</div></div>
+        <div class="metric-card"><div class="metric-label">EPS 增率</div><div class="metric-value metric-up">+96.0%</div></div>
+        <div class="metric-card"><div class="metric-label">營收增率</div><div class="metric-value metric-up">+44.7%</div></div>
+        <div class="metric-card"><div class="metric-label">Tirzepatide 增率</div><div class="metric-value metric-up">+114.6%</div></div>
+        <div class="metric-card"><div class="metric-label">52週技術位</div><div class="metric-value">54%</div><div class="metric-note">中段，合理回調</div></div>
+      </div>
+      <div class="tech-bar-wrap">
+        <div class="tech-bar-label">52 週技術位置 — 54%（中段，從高點理性回調）</div>
+        <div class="tech-bar-track"><div class="tech-bar-fill mid" style="width:54%"></div></div>
+        <div class="tech-bar-ends"><span>$623.78（52週低）</span><span>$1,133.95（52週高）</span></div>
+      </div>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="analysis-block">
+          <strong>📈 市場面（看多）</strong><br>
+          GLP-1 藥物市場全球 TAM 超過 $1 兆，目前滲透率極低（&lt;5%）。Tirzepatide 銷售年增 114.6%，供應端持續擴充。Retatrutide 後期試驗糖尿病成功，開啟第二成長曲線。EPS 年增 +96% 顯示槓桿效應持續加速。
+        </div>
+        <div class="analysis-block">
+          <strong>⚠️ 主要風險</strong><br>
+          GLP-1 口服版競爭加劇（Novo Nordisk、Pfizer 跟進）；HSBC 因「激烈定價競爭」已發出警告降評。美國政府藥品定價政策（IRA 法案）持續壓力。臨床試驗失敗黑天鵝風險。
+        </div>
+      </div>
+    </div>
+
+    <!-- GOOGL -->
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <div>
+          <div class="stock-ticker">GOOGL <span class="tag tag-green">Strong Buy</span> <span class="tag tag-blue">AI 軟體平台</span></div>
+          <div class="stock-name">Alphabet Inc. (Class A)</div>
+        </div>
+        <div class="stock-price">
+          <div class="current">$290.44</div>
+          <div class="target">目標價 <strong>$351.82</strong></div>
+          <div class="upside upside-positive">▲ +21.1% 上漲空間</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">市值</div><div class="metric-value">$3.51T</div></div>
+        <div class="metric-card"><div class="metric-label">P/E</div><div class="metric-value" style="color:#16a34a;">26.9x</div><div class="metric-note">AI股最低估值</div></div>
+        <div class="metric-card"><div class="metric-label">EPS 增率</div><div class="metric-value metric-up">+34.4%</div></div>
+        <div class="metric-card"><div class="metric-label">營收增率</div><div class="metric-value metric-up">+15.1%</div></div>
+        <div class="metric-card"><div class="metric-label">分析師人數</div><div class="metric-value">44 位</div><div class="metric-note">Strong Buy</div></div>
+        <div class="metric-card"><div class="metric-label">52週技術位</div><div class="metric-value">72%</div></div>
+      </div>
+      <div class="tech-bar-wrap">
+        <div class="tech-bar-label">52 週技術位置 — 72%（上段，近期輪動打壓）</div>
+        <div class="tech-bar-track"><div class="tech-bar-fill high" style="width:72%"></div></div>
+        <div class="tech-bar-ends"><span>$140.53（52週低）</span><span>$349.00（52週高）</span></div>
+      </div>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="analysis-block">
+          <strong>📈 市場面（看多）</strong><br>
+          全球市值第二大公司，P/E 26.9x 是 AI 時代大型科技股中最低廉的估值。搜尋廣告護城河 + YouTube + Google Cloud + Gemini AI 四大支柱並行。Gemini AI 整合至廣告生態系，每提升 1% CTR 即帶來數十億美元額外收入。五角大廈合約強化政府端業務。
+        </div>
+        <div class="analysis-block">
+          <strong>⚠️ 主要風險</strong><br>
+          最大風險是 DOJ 訴訟——法院可能強制拆分 Google 搜尋業務。SearchGPT 等 AI 搜尋工具蠶食傳統搜尋市佔。YouTube 廣告面臨 TikTok、Reels 競爭。
+        </div>
+      </div>
+    </div>
+
+    <!-- PLTR -->
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <div>
+          <div class="stock-ticker">PLTR <span class="tag tag-blue">Buy</span> <span class="tag tag-yellow">高風險高報酬</span></div>
+          <div class="stock-name">Palantir Technologies Inc.</div>
+        </div>
+        <div class="stock-price">
+          <div class="current">$154.78</div>
+          <div class="target">目標價 <strong>$196.43</strong></div>
+          <div class="upside upside-positive">▲ +26.9% 上漲空間</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">市值</div><div class="metric-value">$370.18B</div></div>
+        <div class="metric-card"><div class="metric-label">P/E</div><div class="metric-value metric-down">245.7x</div><div class="metric-note">動能型估值</div></div>
+        <div class="metric-card"><div class="metric-label">EPS 增率</div><div class="metric-value metric-up">+231.6%</div></div>
+        <div class="metric-card"><div class="metric-label">營收增率</div><div class="metric-value metric-up">+56.2%</div></div>
+        <div class="metric-card"><div class="metric-label">商業 ARR 增率</div><div class="metric-value metric-up">+137%</div></div>
+        <div class="metric-card"><div class="metric-label">52週技術位</div><div class="metric-value">62%</div></div>
+      </div>
+      <div class="tech-bar-wrap">
+        <div class="tech-bar-label">52 週技術位置 — 62%（上段）</div>
+        <div class="tech-bar-track"><div class="tech-bar-fill high" style="width:62%"></div></div>
+        <div class="tech-bar-ends"><span>$66.12（52週低）</span><span>$207.52（52週高）</span></div>
+      </div>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="analysis-block">
+          <strong>📈 市場面（看多）</strong><br>
+          五角大廈將 Maven AI 正式列為「長期預算編列計畫」，是政府 AI 轉為常態化的重大里程碑。與 Anduril 合作「黃金穹頂」反導彈系統。美國商業客戶 ARR 年增 137%，顯示企業端需求爆發期。FCA 英國金融監管合約拓展國際版圖。
+        </div>
+        <div class="analysis-block">
+          <strong>⚠️ 主要風險</strong><br>
+          P/E 245x 是名單中最昂貴，任何預期落差都將觸發大幅修正（>30%）。高度依賴政府合約，政策轉向風險大。需要嚴格紀律性停損。
+        </div>
+      </div>
+    </div>
+
+    <!-- NFLX -->
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <div>
+          <div class="stock-ticker">NFLX <span class="tag tag-blue">Buy</span> <span class="tag tag-gray">消費平台</span></div>
+          <div class="stock-name">Netflix, Inc. <small style="font-size:11px; color:#94a3b8;">（推估股票分割後價格）</small></div>
+        </div>
+        <div class="stock-price">
+          <div class="current">$90.92*</div>
+          <div class="target">目標價 <strong>$118.49</strong></div>
+          <div class="upside upside-positive">▲ +30.3% 上漲空間</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">市值</div><div class="metric-value">$383.88B</div></div>
+        <div class="metric-card"><div class="metric-label">P/E</div><div class="metric-value">35.9x</div></div>
+        <div class="metric-card"><div class="metric-label">P/S</div><div class="metric-value">8.48x</div></div>
+        <div class="metric-card"><div class="metric-label">EPS 增率</div><div class="metric-value metric-up">+27.8%</div></div>
+        <div class="metric-card"><div class="metric-label">營收增率</div><div class="metric-value metric-up">+15.9%</div></div>
+        <div class="metric-card"><div class="metric-label">52週技術位</div><div class="metric-value">27%</div><div class="metric-note">低位，機會區</div></div>
+      </div>
+      <div class="tech-bar-wrap">
+        <div class="tech-bar-label">52 週技術位置 — 27%（下段，風險報酬比佳）</div>
+        <div class="tech-bar-track"><div class="tech-bar-fill low" style="width:27%"></div></div>
+        <div class="tech-bar-ends"><span>$75.01（52週低）</span><span>$134.12（52週高）</span></div>
+      </div>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="analysis-block">
+          <strong>📈 市場面（看多）</strong><br>
+          廣告支援訂閱方案（AVOD）滲透率持續提升，廣告收入從零開始的利潤率擴張故事是目前最確定性的。BTS 演唱會 1,840 萬觀眾展現事件型直播強大黏性。AI 公司收購顯示內容製作 AI 化轉型。EPS 年增 27.8% 且利潤率持續擴張。
+        </div>
+        <div class="analysis-block">
+          <strong>⚠️ 主要風險</strong><br>
+          串流市場競爭激烈（Disney+、Apple TV+、Amazon Prime Video）；用戶增長動能趨緩，廣告收入成長能否持續是關鍵。共用帳號政策調整後的用戶反彈風險。
+        </div>
+      </div>
+    </div>
+
+    <!-- TSM -->
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <div>
+          <div class="stock-ticker">TSM <span class="tag tag-blue">Buy</span> <span class="tag tag-blue">AI 基礎建設</span></div>
+          <div class="stock-name">Taiwan Semiconductor Manufacturing Co. (NYSE ADR)</div>
+        </div>
+        <div class="stock-price">
+          <div class="current">$343.25</div>
+          <div class="target">目標價 <strong>$401.67</strong></div>
+          <div class="upside upside-positive">▲ +17.0% 上漲空間</div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-label">市值</div><div class="metric-value">$1.78T</div></div>
+        <div class="metric-card"><div class="metric-label">P/E</div><div class="metric-value">32.5x</div></div>
+        <div class="metric-card"><div class="metric-label">淨利增率</div><div class="metric-value metric-up">+46.4%</div></div>
+        <div class="metric-card"><div class="metric-label">營收增率</div><div class="metric-value metric-up">+31.6%</div></div>
+        <div class="metric-card"><div class="metric-label">VP 內部買入</div><div class="metric-value metric-up">$55K</div><div class="metric-note">3/24 自掏腰包</div></div>
+        <div class="metric-card"><div class="metric-label">52週技術位</div><div class="metric-value">82%</div><div class="metric-note">技術面強勢</div></div>
+      </div>
+      <div class="tech-bar-wrap">
+        <div class="tech-bar-label">52 週技術位置 — 82%（高段，技術面強勢但上漲空間有限）</div>
+        <div class="tech-bar-track"><div class="tech-bar-fill high" style="width:82%"></div></div>
+        <div class="tech-bar-ends"><span>$134.25（52週低）</span><span>$390.21（52週高）</span></div>
+      </div>
+      <div class="two-col" style="margin-top:12px;">
+        <div class="analysis-block">
+          <strong>📈 市場面（看多）</strong><br>
+          AI 晶片供應鏈的「不可取代關鍵節點」——無論 NVDA、AMD、AVGO 還是 Apple、Qualcomm 全都依賴 TSMC 最先進製程。Broadcom 公開警告 TSMC 產能已達瓶頸，反映極強的定價能力。VP 於 3/24 自掏腰包買入 $55,000 的股票，展現管理層信心。
+        </div>
+        <div class="analysis-block">
+          <strong>⚠️ 主要風險</strong><br>
+          台海地緣政治風險是最大不確定性。美國 CHIPS Act 補貼推動晶片在地化，長期分散供應鏈壓力。上漲空間（+17%）相對名單中最低，更適合長期持有者而非短線操作。
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ 目標價情境分析 ═══ -->
+  <div class="section-card">
+    <h2>🔹 目標價情境分析（牛/基本/熊）</h2>
+    <table class="scenario-table">
+      <thead>
+        <tr>
+          <th>代碼</th>
+          <th>現價</th>
+          <th>🐻 熊市目標</th>
+          <th>📊 基本目標（分析師共識）</th>
+          <th>🐂 牛市目標</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="scenario-base">
+          <td><strong>NVDA</strong></td>
+          <td>$175.20</td>
+          <td class="scenario-bear" style="background:#fff8f8; border-left: 4px solid #ef4444;"><span class="scenario-target" style="color:#dc2626;">$130</span><br><small>AI 資本支出削減</small></td>
+          <td><span class="scenario-target" style="color:#2563eb;">$265.97</span><br><small>AI 算力持續擴張</small></td>
+          <td class="scenario-bull" style="background:#f0fdf4; border-left: 4px solid #22c55e;"><span class="scenario-target" style="color:#16a34a;">$350</span><br><small>Vera Rubin 超預期出貨</small></td>
+        </tr>
+        <tr class="scenario-base">
+          <td><strong>MSFT</strong></td>
+          <td>$372.74</td>
+          <td class="scenario-bear" style="background:#fff8f8; border-left: 4px solid #ef4444;"><span class="scenario-target" style="color:#dc2626;">$320</span><br><small>反壟斷強制拆分</small></td>
+          <td><span class="scenario-target" style="color:#2563eb;">$599.63</span><br><small>AI Copilot 商業化正常推進</small></td>
+          <td class="scenario-bull" style="background:#f0fdf4; border-left: 4px solid #22c55e;"><span class="scenario-target" style="color:#16a34a;">$700</span><br><small>Azure AI 超越 AWS</small></td>
+        </tr>
+        <tr class="scenario-base">
+          <td><strong>AMZN</strong></td>
+          <td>$207.24</td>
+          <td class="scenario-bear" style="background:#fff8f8; border-left: 4px solid #ef4444;"><span class="scenario-target" style="color:#dc2626;">$165</span><br><small>電商衰退 + AWS 競爭</small></td>
+          <td><span class="scenario-target" style="color:#2563eb;">$278.69</span><br><small>AWS 成長恢復加速</small></td>
+          <td class="scenario-bull" style="background:#f0fdf4; border-left: 4px solid #22c55e;"><span class="scenario-target" style="color:#16a34a;">$340</span><br><small>機器人+自駕商業化</small></td>
+        </tr>
+        <tr class="scenario-base">
+          <td><strong>AVGO</strong></td>
+          <td>$318.29</td>
+          <td class="scenario-bear" style="background:#fff8f8; border-left: 4px solid #ef4444;"><span class="scenario-target" style="color:#dc2626;">$240</span><br><small>AI XPU 訂單延遲</small></td>
+          <td><span class="scenario-target" style="color:#2563eb;">$431.24</span><br><small>AI 晶片訂單持續</small></td>
+          <td class="scenario-bull" style="background:#f0fdf4; border-left: 4px solid #22c55e;"><span class="scenario-target" style="color:#16a34a;">$520</span><br><small>超大型客戶 XPU 份額擴大</small></td>
+        </tr>
+        <tr class="scenario-base">
+          <td><strong>LLY</strong></td>
+          <td>$903.02</td>
+          <td class="scenario-bear" style="background:#fff8f8; border-left: 4px solid #ef4444;"><span class="scenario-target" style="color:#dc2626;">$700</span><br><small>定價競爭+政府管控</small></td>
+          <td><span class="scenario-target" style="color:#2563eb;">$1,182.42</span><br><small>GLP-1 市場正常滲透</small></td>
+          <td class="scenario-bull" style="background:#f0fdf4; border-left: 4px solid #22c55e;"><span class="scenario-target" style="color:#16a34a;">$1,500</span><br><small>Retatrutide 超預期+口服版主導</small></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sources">目標價依據：分析師共識目標價（StockAnalysis.com，2026/03/24）。牛/熊情境為 AI 推估，非官方預測。</div>
+  </div>
+
+  <!-- ═══ 投資組合配置 ═══ -->
+  <div class="section-card">
+    <h2>🔹 投資組合配置建議</h2>
+    <div class="portfolio-grid">
+      <div class="portfolio-item">
+        <div class="pi-title">🛡️ 保守型</div>
+        <div class="pi-stocks"><strong>MSFT · GOOGL · AMZN · TSM</strong><br><br>大市值、估值合理、護城河深厚、現金流強健。MSFT 目前位於 52 週底部，風險報酬比佳。</div>
+      </div>
+      <div class="portfolio-item">
+        <div class="pi-title">⚖️ 平衡型</div>
+        <div class="pi-stocks"><strong>上述 + NVDA · AVGO · LLY · NFLX</strong><br><br>加入 AI 晶片供應鏈（NVDA/AVGO）與跨產業成長股（LLY/NFLX），兼顧穩定與彈性。</div>
+      </div>
+      <div class="portfolio-item">
+        <div class="pi-title">🚀 積極型</div>
+        <div class="pi-stocks"><strong>全部 10 檔含 CRWD · PLTR</strong><br><br>接受高估值風險換取高彈性。PLTR（P/E 245x）與 CRWD（尚未穩定盈利）需嚴格停損紀律。</div>
+      </div>
+    </div>
+    <p style="margin-top:12px; font-size:0.875rem; color:#374151;">💡 <strong>建議持倉比例：</strong>單一股票不超過組合的 15%；高估值動能股（PLTR、CRWD）各不超過 8%。定期檢視基本面是否符合原始投資論點。</p>
+  </div>
+
+  <!-- ═══ 主要風險 ═══ -->
+  <div class="section-card">
+    <h2>🔹 整體市場風險提示</h2>
+    <div class="risk-grid">
+      <div class="risk-item">
+        <strong>🤖 AI 泡沫風險</strong>
+        若超大型雲端業者資本支出出現削減訊號，NVDA/AVGO/PLTR 估值將快速收縮。留意各大雲端業者每季財報指引。
+      </div>
+      <div class="risk-item">
+        <strong>📈 利率風險</strong>
+        若通膨反彈導致 Fed 重啟升息，高本益比成長股（PLTR、CRWD、LLY）首當其衝，估值壓縮可達 30-50%。
+      </div>
+      <div class="risk-item">
+        <strong>🌏 地緣政治風險</strong>
+        TSM 台海風險是最大尾端風險；NVDA 中國出口管制持續不確定；中美貿易摩擦可能加劇供應鏈分裂。
+      </div>
+      <div class="risk-item">
+        <strong>⚖️ 反壟斷風險</strong>
+        MSFT/GOOGL/AMZN 均面臨不同程度的政府監管壓力。GOOGL 被強制拆分搜尋業務是尾端但不可忽視的風險。
+      </div>
+    </div>
+  </div>
+
+  <!-- 數據說明 -->
+  <div class="section-card">
+    <div class="disclaimer">
+      ⚠️ <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議或要約。投資市場存在風險，過去表現不代表未來績效，請自行評估風險承受能力並諮詢專業理財顧問後再做決策。*NFLX 數據推估已反映股票分割，實際請以券商數據為準。
+    </div>
+    <div class="sources" style="margin-top:12px;">
+      📊 資料來源：StockAnalysis.com, Yahoo Finance, Reuters — 截至 2026/03/24 收盤後。
+    </div>
+  </div>
+
+</main>
+
+<footer class="report-footer">
+  <span>🤖 Generated by Market Analyst · Claude Code (claude-sonnet-4-6)</span>
+  <span>最後更新：2026/03/25 00:00</span>
+</footer>
+
+</body>
+</html>

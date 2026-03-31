@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>美股強勢股精選分析報告 – 2026/03/23</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+    .report-header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 960px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-header h1 span.ticker {
+      font-size: 1rem; font-weight: 400; color: #90b8d8;
+      margin-left: 10px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90b8d8; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+    .report-body { max-width: 960px; margin: 0 auto; padding: 32px 20px 0; }
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #1a1a2e; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 {
+      font-size: 0.95rem; font-weight: 700;
+      color: #1a1a2e; margin: 20px 0 10px;
+      padding: 8px 14px;
+      background: #f0f5ff;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0 8px 8px 0;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.8; margin-bottom: 10px; }
+    .section-card ul, .section-card ol {
+      padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.9;
+    }
+    .section-card li { margin-bottom: 6px; }
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.1rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; margin: 12px 0;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+    .tag-orange { background: #ffedd5; color: #9a3412; }
+    .stock-card {
+      border: 1px solid #e2e8f4;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+    .stock-card-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .stock-badge {
+      background: #1a1a2e; color: #fff;
+      font-size: 12px; font-weight: 700;
+      padding: 4px 10px; border-radius: 6px;
+    }
+    .stock-name { font-size: 1.05rem; font-weight: 700; color: #1a2332; }
+    .stock-code { font-size: 0.85rem; color: #64748b; }
+    .rotation-banner {
+      background: linear-gradient(135deg, #1a1a2e, #0f3460);
+      color: #fff; padding: 16px 20px; border-radius: 10px;
+      margin-bottom: 16px; font-size: 0.9rem; line-height: 1.7;
+    }
+    .rotation-banner strong { color: #60a5fa; }
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+    .sources { font-size: 0.8rem; color: #64748b; margin-top: 8px; }
+    .sources a { color: #2563eb; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+    .report-footer {
+      max-width: 960px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.3rem; }
+      .section-card { padding: 20px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">US Stock · 強勢股精選報告</div>
+    <h1>美股下一個月強勢股精選<span class="ticker">2026/03/23 – 2026/04/23</span></h1>
+    <div class="report-meta">
+      <span>📅 2026/03/23</span>
+      <span>🌐 NYSE / NASDAQ</span>
+      <span>⚡ 基於 2026 年大輪動市場結構分析</span>
+    </div>
+  </div>
+</header>
+
+<main class="report-body">
+
+  <!-- 市場背景 -->
+  <div class="section-card">
+    <h2>🔹 2026 年「大輪動」(The Great Rotation) 背景</h2>
+
+    <div class="rotation-banner">
+      <strong>核心結構轉變：</strong> 2026 年初，資金從主導 2023–2025 年的 Magnificent 7（蘋果、微軟、NVIDIA、Alphabet、Meta、Amazon、Tesla）大量流出，流向工業、能源、消費防禦、小型股。這是 2019 年以來最重要的板塊輪動，未來 1 個月此趨勢仍將延續。
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">能源板塊 YTD</div>
+        <div class="metric-value">+22%</div>
+        <div class="metric-note">XOM +26%, CVX +21.8%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">材料板塊 YTD</div>
+        <div class="metric-value">+17%</div>
+        <div class="metric-note">黃金、礦業領漲</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">工業板塊 YTD</div>
+        <div class="metric-value">+16%</div>
+        <div class="metric-note">CAT +32% 最強</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">消費防禦 YTD</div>
+        <div class="metric-value">+13.3%</div>
+        <div class="metric-note">WMT +13.7%, COST +15.7%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">小型股趨勢</div>
+        <div class="metric-value">跑贏大型股</div>
+        <div class="metric-note">2019年來首見</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Magnificent 7</div>
+        <div class="metric-value">落後大盤</div>
+        <div class="metric-note">輪動退潮</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 主題一：工業 -->
+  <div class="section-card">
+    <h2>🔹 主題一：工業 / 再工業化 — 漲勢最強</h2>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#1</span>
+        <span class="stock-name">Caterpillar</span>
+        <span class="stock-code">CAT (NYSE) ｜ 精選標的</span>
+        <span class="tag tag-green">YTD +32%</span>
+        <span class="tag tag-blue">輪動龍頭</span>
+      </div>
+      <ul>
+        <li>2026 年工業板塊漲幅最大標的（YTD +32%），OBBBA（One Big Beautiful Budget Act）100% 加速折舊激勵企業大規模設備投資</li>
+        <li>美國「近岸外包」（nearshoring）趨勢帶動建設機械訂單量暴增</li>
+        <li>Q1 財報（4 月）預計將創歷史獲利新高，提供強大催化劑</li>
+        <li>風險：漲幅已大（+32%），短期可能有技術性回調</li>
+      </ul>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#2</span>
+        <span class="stock-name">GE Aerospace</span>
+        <span class="stock-code">GE (NYSE) ｜ 補漲標的</span>
+        <span class="tag tag-yellow">補漲空間大</span>
+      </div>
+      <ul>
+        <li>商用航空復甦（波音 737 MAX 產能回升）+ 美軍防衛支出增加雙引擎驅動</li>
+        <li>相較 CAT 漲幅較小，具更大補漲空間</li>
+        <li>Morningstar 分析師正面評價，訂單能見度清晰</li>
+      </ul>
+    </div>
+
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>CAT 目標</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">🐻 熊市</span></td>
+          <td><span class="scenario-target">-10%</span></td>
+          <td>基建支出低於預期，訂單取消</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">📊 基本</span></td>
+          <td><span class="scenario-target">+8 ~ +12%</span></td>
+          <td>基建訂單維持強勁，Q1 財報優異</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">🐂 牛市</span></td>
+          <td><span class="scenario-target">+18 ~ +22%</span></td>
+          <td>Q2 指引超預期 + 政府基建補貼擴大</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 主題二：能源 -->
+  <div class="section-card">
+    <h2>🔹 主題二：能源 — 動能最持久</h2>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#3</span>
+        <span class="stock-name">ExxonMobil</span>
+        <span class="stock-code">XOM (NYSE) ｜ 精選標的</span>
+        <span class="tag tag-green">YTD +26%</span>
+        <span class="tag tag-orange">能源龍頭</span>
+      </div>
+      <ul>
+        <li>2026 年 YTD +26%，能源板塊最大貢獻者</li>
+        <li>地緣政治溢價持續（中東情勢、俄烏局勢），油價維持高位</li>
+        <li>自由現金流（FCF）充裕，持續大規模股份回購 + 股息增長</li>
+        <li>Q1 財報（4 月）：若油價維持 $70+ Brent，獲利表現亮眼</li>
+      </ul>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#4</span>
+        <span class="stock-name">Chevron</span>
+        <span class="stock-code">CVX (NYSE) ｜ 輔助標的</span>
+        <span class="tag tag-green">YTD +21.8%</span>
+      </div>
+      <ul>
+        <li>YTD +21.8%，Permian Basin 產量持續提升</li>
+        <li>較 XOM 估值稍低，具更多上行空間</li>
+        <li>股息收益率約 4%+，提供防禦性收益</li>
+      </ul>
+    </div>
+
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>XOM 目標</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">🐻 熊市</span></td>
+          <td><span class="scenario-target">-12%</span></td>
+          <td>油價崩跌（OPEC+ 增產 + 需求萎縮）</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">📊 基本</span></td>
+          <td><span class="scenario-target">+5 ~ +10%</span></td>
+          <td>地緣政治溢價維持，Q1 獲利穩健</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">🐂 牛市</span></td>
+          <td><span class="scenario-target">+15 ~ +20%</span></td>
+          <td>地緣緊張升溫 + 夏季需求旺季 + 回購加速</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 主題三：消費防禦低估值 -->
+  <div class="section-card">
+    <h2>🔹 主題三：消費防禦 (低估值替代品) — 輪動遷移中</h2>
+
+    <p>Morningstar 首席美股策略師指出：WMT 和 COST 均被評為 <strong>1 星（嚴重高估）</strong>，輪動資金正在尋找防禦性板塊中的便宜替代品。</p>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#5</span>
+        <span class="stock-name">Mondelez International</span>
+        <span class="stock-code">MDLZ (NASDAQ) ｜ 精選標的</span>
+        <span class="tag tag-green">Morningstar 4★</span>
+        <span class="tag tag-blue">低估值</span>
+      </div>
+      <ul>
+        <li>Morningstar <strong>4 星評級</strong>（WMT/COST 為 1 星），估值低於歷史均值</li>
+        <li>全球頂尖零食品牌組合（奧利奧、Chips Ahoy、黑巧克力等），定價能力強</li>
+        <li>防禦性板塊輪動中，資金將從高估的 WMT/COST 遷移至 MDLZ</li>
+        <li>新興市場業務持續成長，提供額外上行空間</li>
+      </ul>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#6</span>
+        <span class="stock-name">Constellation Brands</span>
+        <span class="stock-code">STZ (NYSE) ｜ 輔助標的</span>
+        <span class="tag tag-green">Morningstar 4★</span>
+      </div>
+      <ul>
+        <li>Morningstar <strong>4 星評級</strong>，Modelo 啤酒（全美暢銷啤酒品牌之一）</li>
+        <li>美國酒精飲料市場強勁消費，定價能力高</li>
+        <li>相對 WMT/COST 大幅折價，防禦性輪動下補漲邏輯清楚</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 主題四：醫療保健 -->
+  <div class="section-card">
+    <h2>🔹 主題四：醫療保健 — 下一個輪動目標（提前佈局）</h2>
+
+    <p>市場分析師預測輪動路徑：能源 → 工業 → 消費防禦 → <strong>醫療保健（下一棒）</strong>。提前佈局輪動方向，勝率最高。</p>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#7</span>
+        <span class="stock-name">Eli Lilly</span>
+        <span class="stock-code">LLY (NYSE) ｜ 強勢成長</span>
+        <span class="tag tag-blue">GLP-1 龍頭</span>
+        <span class="tag tag-green">成長超強</span>
+      </div>
+      <ul>
+        <li>GLP-1 減肥藥（Mounjaro、Zepbound）全球需求爆炸，2026 年仍高速成長</li>
+        <li>適應症持續擴展（心血管、阿茲海默症），總體市場（TAM）遠未觸頂</li>
+        <li>醫療板塊輪動啟動後，LLY 因成長性最強將率先大漲</li>
+      </ul>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#8</span>
+        <span class="stock-name">UnitedHealth Group</span>
+        <span class="stock-code">UNH (NYSE) ｜ 防禦成長</span>
+        <span class="tag tag-gray">醫療保險龍頭</span>
+      </div>
+      <ul>
+        <li>美國最大醫療保險集團，保費收入穩健成長</li>
+        <li>P/E 低於同業，估值相對合理</li>
+        <li>防禦性 + 成長性兼具，是醫療板塊輪動最安全的入場點</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 主題五：小型股 -->
+  <div class="section-card">
+    <h2>🔹 主題五：小型股輪動 — 大輪動最大結構性機會</h2>
+
+    <p>2026 年最重要的結構轉變之一：小型股開始跑贏大型股，這是 2019 年以來首見，反映美國強勁 GDP + Main Street 經濟復甦。</p>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#9</span>
+        <span class="stock-name">iShares Russell 2000 ETF</span>
+        <span class="stock-code">IWM (NYSE Arca) ｜ 最直接參與方式</span>
+        <span class="tag tag-blue">小型股ETF</span>
+      </div>
+      <ul>
+        <li>涵蓋 2,000 支美國小型股，是參與小型股輪動最直接方式</li>
+        <li>美國 GDP 強勁 + 消費市場支撐 Main Street 企業獲利</li>
+        <li>歷史上，Fed 降息週期初期小型股往往大幅跑贏大型股</li>
+      </ul>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#10</span>
+        <span class="stock-name">Willdan Group</span>
+        <span class="stock-code">WLDN (NASDAQ) ｜ 利基黑馬</span>
+        <span class="tag tag-yellow">AI 電網黑馬</span>
+      </div>
+      <ul>
+        <li>AI 算力爆炸導致電力需求暴增，Willdan 提供電力網格 AI 化工程服務</li>
+        <li>記錄需求創新高，是小型股中具強烈成長主題的標的</li>
+        <li>受惠 AI 基礎設施建設熱潮，但規模小，波動大，適合承受較高風險者</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 催化劑與風險 -->
+  <div class="section-card">
+    <h2>🔹 催化劑 &amp; 風險評估</h2>
+
+    <h3>✅ 近期催化劑（未來 1 個月）</h3>
+    <ul>
+      <li><strong>Q1 財報季（4 月啟動）</strong>：CAT、XOM、CVX 預計均有亮眼表現，確認輪動邏輯</li>
+      <li><strong>OBBBA 基建支出持續落地</strong>：工業股訂單能見度高，CAT / GE 受惠</li>
+      <li><strong>Fed 政策不確定性降低</strong>：若 Fed 明確暗示 2026 H2 降息，小型股有望大爆發</li>
+      <li><strong>油價地緣政治溢價維持</strong>：中東情勢若維持緊張，XOM/CVX 繼續受益</li>
+      <li><strong>WMT/COST 估值過高引發板塊內資金重配</strong>：MDLZ/STZ 低估值吸引防禦性資金</li>
+    </ul>
+
+    <h3>⚠️ 主要風險</h3>
+    <ul>
+      <li><strong>Fed 意外升息</strong>：若通膨再起，小型股和工業股承壓，高債務公司首當其衝</li>
+      <li><strong>能源股漲幅已大</strong>：若 OPEC+ 決定增產，油價崩跌，XOM/CVX 急跌風險高</li>
+      <li><strong>關稅 / 貿易戰升溫</strong>：若美國關稅政策趨嚴，影響全球需求與製造成本</li>
+      <li><strong>板塊過熱</strong>：工業股 CAT 已漲 32%，技術面過熱有短期回調風險</li>
+      <li><strong>醫療板塊政策風險</strong>：藥價管制政策若收緊，LLY 估值大幅壓縮</li>
+    </ul>
+  </div>
+
+  <!-- 結論總結 -->
+  <div class="section-card">
+    <h2>🔹 一個月強勢股排名總結</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>排名</th>
+          <th>代碼</th>
+          <th>公司</th>
+          <th>板塊</th>
+          <th>主要邏輯</th>
+          <th>建議策略</th>
+          <th>信心度</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td><strong>XOM</strong></td>
+          <td>ExxonMobil</td>
+          <td><span class="tag tag-orange">能源</span></td>
+          <td>YTD +26%，動能最強，地緣溢價持續</td>
+          <td>持有 / 逢回買進</td>
+          <td>⭐⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td><strong>CAT</strong></td>
+          <td>Caterpillar</td>
+          <td><span class="tag tag-blue">工業</span></td>
+          <td>YTD +32%，Q1財報催化，基建訂單滿載</td>
+          <td>持有，注意過熱回調</td>
+          <td>⭐⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td><strong>MDLZ</strong></td>
+          <td>Mondelez</td>
+          <td><span class="tag tag-green">消費防禦</span></td>
+          <td>Morningstar 4星，防禦輪動資金遷移</td>
+          <td>分批建倉</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td><strong>GE</strong></td>
+          <td>GE Aerospace</td>
+          <td><span class="tag tag-blue">工業</span></td>
+          <td>補漲空間大，防衛+商航雙引擎</td>
+          <td>新建倉</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td><strong>LLY</strong></td>
+          <td>Eli Lilly</td>
+          <td><span class="tag tag-gray">醫療</span></td>
+          <td>GLP-1 爆發，預先佈局醫療輪動</td>
+          <td>小量佈局</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td>補充</td>
+          <td>CVX</td>
+          <td>Chevron</td>
+          <td><span class="tag tag-orange">能源</span></td>
+          <td>XOM 替代，股息 4%+ 保護</td>
+          <td>持有</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td>補充</td>
+          <td>IWM</td>
+          <td>Russell 2000 ETF</td>
+          <td><span class="tag tag-yellow">小型股</span></td>
+          <td>大輪動最大結構性機會</td>
+          <td>中長線配置</td>
+          <td>⭐⭐⭐</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 資料來源 -->
+  <div class="section-card">
+    <h2>🔹 資料來源</h2>
+    <div class="sources">
+      <ul>
+        <li><a href="https://www.morningstar.com/markets/is-stock-market-rotation-underway-these-sectors-are-outpacing-tech-2026" target="_blank">Is a Stock Market Rotation Underway? — Morningstar</a></li>
+        <li><a href="https://markets.financialcontent.com/stocks/article/marketminute-2026-3-17-the-great-rotation-small-caps-surge-as-magnificent-7-leadership-fades-in-a-broadening-market" target="_blank">The Great Rotation: Small-Caps Surge as Magnificent 7 Fades — FinancialContent</a></li>
+        <li><a href="https://markets.financialcontent.com/stocks/article/marketminute-2026-3-12-from-silicon-to-steel-the-great-sector-rotation-of-2026-redefines-wall-street" target="_blank">From Silicon to Steel: The Great Sector Rotation of 2026 — FinancialContent</a></li>
+        <li><a href="https://www.morganstanley.com/insights/articles/stock-market-investment-outlook-2026" target="_blank">Investment Outlook 2026: U.S. Stock Market — Morgan Stanley</a></li>
+        <li><a href="https://www.schwab.com/learn/story/stock-sector-outlook" target="_blank">Monthly Stock Sector Outlook 2026 — Charles Schwab</a></li>
+        <li>資料截止日期：2026 年 3 月 23 日</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 免責聲明 -->
+  <div class="section-card">
+    <div class="disclaimer">
+      ⚠️ <strong>免責聲明：</strong>本報告由 AI 根據公開資訊自動生成，僅供參考，不構成任何投資建議或要約。
+      投資市場存在高度風險，過去表現不代表未來績效，個股可能因基本面、技術面或市場情緒急劇變化而與預期相反。
+      請自行評估風險承受能力並諮詢專業理財顧問後再做決策。
+    </div>
+  </div>
+
+</main>
+
+<footer class="report-footer">
+  <span>🤖 Generated by Market Analyst · Claude Code (Sonnet 4.6)</span>
+  <span>最後更新：2026/03/23 (分析日期)</span>
+</footer>
+
+</body>
+</html>

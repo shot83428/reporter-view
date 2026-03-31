@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XLE (Energy Select Sector SPDR ETF) 與國際油價分析 – 2026/03/31</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── Header ── */
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1e3d6e 60%, #1a5276 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 900px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 2rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-header h1 span.ticker {
+      font-size: 1.1rem; font-weight: 400; color: #90b8d8;
+      margin-left: 10px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90b8d8; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── Price Pill ── */
+    .price-banner {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-top: 16px;
+      display: inline-flex; align-items: baseline; gap: 12px;
+    }
+    .price-banner .price { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    .price-banner .change-up { color: #4ade80; font-weight: 600; }
+    .price-banner .change-down { color: #f87171; font-weight: 600; }
+
+    /* ── Main Container ── */
+    .report-body { max-width: 900px; margin: 0 auto; padding: 32px 20px 0; }
+
+    /* ── Section Cards ── */
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #0f2744; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 {
+      font-size: 0.9rem; font-weight: 600;
+      color: #334155; margin: 18px 0 10px;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.75; margin-bottom: 10px; }
+    .section-card ul, .section-card ol {
+      padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.85;
+    }
+    .section-card li { margin-bottom: 4px; }
+
+    /* ── Data Table ── */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .data-table td strong { color: #1a2332; }
+
+    /* ── Scenario Table ── */
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.15rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+
+    /* ── Inline Tags ── */
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+
+    /* ── Key Metric Cards ── */
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; margin: 12px 0;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+    /* ── Blockquote / Disclaimer ── */
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+
+    /* ── Horizontal Rule ── */
+    hr { border: none; border-top: 1px solid #e8edf4; margin: 16px 0; }
+
+    /* ── Source Citations ── */
+    .sources {
+      font-size: 0.8rem; color: #64748b; margin-top: 8px;
+    }
+    .sources a { color: #2563eb; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    .report-footer {
+      max-width: 900px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+    .report-footer a { color: #64748b; text-decoration: none; }
+
+    /* highlight box */
+    .highlight-box {
+      background: #fef3c7; border: 1px solid #f59e0b; border-radius: 10px;
+      padding: 16px 20px; margin: 12px 0;
+    }
+    .highlight-box p { color: #92400e; margin: 0; }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .report-header { background: #0f2744 !important; -webkit-print-color-adjust: exact; }
+      .section-card { box-shadow: none; border: 1px solid #dde4ef; }
+      .report-footer { display: none; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.4rem; }
+      .section-card { padding: 20px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">US ETF &middot; 能源類股分析</div>
+    <h1>Energy Select Sector SPDR ETF<span class="ticker">XLE</span></h1>
+    <div class="report-meta">
+      <span>&#128197; 2026/03/31</span>
+      <span>&#127760; NYSE Arca</span>
+      <span>&#9889; 即時數據</span>
+    </div>
+    <div class="price-banner">
+      <span class="price">$61.96</span>
+      <span class="change-down">&#9660; $0.60 (&minus;0.96%)</span>
+    </div>
+  </div>
+</header>
+
+<!-- BODY -->
+<main class="report-body">
+
+  <!-- 基本資料 -->
+  <div class="section-card">
+    <h2>&#128313; 基本資料</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">收盤價 (3/30)</div>
+        <div class="metric-value">$61.96</div>
+        <div class="metric-note">-0.96%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">盤後價 (3/30)</div>
+        <div class="metric-value">$62.12</div>
+        <div class="metric-note">+0.26%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">WTI 原油 (3/31)</div>
+        <div class="metric-value">$101.85</div>
+        <div class="metric-note">-1.0%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Brent 原油 (3/31)</div>
+        <div class="metric-value">$105.71</div>
+        <div class="metric-note">-1.56%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">52 週區間</div>
+        <div class="metric-value">$37.25 - $63.46</div>
+        <div class="metric-note">接近高點</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">年初至今</div>
+        <div class="metric-value">+39.49%</div>
+        <div class="metric-note">含息 +38.37%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">殖利率</div>
+        <div class="metric-value">2.41%</div>
+        <div class="metric-note">季配息</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">費用率</div>
+        <div class="metric-value">0.08%</div>
+        <div class="metric-note">25 檔持股</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 油價發生了什麼？ -->
+  <div class="section-card">
+    <h2>&#128313; 油價到底怎麼了？</h2>
+    <p><strong>是的，油價在 3/30-31 出現回調</strong>，但必須放在整個 3 月的瘋狂漲勢中理解。</p>
+    <div class="highlight-box">
+      <p><strong>&#128293; Brent 原油 3 月暴漲約 55%</strong> &mdash; 創下 1988 年以來最大單月漲幅！一個月前 Brent 還在 ~$73，現在已突破 $105-111。</p>
+    </div>
+
+    <h3>3/30-31 油價回落 1-1.5% 的三大主因：</h3>
+    <ul>
+      <li><strong>Trump 釋出停火訊號</strong>：報導指出 Trump 願意結束對伊朗的軍事行動，即使荷莫茲海峽仍維持關閉</li>
+      <li><strong>獲利了結 (Profit-taking)</strong>：在 55% 的月漲幅後，市場出現大量獲利回吐</li>
+      <li><strong>降溫預期</strong>：部分投資人押注地緣風險短期緩和</li>
+    </ul>
+  </div>
+
+  <!-- XLE 盤後分析 -->
+  <div class="section-card">
+    <h2>&#128313; XLE 盤後到底跌了多少？</h2>
+    <p>根據抓取到的數據，<strong>XLE 盤後並沒有跌 $2</strong>，但日內確實有顯著回落：</p>
+    <table class="data-table">
+      <thead>
+        <tr><th>時間點</th><th>價格</th><th>變動</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>3/30 開盤</td><td><strong>$63.13</strong></td><td>&mdash;</td></tr>
+        <tr><td>3/30 盤中高點</td><td><strong>$63.46</strong></td><td>52 週新高</td></tr>
+        <tr><td>3/30 收盤</td><td><strong>$61.96</strong></td><td style="color:#dc2626;">從高點跌 $1.50</td></tr>
+        <tr><td>3/30 盤後 (7:30PM)</td><td><strong>$62.12</strong></td><td style="color:#16a34a;">+$0.16</td></tr>
+        <tr><td>3/31 盤前 (5:51AM)</td><td><strong>$62.10</strong></td><td style="color:#16a34a;">+$0.14</td></tr>
+      </tbody>
+    </table>
+    <p><strong>你看到的「跌 $2」可能是：</strong></p>
+    <ul>
+      <li>日內從高點 ($63.46) 到低點 ($61.78) = <strong>跌 $1.68</strong>（接近 $2）</li>
+      <li>盤後更晚時段可能有額外下跌（我的數據截至 7:30PM EDT）</li>
+      <li>期貨隔夜交易可能導致 ETF NAV 估值下修</li>
+    </ul>
+  </div>
+
+  <!-- 近期走勢 -->
+  <div class="section-card">
+    <h2>&#128313; XLE 近期走勢</h2>
+    <table class="data-table">
+      <thead>
+        <tr><th>日期</th><th>開盤</th><th>最高</th><th>最低</th><th>收盤</th><th>漲跌</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Mar 30</td><td>$63.13</td><td>$63.46</td><td>$61.78</td><td>$61.96</td><td style="color:#dc2626;">-0.96%</td></tr>
+        <tr><td>Mar 27</td><td>$61.53</td><td>$62.79</td><td>$61.26</td><td>$62.56</td><td style="color:#16a34a;">+1.69%</td></tr>
+        <tr><td>Mar 26</td><td>$60.67</td><td>$61.86</td><td>$60.59</td><td>$61.52</td><td style="color:#16a34a;">+1.57%</td></tr>
+        <tr><td>Mar 25</td><td>$60.32</td><td>$61.00</td><td>$60.26</td><td>$60.57</td><td style="color:#dc2626;">-0.44%</td></tr>
+        <tr><td>Mar 24</td><td>$59.80</td><td>$61.47</td><td>$59.77</td><td>$60.84</td><td style="color:#16a34a;">+2.03%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 地緣政治背景 -->
+  <div class="section-card">
+    <h2>&#128313; 背景：中東危機與油價</h2>
+    <table class="data-table">
+      <thead>
+        <tr><th>事件</th><th>影響</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>美伊衝突升級</strong></td><td>美軍部署地面部隊，可能攻擊伊朗石油出口樞紐 Kharg Island</td></tr>
+        <tr><td><strong>荷莫茲海峽幾乎關閉</strong></td><td>全球 20% 石油供應通道受阻，流量從 ~20mb/d 降至幾近停擺</td></tr>
+        <tr><td><strong>伊朗攻擊民用船舶</strong></td><td>波斯灣航運風險急劇上升，伊朗攻擊杜拜外海油輪</td></tr>
+        <tr><td><strong>胡塞武裝攻擊</strong></td><td>紅海/蘇伊士運河替代路線也受威脅</td></tr>
+        <tr><td><strong>美國汽油價格破 $4</strong></td><td>2022 年以來首次，通膨壓力升高</td></tr>
+        <tr><td><strong>Brent 月漲 55%</strong></td><td>1988 年以來最大單月漲幅</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 目標價 -->
+  <div class="section-card">
+    <h2>&#128313; 目標價 / 展望</h2>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">&#128059; 熊市</span></td>
+          <td><span class="scenario-target">$50-55</span></td>
+          <td>美伊達成停火，荷莫茲重開，油價回落至 $75-80</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">&#128202; 基本</span></td>
+          <td><span class="scenario-target">$60-65</span></td>
+          <td>衝突持續但不再升級，油價維持 $95-105</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">&#128002; 牛市</span></td>
+          <td><span class="scenario-target">$70-80</span></td>
+          <td>地面戰升級，荷莫茲長期關閉，油價衝破 $120+</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 催化劑與風險 -->
+  <div class="section-card">
+    <h2>&#128313; 催化劑與風險</h2>
+    <h3>上行催化劑</h3>
+    <ul>
+      <li>衝突擴大（地面入侵伊朗、Kharg Island 受攻擊）</li>
+      <li>荷莫茲海峽持續封鎖</li>
+      <li>美國戰略石油儲備耗盡</li>
+    </ul>
+    <h3>下行風險</h3>
+    <ul>
+      <li>美伊談判達成停火（Trump 已在釋放訊號）</li>
+      <li>荷莫茲恢復通航</li>
+      <li>全球經濟放緩壓抑需求</li>
+      <li>獲利回吐壓力（XLE 年初至今已漲 ~39%）</li>
+    </ul>
+  </div>
+
+  <!-- 結論 -->
+  <div class="section-card">
+    <h2>&#128313; 結論</h2>
+    <p>油價在 3/30-31 <strong>小幅回調 1-1.5%</strong>，屬於 3 月瘋狂漲勢中的正常喘息。XLE 在 3/30 <strong>盤中從高點回落約 $1.50-1.70</strong>（接近 $2），主要受到 Trump 停火訊號、大盤下跌（道瓊進入修正領域）、獲利了結三重壓力。盤後實際微幅回升。</p>
+    <p>短期而言，油價與 XLE 走勢完全取決於<strong>美伊衝突走向</strong> &mdash; 這是一個「地緣政治主導」的市場，基本面暫時退居二線。分析師估計衝突在 5 月前結束的機率為 25%，秋季前 45%，延伸到 2027 年 35%。</p>
+    <div class="sources">
+      <p><strong>資料來源：</strong>
+        <a href="https://fortune.com/article/price-of-oil-03-30-2026/">Fortune</a> &middot;
+        <a href="https://www.cnbc.com/2026/03/25/oil-price-wti-brent-gas-lng-trump-iran-talks-hormuz.html">CNBC</a> &middot;
+        <a href="https://stockanalysis.com/etf/xle/">StockAnalysis</a> &middot;
+        <a href="https://www.fxleaders.com/news/2026/03/27/wti-crude-oil-price-analysis-oil-surges-4-6-to-94-48-as-iran-rejects-peace-talks-is-100-the-next-stop/">FX Leaders</a> &middot;
+        <a href="https://fortune.com/2026/03/29/stock-market-today-dow-futures-oil-prices-us-ground-assault-iran-houthis-red-sea-suez/">Fortune (Market)</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- 免責聲明 -->
+  <div class="section-card">
+    <div class="disclaimer">
+      &#9888;&#65039; <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議或要約。
+      投資市場存在風險，過去表現不代表未來績效，請自行評估風險承受能力並諮詢專業理財顧問後再做決策。
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="report-footer">
+  <span>&#129302; Generated by Market Analyst &middot; Claude Code</span>
+  <span>最後更新：2026/03/31 09:00</span>
+</footer>
+
+</body>
+</html>

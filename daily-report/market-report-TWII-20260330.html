@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台灣加權指數 (^TWII) 分析報告 – 2026/03/30</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── Header ── */
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1e3d6e 60%, #1a5276 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 900px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 2rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-header h1 span.ticker {
+      font-size: 1.1rem; font-weight: 400; color: #90b8d8;
+      margin-left: 10px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90b8d8; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── Price Pill ── */
+    .price-banner {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-top: 16px;
+      display: inline-flex; align-items: baseline; gap: 12px;
+    }
+    .price-banner .price { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    .price-banner .change-up { color: #4ade80; font-weight: 600; }
+    .price-banner .change-down { color: #f87171; font-weight: 600; }
+
+    /* ── Main Container ── */
+    .report-body { max-width: 900px; margin: 0 auto; padding: 32px 20px 0; }
+
+    /* ── Section Cards ── */
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #0f2744; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 {
+      font-size: 0.9rem; font-weight: 600;
+      color: #334155; margin: 18px 0 10px;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.75; margin-bottom: 10px; }
+    .section-card ul, .section-card ol {
+      padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.85;
+    }
+    .section-card li { margin-bottom: 4px; }
+
+    /* ── Data Table ── */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .data-table td strong { color: #1a2332; }
+
+    /* ── Scenario Table ── */
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.15rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+
+    /* ── Inline Tags ── */
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+
+    /* ── Key Metric Cards ── */
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; margin: 12px 0;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .metric-value.down { color: #dc2626; }
+
+    /* ── Blockquote / Disclaimer ── */
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+
+    /* ── Horizontal Rule ── */
+    hr { border: none; border-top: 1px solid #e8edf4; margin: 16px 0; }
+
+    /* ── Source Citations ── */
+    .sources {
+      font-size: 0.8rem; color: #64748b; margin-top: 8px;
+    }
+    .sources a { color: #2563eb; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    /* ── Alert Box ── */
+    .alert-box {
+      background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px;
+      padding: 14px 18px; margin: 12px 0;
+    }
+    .alert-box strong { color: #991b1b; }
+    .alert-box p { color: #7f1d1d; margin: 0; font-size: 0.88rem; }
+
+    /* ── Catalyst Box ── */
+    .catalyst-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0;
+    }
+    .catalyst-card {
+      border-radius: 10px; padding: 16px 18px;
+    }
+    .catalyst-positive { background: #f0fdf4; border: 1px solid #bbf7d0; }
+    .catalyst-negative { background: #fef2f2; border: 1px solid #fecaca; }
+    .catalyst-card h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 10px; }
+    .catalyst-positive h4 { color: #166534; }
+    .catalyst-negative h4 { color: #991b1b; }
+    .catalyst-card ul { padding-left: 16px; font-size: 0.83rem; line-height: 1.8; }
+    .catalyst-positive ul { color: #15803d; }
+    .catalyst-negative ul { color: #b91c1c; }
+
+    /* ── Footer ── */
+    .report-footer {
+      max-width: 900px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+    .report-footer a { color: #64748b; text-decoration: none; }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .report-header { background: #0f2744 !important; -webkit-print-color-adjust: exact; }
+      .section-card { box-shadow: none; border: 1px solid #dde4ef; }
+      .report-footer { display: none; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.4rem; }
+      .section-card { padding: 20px 18px; }
+      .catalyst-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">台股指數 &middot; 盤中分析</div>
+    <h1>台灣加權指數<span class="ticker">^TWII</span></h1>
+    <div class="report-meta">
+      <span>&#128197; 2026/03/30</span>
+      <span>&#127760; 臺灣證券交易所</span>
+      <span>&#9889; 盤中即時數據</span>
+    </div>
+    <div class="price-banner">
+      <span class="price">32,549.99</span>
+      <span class="change-down">&#9660; 562.60 (&minus;1.70%)</span>
+    </div>
+  </div>
+</header>
+
+<!-- BODY -->
+<main class="report-body">
+
+  <!-- 即時數據總覽 -->
+  <div class="section-card">
+    <h2>&#128313; 即時數據總覽</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">現價</div>
+        <div class="metric-value down">32,549.99</div>
+        <div class="metric-note">截至 09:11</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">漲跌</div>
+        <div class="metric-value down">-562.60</div>
+        <div class="metric-note">-1.70%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">開盤</div>
+        <div class="metric-value">33,009.68</div>
+        <div class="metric-note">跳空開低</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">盤中最高</div>
+        <div class="metric-value">33,009.68</div>
+        <div class="metric-note">= 開盤價</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">盤中最低</div>
+        <div class="metric-value down">32,430.39</div>
+        <div class="metric-note">跌逾 680 點</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">昨收</div>
+        <div class="metric-value">33,112.59</div>
+        <div class="metric-note">3/27 收盤</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">成交金額</div>
+        <div class="metric-value">1,276 億</div>
+        <div class="metric-note">TWD</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">振幅</div>
+        <div class="metric-value">1.75%</div>
+        <div class="metric-note">高低差 579 點</div>
+      </div>
+    </div>
+    <div class="alert-box">
+      <p><strong>&#9888;&#65039; 空頭訊號：</strong>開盤即為盤中最高點，顯示空方自開盤即全面主導，多方無力反擊。</p>
+    </div>
+  </div>
+
+  <!-- 今日盤勢摘要 -->
+  <div class="section-card">
+    <h2>&#128313; 今日盤勢摘要</h2>
+    <p>台股今日（週一）<strong>開低走低</strong>，受美股上週五全面重挫、中東地緣政治風險升溫、以及台指期夜盤暴跌 882 點的三重利空夾擊，開盤即跳空下跌逾百點，盤中一度摜破 32,500 點關卡。</p>
+    <p>截至早盤 09:11，指數暫報 <strong>32,549.99 點</strong>，下跌 562.60 點（-1.70%）。權值股台積電失守 1,800 元大關，暫報 1,780 元，跌幅約 2.2%。</p>
+    <p>成交金額僅 1,276 億元（早盤），預估全日成交量將因清明連假前觀望氣氛而持續萎縮。</p>
+  </div>
+
+  <!-- 下跌原因分析 -->
+  <div class="section-card">
+    <h2>&#128313; 下跌原因分析</h2>
+
+    <h3>1. 美股全面重挫（核心利空）</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>美股指數</th><th>3/27 收盤</th><th>跌幅</th><th>備註</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>道瓊工業</td><td class="num">&mdash;</td><td class="num" style="color:#dc2626;font-weight:700;">-1.73%</td><td><span class="tag tag-red">進入修正區間</span></td></tr>
+        <tr><td>S&amp;P 500</td><td class="num">6,368.85</td><td class="num" style="color:#dc2626;font-weight:700;">-1.67%</td><td><span class="tag tag-red">連五週下跌</span></td></tr>
+        <tr><td>NASDAQ</td><td class="num">20,948.36</td><td class="num" style="color:#dc2626;font-weight:700;">-2.15%</td><td><span class="tag tag-red">科技股領跌</span></td></tr>
+        <tr><td>VIX 恐慌指數</td><td class="num">&gt; 30</td><td class="num" style="color:#dc2626;font-weight:700;">飆升</td><td><span class="tag tag-yellow">極度恐慌</span></td></tr>
+      </tbody>
+    </table>
+
+    <h3>2. 中東地緣政治風險升級</h3>
+    <ul>
+      <li>以色列持續大規模空襲伊朗，國際油價 3/27 急漲</li>
+      <li>美伊談判前景不明，停火協議蒙上陰影</li>
+      <li>能源成本飆升壓縮企業獲利預期</li>
+    </ul>
+
+    <h3>3. 外資持續大幅賣超</h3>
+    <ul>
+      <li>上週五三大法人合計賣超 <strong>401.86 億元</strong></li>
+      <li>外資及陸資賣超 <strong>384.7 億元</strong>（佔比 95.7%）</li>
+      <li>台指期夜盤收 32,244 點，重挫 882 點</li>
+    </ul>
+
+    <h3>4. 節前觀望心態</h3>
+    <ul>
+      <li>清明連假將至，市場觀望氣氛濃厚</li>
+      <li>成交量能萎縮，上週五全日僅 6,320 億元</li>
+    </ul>
+  </div>
+
+  <!-- 類股表現 -->
+  <div class="section-card">
+    <h2>&#128313; 類股表現</h2>
+    <table class="data-table">
+      <thead>
+        <tr><th>分類</th><th>狀態</th><th>代表個股 / 族群</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>權值股</td><td><span class="tag tag-red">弱勢</span></td><td>台積電跌破 1,800 元，暫報 1,780 元（-40）</td></tr>
+        <tr><td>記憶體</td><td><span class="tag tag-red">重挫</span></td><td>群聯、力積電大幅下跌</td></tr>
+        <tr><td>PCB / 載板</td><td><span class="tag tag-green">相對強勢</span></td><td>華通、楠梓電、定穎投控</td></tr>
+        <tr><td>低軌衛星</td><td><span class="tag tag-green">抗跌</span></td><td>衛星通訊概念股逆勢表現</td></tr>
+        <tr><td>AI 伺服器</td><td><span class="tag tag-yellow">分歧</span></td><td>散熱、銅箔基板個股有撐</td></tr>
+        <tr><td>傳產</td><td><span class="tag tag-blue">資金轉進</span></td><td>部分低基期傳產股獲買盤青睞</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 技術面觀察 -->
+  <div class="section-card">
+    <h2>&#128313; 技術面觀察</h2>
+    <ul>
+      <li><strong>趨勢：</strong>指數跌破短期均線支撐，短線偏空格局確立</li>
+      <li><strong>關鍵支撐：</strong>32,000 ~ 32,500 點區間（前波回檔低點）</li>
+      <li><strong>關鍵壓力：</strong>33,000 點（今日開盤即跌破，已轉為壓力區）</li>
+      <li><strong>量能觀察：</strong>下跌帶量不足，非恐慌性崩跌，但多方承接意願薄弱</li>
+      <li><strong>VIX 訊號：</strong>VIX &gt; 30 歷史經驗上常伴隨恐慌出清期，但也是中期底部形成的前兆</li>
+    </ul>
+  </div>
+
+  <!-- 目標區間 -->
+  <div class="section-card">
+    <h2>&#128313; 短期目標區間</h2>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標區間</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">&#x1F43B; 熊市</span></td>
+          <td><span class="scenario-target">31,500 ~ 32,000</span></td>
+          <td>美伊衝突擴大、油價持續飆漲、外資加速撤離</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">&#x1F4CA; 基本</span></td>
+          <td><span class="scenario-target">32,500 ~ 33,500</span></td>
+          <td>地緣風險消化後震盪整理，等待清明連假後方向選擇</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">&#x1F402; 牛市</span></td>
+          <td><span class="scenario-target">33,500 ~ 34,500</span></td>
+          <td>美伊快速達成停火、油價回落、外資回補</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 催化劑 & 風險 -->
+  <div class="section-card">
+    <h2>&#128313; 催化劑 &amp; 風險</h2>
+    <div class="catalyst-grid">
+      <div class="catalyst-card catalyst-positive">
+        <h4>&#x2705; 正面催化劑</h4>
+        <ul>
+          <li>美伊若達成停火協議，油價回落將大幅舒緩市場壓力</li>
+          <li>NVIDIA Vera Rubin 新一代伺服器進入量產，台廠 AI 供應鏈受惠</li>
+          <li>台灣經濟基本面穩健，提供多頭反擊底氣</li>
+          <li>2026 年開戶數較 2025 年均值暴增 2.6 倍，投資人信心未潰散</li>
+        </ul>
+      </div>
+      <div class="catalyst-card catalyst-negative">
+        <h4>&#x26A0;&#xFE0F; 主要風險</h4>
+        <ul>
+          <li>中東戰事升級失控，油價衝上歷史高點</li>
+          <li>美股進一步下跌，系統性風險外溢</li>
+          <li>外資持續大幅賣超，資金面壓力加劇</li>
+          <li>清明連假不確定性，假前賣壓加重</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 操作建議 -->
+  <div class="section-card">
+    <h2>&#128313; 結論與操作建議</h2>
+    <p>今日台股大幅開低走低，主因是上週五美股全面重挫（道瓊進入修正、NASDAQ 跌逾 2%）加上中東地緣政治風險持續升溫的雙重利空夾擊。<strong>短期偏空</strong>，但跌幅能否擴大取決於兩個關鍵變數：<strong>美伊談判進展</strong>與<strong>國際油價走向</strong>。</p>
+    <table class="data-table">
+      <thead><tr><th>投資人類型</th><th>建議策略</th></tr></thead>
+      <tbody>
+        <tr><td><strong>保守型</strong></td><td>清明連假前宜減碼觀望，降低持股水位至 3~5 成</td></tr>
+        <tr><td><strong>積極型</strong></td><td>若指數下探 32,000 點附近出現止穩訊號，可考慮分批佈局 AI 供應鏈強勢股</td></tr>
+        <tr><td><strong>全體投資人</strong></td><td>嚴格控管部位，設定停損，避免重壓單一個股</td></tr>
+      </tbody>
+    </table>
+    <div class="sources" style="margin-top: 16px;">
+      <strong>資料來源：</strong>
+      <a href="https://tw.stock.yahoo.com/quote/%5ETWII" target="_blank">Yahoo 股市</a> &middot;
+      <a href="https://tw.stock.yahoo.com/tw-market/" target="_blank">Yahoo 台股盤勢</a> &middot;
+      <a href="https://www.cnn.com/2026/03/27/investing/us-stocks-iran" target="_blank">CNN Business</a> &middot;
+      <a href="https://www.cnbc.com/2026/03/26/stock-market-today-live-updates.html" target="_blank">CNBC</a> &middot;
+      <a href="https://udn.com/news/story/7251/9409896" target="_blank">聯合新聞網</a> &middot;
+      <a href="https://news.cnyes.com/news/cat/tw_stock" target="_blank">鉅亨網</a>
+    </div>
+  </div>
+
+  <!-- 免責聲明 -->
+  <div class="section-card">
+    <div class="disclaimer">
+      &#9888;&#65039; <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議或要約。
+      投資市場存在風險，過去表現不代表未來績效，請自行評估風險承受能力並諮詢專業理財顧問後再做決策。
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="report-footer">
+  <span>&#129302; Generated by Market Analyst &middot; Claude Code</span>
+  <span>最後更新：2026/03/30 09:11</span>
+</footer>
+
+</body>
+</html>

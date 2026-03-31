@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>美股綠能板塊 投資分析報告 – 2026/03/27</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── Header ── */
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1a5e2e 60%, #166534 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 960px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8f0c0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 2rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-header h1 span.ticker {
+      font-size: 1.1rem; font-weight: 400; color: #90d8b0;
+      margin-left: 10px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90d8b0; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── Main Container ── */
+    .report-body { max-width: 960px; margin: 0 auto; padding: 32px 20px 0; }
+
+    /* ── Section Cards ── */
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #0f2744; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 {
+      font-size: 0.92rem; font-weight: 600;
+      color: #334155; margin: 18px 0 10px;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.8; margin-bottom: 10px; }
+    .section-card ul, .section-card ol {
+      padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.9;
+    }
+    .section-card li { margin-bottom: 5px; }
+
+    /* ── Data Table ── */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.855rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .data-table td strong { color: #1a2332; }
+
+    /* ── Scenario Table ── */
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.15rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+
+    /* ── Inline Tags ── */
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+
+    /* ── Key Metric Cards ── */
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px; margin: 12px 0 20px;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .metric-up { color: #16a34a !important; }
+    .metric-down { color: #dc2626 !important; }
+
+    /* ── Stock Header ── */
+    .stock-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stock-badge {
+      background: #0f2744; color: #fff;
+      font-size: 13px; font-weight: 700; letter-spacing: 1px;
+      padding: 4px 12px; border-radius: 6px;
+    }
+    .stock-name { font-size: 1rem; font-weight: 600; color: #334155; }
+    .stock-rating {
+      margin-left: auto;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* ── Allocation Table ── */
+    .alloc-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .alloc-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .alloc-table td { padding: 11px 16px; border-bottom: 1px solid #edf0f7; font-size: 0.875rem; }
+    .alloc-table tr:last-child td { border-bottom: none; }
+    .alloc-table .row-top { background: #f0fdf4; font-weight: 600; }
+
+    /* ── Risk / Catalyst Box ── */
+    .two-col {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px;
+    }
+    .box-positive { background: #f0fdf4; border-radius: 10px; padding: 16px; }
+    .box-negative { background: #fff8f8; border-radius: 10px; padding: 16px; }
+    .box-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; }
+    .box-positive .box-title { color: #15803d; }
+    .box-negative .box-title { color: #dc2626; }
+
+    /* ── Blockquote / Disclaimer ── */
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+
+    hr { border: none; border-top: 1px solid #e8edf4; margin: 16px 0; }
+
+    .sources { font-size: 0.8rem; color: #64748b; margin-top: 8px; }
+
+    /* ── Footer ── */
+    .report-footer {
+      max-width: 960px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.4rem; }
+      .section-card { padding: 20px 18px; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">US Stock · 綠能板塊分析</div>
+    <h1>美股綠能板塊<span class="ticker">Green Energy Sector</span></h1>
+    <div class="report-meta">
+      <span>📅 2026/03/27</span>
+      <span>🌐 NASDAQ / NYSE</span>
+      <span>⚡ Real-time Data</span>
+      <span>🔍 FSLR · NEE · ENPH · PLUG · ICLN</span>
+    </div>
+  </div>
+</header>
+
+<!-- BODY -->
+<main class="report-body">
+
+  <!-- 宏觀環境 -->
+  <div class="section-card">
+    <h2>🌍 宏觀環境 & 板塊背景</h2>
+    <p>美股綠能板塊（ICLN）過去一年大漲 <strong>+57.22%</strong>，反映整個板塊自低谷大幅反彈。但在政策不確定性與估值修復後，選股策略比過去更為重要。</p>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">ICLN 1年報酬</div>
+        <div class="metric-value metric-up">+57.22%</div>
+        <div class="metric-note">大幅反彈</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">ICLN 年初至今</div>
+        <div class="metric-value metric-up">+9.74%</div>
+        <div class="metric-note">2026 開局</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">ICLN 現價</div>
+        <div class="metric-value">$18.03</div>
+        <div class="metric-note">127 家公司</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">聯準會政策</div>
+        <div class="metric-value">降息中</div>
+        <div class="metric-note">利率仍偏高</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">IRA 稅收抵免</div>
+        <div class="metric-value">尚存</div>
+        <div class="metric-note">核心條款未廢</div>
+      </div>
+    </div>
+
+    <ul>
+      <li><strong>IRA（降低通脹法案）</strong>：核心再生能源稅收抵免仍在，是最大政策護城河</li>
+      <li><strong>關稅保護</strong>：對中國太陽能產品加徵關稅，利好美國本土製造商（FSLR 最大受益者）</li>
+      <li><strong>利率走勢</strong>：聯準會進入降息周期，有利資本密集型再生能源融資</li>
+      <li><strong>AI 資料中心電力需求</strong>：超大規模雲端業者（Google, Microsoft, Amazon）大規模採購再生能源合約</li>
+    </ul>
+
+    <div class="sources">資料來源：StockAnalysis.com，截至 2026/03/26</div>
+  </div>
+
+  <!-- 標的比較總表 -->
+  <div class="section-card">
+    <h2>📊 五大標的快速比較</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>標的</th>
+          <th>現價</th>
+          <th>市值</th>
+          <th>P/E</th>
+          <th>Forward P/E</th>
+          <th>52週高</th>
+          <th>52週低</th>
+          <th>分析師評級</th>
+          <th>目標價</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>FSLR</strong> First Solar</td>
+          <td class="num">$185.83</td>
+          <td class="num">$19.94B</td>
+          <td class="num"><strong style="color:#16a34a">13.08x</strong></td>
+          <td class="num"><strong style="color:#16a34a">10.18x</strong></td>
+          <td class="num">$285.99</td>
+          <td class="num">$116.56</td>
+          <td><span class="tag tag-green">買進</span></td>
+          <td class="num">$241.42 (+30%)</td>
+        </tr>
+        <tr>
+          <td><strong>NEE</strong> NextEra Energy</td>
+          <td class="num">$91.16</td>
+          <td class="num">$189.93B</td>
+          <td class="num">27.62x</td>
+          <td class="num">22.72x</td>
+          <td class="num">$95.91</td>
+          <td class="num">$61.72</td>
+          <td><span class="tag tag-blue">買進</span></td>
+          <td class="num">$93.38 (+2%)</td>
+        </tr>
+        <tr>
+          <td><strong>ENPH</strong> Enphase Energy</td>
+          <td class="num">$40.18</td>
+          <td class="num">$5.27B</td>
+          <td class="num">31.13x</td>
+          <td class="num">—</td>
+          <td class="num">$63.70</td>
+          <td class="num">$25.78</td>
+          <td><span class="tag tag-yellow">持有</span></td>
+          <td class="num">$43.38 (+8%)</td>
+        </tr>
+        <tr>
+          <td><strong>PLUG</strong> Plug Power</td>
+          <td class="num">$2.25</td>
+          <td class="num">$3.14B</td>
+          <td class="num" style="color:#dc2626">虧損中</td>
+          <td class="num">—</td>
+          <td class="num">$4.58</td>
+          <td class="num">$0.69</td>
+          <td><span class="tag tag-yellow">持有</span></td>
+          <td class="num" style="color:#dc2626">$2.09 (-7%)</td>
+        </tr>
+        <tr style="background:#f0fdf4;">
+          <td><strong>ICLN</strong> ETF</td>
+          <td class="num">$18.03</td>
+          <td class="num">AUM $2.19B</td>
+          <td class="num">18.98x</td>
+          <td class="num">—</td>
+          <td class="num">$19.38</td>
+          <td class="num">$10.46</td>
+          <td>—</td>
+          <td class="num">—</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="sources">資料來源：StockAnalysis.com，截至 2026/03/26 收盤</div>
+  </div>
+
+  <!-- FSLR 深度分析 -->
+  <div class="section-card">
+    <h2>⭐ FSLR — First Solar（首選標的）</h2>
+
+    <div class="stock-header">
+      <div class="stock-badge">FSLR</div>
+      <div class="stock-name">First Solar Inc. · NASDAQ</div>
+      <div class="stock-rating">
+        <span class="tag tag-green">買進</span>
+        <span style="font-size:0.85rem; color:#64748b; margin-left:4px;">分析師共識</span>
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">現價</div>
+        <div class="metric-value">$185.83</div>
+        <div class="metric-note">-3.97% 昨收</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Forward P/E</div>
+        <div class="metric-value metric-up">10.18x</div>
+        <div class="metric-note">極度便宜</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">EPS (TTM)</div>
+        <div class="metric-value metric-up">$14.21</div>
+        <div class="metric-note">+18.2% YoY</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">營收 (TTM)</div>
+        <div class="metric-value">$5.22B</div>
+        <div class="metric-note">+24.1% YoY</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">毛利率</div>
+        <div class="metric-value">40.62%</div>
+        <div class="metric-note">FY2025</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">分析師目標</div>
+        <div class="metric-value metric-up">$241.42</div>
+        <div class="metric-note">+29.9% 上漲空間</div>
+      </div>
+    </div>
+
+    <h3>近 4 年財務趨勢</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>年度</th><th>營收</th><th>淨利</th><th>EPS</th><th>毛利率</th><th>營業利益率</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>FY2025</td><td class="num">$5,219M</td><td class="num">$1,528M</td><td class="num"><strong>$14.21</strong></td><td class="num">40.62%</td><td class="num">30.59%</td></tr>
+        <tr><td>FY2024</td><td class="num">$4,206M</td><td class="num">$1,292M</td><td class="num">$12.02</td><td class="num">44.17%</td><td class="num">33.12%</td></tr>
+        <tr><td>FY2023</td><td class="num">$3,319M</td><td class="num">$831M</td><td class="num">$7.74</td><td class="num">39.19%</td><td class="num">25.62%</td></tr>
+        <tr><td>FY2022</td><td class="num" style="color:#dc2626">$2,619M</td><td class="num" style="color:#dc2626">-$44M</td><td class="num" style="color:#dc2626">-$0.41</td><td class="num" style="color:#dc2626">2.67%</td><td class="num" style="color:#dc2626">-10.72%</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.82rem; color:#64748b; margin-top:4px;">2022 年虧損，2023 大幅轉盈，2025 年淨利達 $15.28 億，成長軌跡強勁</p>
+
+    <h3>競爭優勢</h3>
+    <ul>
+      <li>唯一大規模使用<strong>碲化鎘（CdTe）薄膜技術</strong>的美國製造商，與中國廠商供應鏈完全獨立</li>
+      <li>對中國太陽能組件的關稅政策，讓 FSLR 在美國本土市場幾乎無競爭對手</li>
+      <li>大型公用事業電廠（Utility-Scale）訂單能見度高，多年合約保障收入穩定性</li>
+      <li>IRA 先進製造生產稅收抵免（AMPC），每瓦額外補貼直接提升獲利</li>
+    </ul>
+
+    <h3>目標價區間</h3>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標價</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">🐻 熊市</span></td>
+          <td><span class="scenario-target">$130</span></td>
+          <td>IRA 稅收抵免大幅削減、太陽能需求衰退、毛利率壓縮至 30% 以下</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">📊 基本</span></td>
+          <td><span class="scenario-target">$230</span></td>
+          <td>Forward P/E 擴張至 12-13x，維持當前營收/EPS 成長軌跡，IRA 大致維持</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">🐂 牛市</span></td>
+          <td><span class="scenario-target">$320</span></td>
+          <td>訂單爆發、AI 資料中心再生能源大規模採購、IRA 完整維持、產能擴充超預期</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- NEE 深度分析 -->
+  <div class="section-card">
+    <h2>🏭 NEE — NextEra Energy（穩健配息首選）</h2>
+
+    <div class="stock-header">
+      <div class="stock-badge">NEE</div>
+      <div class="stock-name">NextEra Energy Inc. · NYSE</div>
+      <div class="stock-rating">
+        <span class="tag tag-blue">適合長期持有</span>
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">現價</div>
+        <div class="metric-value">$91.16</div>
+        <div class="metric-note">近 52 週高點</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">配息殖利率</div>
+        <div class="metric-value metric-up">2.74%</div>
+        <div class="metric-note">年配息 $2.49</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">市值</div>
+        <div class="metric-value">$189.93B</div>
+        <div class="metric-note">全球最大再生能源公用事業</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">P/E</div>
+        <div class="metric-value">27.62x</div>
+        <div class="metric-note">公用事業溢價</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">毛利率</div>
+        <div class="metric-value">62.27%</div>
+        <div class="metric-note">FY2025</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">分析師目標</div>
+        <div class="metric-value">$93.38</div>
+        <div class="metric-note">僅 +2.4% 空間</div>
+      </div>
+    </div>
+
+    <p>NEE 是全球最大再生能源公用事業公司，旗下運營風能、太陽能與儲能設施，長期配息增長紀錄優秀。然而目前股價 $91.16 已接近分析師目標價 $93.38，短期資本利得空間有限，較適合以<strong>配息收益為主</strong>的長期投資人。</p>
+
+    <h3>目標價區間</h3>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標價</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">🐻 熊市</span></td>
+          <td><span class="scenario-target">$72</span></td>
+          <td>利率維持高位、監管壓力加重、公用事業股重估</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">📊 基本</span></td>
+          <td><span class="scenario-target">$95</span></td>
+          <td>配息持續增長、大型再生能源合約穩定執行</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">🐂 牛市</span></td>
+          <td><span class="scenario-target">$118</span></td>
+          <td>聯準會加速降息、資料中心電力合約爆發、估值回歸歷史均值</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ENPH 分析 -->
+  <div class="section-card">
+    <h2>☀️ ENPH — Enphase Energy（等待降息再進場）</h2>
+
+    <div class="stock-header">
+      <div class="stock-badge">ENPH</div>
+      <div class="stock-name">Enphase Energy Inc. · NASDAQ</div>
+      <div class="stock-rating">
+        <span class="tag tag-yellow">持有 · 觀察</span>
+      </div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">現價</div>
+        <div class="metric-value">$40.18</div>
+        <div class="metric-note">-5.53% 昨收</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">52週高</div>
+        <div class="metric-value">$63.70</div>
+        <div class="metric-note">目前折價 37%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">P/E</div>
+        <div class="metric-value">31.13x</div>
+        <div class="metric-note">EPS 僅 $1.29</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">EPS 成長</div>
+        <div class="metric-value metric-up">+71.9%</div>
+        <div class="metric-note">惟基期低</div>
+      </div>
+    </div>
+
+    <p>Enphase 是住宅太陽能微型逆變器市場領導者，業績對利率高度敏感（直接影響屋主融資意願）。雖然 EPS 恢復強勁成長（+71.9%），但估值 31x 搭配僅 8% 的目標價上漲空間，風險/報酬比不夠吸引。建議等待聯準會明確加速降息後再積極加碼。</p>
+
+    <h3>目標價區間</h3>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標價</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">🐻 熊市</span></td>
+          <td><span class="scenario-target">$26</span></td>
+          <td>住宅太陽能需求持續疲弱、競爭加劇、市佔率流失</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">📊 基本</span></td>
+          <td><span class="scenario-target">$45</span></td>
+          <td>溫和復甦、略超市場預期</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">🐂 牛市</span></td>
+          <td><span class="scenario-target">$68</span></td>
+          <td>降息加速、IQ Battery 儲能交叉銷售帶動、歐洲市場重返成長</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PLUG 風險警示 -->
+  <div class="section-card">
+    <h2>⚠️ PLUG — Plug Power（高風險：不建議一般投資人）</h2>
+    <div class="stock-header">
+      <div class="stock-badge" style="background:#dc2626;">PLUG</div>
+      <div class="stock-name">Plug Power Inc. · NASDAQ</div>
+      <div class="stock-rating">
+        <span class="tag tag-red">高風險</span>
+      </div>
+    </div>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">現價</div>
+        <div class="metric-value">$2.25</div>
+        <div class="metric-note">52週範圍極大</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">EPS</div>
+        <div class="metric-value metric-down">-$1.42</div>
+        <div class="metric-note">持續虧損</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">分析師目標</div>
+        <div class="metric-value metric-down">$2.09</div>
+        <div class="metric-note">低於現價 -7%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Beta</div>
+        <div class="metric-value">2.01</div>
+        <div class="metric-note">高波動性</div>
+      </div>
+    </div>
+    <p>Plug Power 仍處持續虧損狀態，分析師目標價 $2.09 <strong>低於現價</strong>，氫能商業化時程遠比市場預期長。建議一般投資人<strong>避免</strong>，僅適合接受極高風險的投機性部位。</p>
+  </div>
+
+  <!-- ICLN ETF -->
+  <div class="section-card">
+    <h2>🌐 ICLN ETF — 分散佈局的低成本選擇</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">現價</div>
+        <div class="metric-value">$18.03</div>
+        <div class="metric-note">-4.15% 昨收</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">1年報酬</div>
+        <div class="metric-value metric-up">+57.22%</div>
+        <div class="metric-note">強勁反彈</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">費用率</div>
+        <div class="metric-value metric-up">0.39%</div>
+        <div class="metric-note">成本低廉</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">持股數</div>
+        <div class="metric-value">127 家</div>
+        <div class="metric-note">全球分散</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">配息殖利率</div>
+        <div class="metric-value">1.49%</div>
+        <div class="metric-note">有穩定配息</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">AUM</div>
+        <div class="metric-value">$2.19B</div>
+        <div class="metric-note">流動性佳</div>
+      </div>
+    </div>
+
+    <h3>前 5 大持股</h3>
+    <table class="data-table">
+      <thead><tr><th>排名</th><th>公司</th><th>代碼</th><th>占比</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Nextpower Inc.</td><td>NXT</td><td class="num">10.59%</td></tr>
+        <tr><td>2</td><td>Bloom Energy Corp.</td><td>BE</td><td class="num">10.03%</td></tr>
+        <tr><td>3</td><td>First Solar Inc.</td><td>FSLR</td><td class="num">5.79%</td></tr>
+        <tr><td>4</td><td>Iberdrola S.A.</td><td>IBE</td><td class="num">5.47%</td></tr>
+        <tr><td>5</td><td>China Yangtze Power</td><td>600900</td><td class="num">4.56%</td></tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top:12px;">⚠️ 注意：近期已有分析師將 ICLN 評級從「買進」降至「持有」，理由為美國清潔能源政策頭風增加。一年大漲 57% 後，短期獲利了結壓力不可忽視。</p>
+  </div>
+
+  <!-- 投資組合配置建議 -->
+  <div class="section-card">
+    <h2>💼 投資組合配置建議</h2>
+    <table class="alloc-table">
+      <thead>
+        <tr><th>配置類型</th><th>標的</th><th>建議比重</th><th>適合投資人</th><th>核心理由</th></tr>
+      </thead>
+      <tbody>
+        <tr class="row-top">
+          <td>🌟 核心成長</td>
+          <td><strong>FSLR</strong></td>
+          <td>40–50%</td>
+          <td>成長型</td>
+          <td>估值最低（Forward P/E 10x），成長最強，關稅受益者，分析師目標 +30%</td>
+        </tr>
+        <tr>
+          <td>🏦 穩健配息</td>
+          <td><strong>NEE</strong></td>
+          <td>20–30%</td>
+          <td>穩健 / 退休型</td>
+          <td>2.74% 配息，市值最大，抗跌性強，長期持有複利效果佳</td>
+        </tr>
+        <tr>
+          <td>🌐 廣泛分散</td>
+          <td><strong>ICLN ETF</strong></td>
+          <td>20–30%</td>
+          <td>被動型</td>
+          <td>一籃子 127 家公司，費用率低，適合不想選股的投資人</td>
+        </tr>
+        <tr>
+          <td>📌 小部位觀察</td>
+          <td><strong>ENPH</strong></td>
+          <td>0–10%</td>
+          <td>積極型</td>
+          <td>等待聯準會明確加速降息再積極加碼，現階段觀望</td>
+        </tr>
+        <tr style="background:#fff8f8;">
+          <td>🚫 避免</td>
+          <td><strong>PLUG</strong></td>
+          <td>—</td>
+          <td>不建議</td>
+          <td>持續虧損，分析師目標低於現價，氫能商業化時程不確定</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 催化劑 & 風險 -->
+  <div class="section-card">
+    <h2>📈 催化劑 & 主要風險</h2>
+    <div class="two-col">
+      <div class="box-positive">
+        <div class="box-title">✅ 正面催化劑</div>
+        <ul>
+          <li>聯準會加速降息 → 利好資本密集型再生能源</li>
+          <li>IRA 稅收抵免維持完整 → 保障美國裝機動能</li>
+          <li>AI 資料中心電力需求爆炸 → 大型再生能源合約激增</li>
+          <li>對中國太陽能關稅升級 → 更利好 FSLR 等本土製造商</li>
+          <li>再生能源成本持續下降 → 提升與傳統能源的競爭力</li>
+          <li>歐洲能源轉型加速 → 全球需求持續擴張</li>
+        </ul>
+      </div>
+      <div class="box-negative">
+        <div class="box-title">⚠️ 主要風險</div>
+        <ul>
+          <li>政策風險：Trump 政府持續挑戰 IRA 條款完整性</li>
+          <li>利率風險：若降息不如預期，融資成本壓制專案可行性</li>
+          <li>估值風險：板塊一年大漲 57%，短期獲利了結壓力大</li>
+          <li>競爭風險：中國太陽能廠商技術追趕，模組價格戰</li>
+          <li>地緣政治：全球供應鏈不穩定，貿易戰擴大可能性</li>
+          <li>電網瓶頸：再生能源電廠核准與電網連接速度落後</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 結論 -->
+  <div class="section-card">
+    <h2>🎯 結論 & 行動建議</h2>
+    <p><strong>首選 FSLR（First Solar）</strong>：在美股綠能板塊中，FSLR 是目前風險/報酬比最佳的標的。Forward P/E 僅 10.18x，完全無法反映其 24% 的營收成長動能。作為美國本土製造商，同時受惠於關稅保護與 IRA 補貼，在當前政策環境下競爭優勢明顯。分析師共識目標價 $241.42，隱含 <strong>+30% 上漲空間</strong>。</p>
+    <p><strong>穩健組合</strong>：以 <strong>NEE + ICLN ETF</strong> 為主，兼顧配息收入與板塊分散暴露，適合不想承擔過多個股風險的投資人。</p>
+    <p><strong>等待時機</strong>：ENPH 值得長期關注，但建議等待聯準會明確進入積極降息階段、住宅太陽能裝機數據轉強後再加碼。</p>
+    <p><strong>避免 PLUG</strong>：除非接受極高風險的投機性部位，否則在公司重返獲利之前，不建議配置 PLUG。</p>
+
+    <div class="disclaimer">
+      ⚠️ <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議或要約。投資市場存在風險，過去表現不代表未來績效，請自行評估風險承受能力並諮詢專業理財顧問後再做決策。所有數據截至 2026/03/26 收盤，來源為 StockAnalysis.com。
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="report-footer">
+  <span>🤖 Generated by Market Analyst · Claude Code</span>
+  <span>最後更新：2026/03/27 00:00</span>
+</footer>
+
+</body>
+</html>

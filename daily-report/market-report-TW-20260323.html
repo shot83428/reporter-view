@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台股強勢股精選分析報告 – 2026/03/23</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1e3d6e 60%, #1a5276 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 960px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 1.8rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-header h1 span.ticker {
+      font-size: 1rem; font-weight: 400; color: #90b8d8;
+      margin-left: 10px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90b8d8; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+    .report-body { max-width: 960px; margin: 0 auto; padding: 32px 20px 0; }
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #0f2744; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 {
+      font-size: 0.95rem; font-weight: 700;
+      color: #1e3d6e; margin: 20px 0 10px;
+      padding: 8px 14px;
+      background: #f0f5ff;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0 8px 8px 0;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.8; margin-bottom: 10px; }
+    .section-card ul, .section-card ol {
+      padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.9;
+    }
+    .section-card li { margin-bottom: 6px; }
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.1rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; margin: 12px 0;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+    .stock-card {
+      border: 1px solid #e2e8f4;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      position: relative;
+    }
+    .stock-card-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+    }
+    .stock-badge {
+      background: #0f2744; color: #fff;
+      font-size: 12px; font-weight: 700;
+      padding: 4px 10px; border-radius: 6px;
+    }
+    .stock-name { font-size: 1.05rem; font-weight: 700; color: #1a2332; }
+    .stock-code { font-size: 0.85rem; color: #64748b; }
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+    .sources { font-size: 0.8rem; color: #64748b; margin-top: 8px; }
+    .sources a { color: #2563eb; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+    .report-footer {
+      max-width: 960px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.3rem; }
+      .section-card { padding: 20px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">台股 · 強勢股精選報告</div>
+    <h1>台股下一個月強勢股精選<span class="ticker">2026/03/23 – 2026/04/23</span></h1>
+    <div class="report-meta">
+      <span>📅 2026/03/23</span>
+      <span>🌐 台灣證券交易所 (TWSE)</span>
+      <span>⚡ 基於最新法人動向與市場數據</span>
+    </div>
+  </div>
+</header>
+
+<main class="report-body">
+
+  <!-- 市場背景 -->
+  <div class="section-card">
+    <h2>🔹 市場背景摘要</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">大盤指數</div>
+        <div class="metric-value">34,000+</div>
+        <div class="metric-note">3/17 反彈回站</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">台積電 (2330)</div>
+        <div class="metric-value">1,870 元</div>
+        <div class="metric-note">3/17 盤中回升</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">信驊 (5274)</div>
+        <div class="metric-value">12,450 元</div>
+        <div class="metric-note">歷史新高 +9.5%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">投信買超</div>
+        <div class="metric-value">9.54 億</div>
+        <div class="metric-note">第 12 週</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">自營商買超</div>
+        <div class="metric-value">75 億</div>
+        <div class="metric-note">急跌中低接</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">CoWoS 2027目標</div>
+        <div class="metric-value">20萬片</div>
+        <div class="metric-note">高盛最新估算</div>
+      </div>
+    </div>
+    <p>2026 年 3 月台股面臨短期震盪，但 AI 供應鏈主旋律不變。高盛點名 25 檔台廠、記憶體族群漲停齊揚、CoWoS 產能持續擴充，三大引擎支撐多頭格局。法人在急跌中積極布局，是進入短期強勢布局窗口的最佳信號。</p>
+  </div>
+
+  <!-- 族群一：記憶體 -->
+  <div class="section-card">
+    <h2>🔹 族群一：記憶體 — 短期最強爆發力</h2>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#1</span>
+        <span class="stock-name">旺宏電子</span>
+        <span class="stock-code">2337 ｜ 精選標的</span>
+        <span class="tag tag-green">外資狂掃</span>
+      </div>
+      <ul>
+        <li>3/17 <strong>漲停</strong>，外資大量買超 <strong>38,687 張</strong>（第 12 週外資買超前三）</li>
+        <li>NOR Flash 為 AI Edge 裝置、工業 MCU 必需元件，供不應求</li>
+        <li>2026 年記憶體景氣確認向上，庫存去化完成</li>
+        <li>股價剛突破壓力，技術面動能強</li>
+      </ul>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#2</span>
+        <span class="stock-name">華邦電子</span>
+        <span class="stock-code">2344 ｜ 輔助標的</span>
+        <span class="tag tag-blue">投信冠軍</span>
+      </div>
+      <ul>
+        <li>3/17 漲幅 +6%，投信買超 <strong>67,079 張（第 12 週投信買超第一名）</strong></li>
+        <li>DRAM NOR 雙線受惠，IoT 與 AI 邊緣運算需求</li>
+        <li>機構 ETF 換股效應 + 主動買盤雙重拉抬</li>
+      </ul>
+    </div>
+
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標漲幅</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">🐻 熊市</span></td>
+          <td><span class="scenario-target">-10 ~ -15%</span></td>
+          <td>記憶體景氣反轉，庫存重新累積</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">📊 基本</span></td>
+          <td><span class="scenario-target">+15 ~ +25%</span></td>
+          <td>外資持續買超，AI 記憶體需求穩健</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">🐂 牛市</span></td>
+          <td><span class="scenario-target">+35 ~ +50%</span></td>
+          <td>HBM/NOR 訂單超預期 + 法說利多</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 族群二：AI 伺服器 ODM -->
+  <div class="section-card">
+    <h2>🔹 族群二：AI 伺服器 ODM — 最直接受益者</h2>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#3</span>
+        <span class="stock-name">廣達電腦</span>
+        <span class="stock-code">2382 ｜ 精選標的</span>
+        <span class="tag tag-green">高盛推薦</span>
+        <span class="tag tag-blue">AI Server No.1</span>
+      </div>
+      <ul>
+        <li>全球最大 AI 伺服器 ODM，主要供應 AWS、Google、Meta</li>
+        <li>2026 年美系超大規模雲端服務商 (Hyperscaler) AI Capex 持續創高</li>
+        <li>NVIDIA GB200 NVL72 / Blackwell 新平台量產，廣達為最大受益者</li>
+        <li>高盛點名台股作戰名單核心成員</li>
+      </ul>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#4</span>
+        <span class="stock-name">緯穎科技</span>
+        <span class="stock-code">6669 ｜ 輔助標的</span>
+        <span class="tag tag-green">高盛推薦</span>
+      </div>
+      <ul>
+        <li>專注 GPU 伺服器系統（OCP、液冷架構），技術門檻高</li>
+        <li>高毛利率，受惠 AI 伺服器單價提升</li>
+        <li>高盛台股作戰名單標的</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 族群三：CoWoS 先進封裝 -->
+  <div class="section-card">
+    <h2>🔹 族群三：CoWoS 先進封裝 — 產能爆發到 2027</h2>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#5</span>
+        <span class="stock-name">日月光投控</span>
+        <span class="stock-code">3711 ｜ 精選標的</span>
+        <span class="tag tag-green">高盛推薦</span>
+      </div>
+      <ul>
+        <li>AI 晶片先進封裝需求升級，CoWoS、SoIC 持續滿載</li>
+        <li>高盛估算 CoWoS 產能 2027 年底突破 <strong>20 萬片晶圓</strong>（遠超市場預期）</li>
+        <li>AI 晶片出貨量放大，營收加速攀升趨勢明確</li>
+      </ul>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#6</span>
+        <span class="stock-name">弘塑科技</span>
+        <span class="stock-code">3063 ｜ 黑馬標的</span>
+        <span class="tag tag-yellow">高盛黑馬</span>
+      </div>
+      <ul>
+        <li>高盛最新點名為先進封裝「測試黑馬」，知名度大增</li>
+        <li>提供晶圓清洗、先進封裝測試設備，技術壁壘高</li>
+        <li>CoWoS 產能擴充帶動設備需求，能見度延伸至 2027 年</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 族群四：散熱 -->
+  <div class="section-card">
+    <h2>🔹 族群四：AI 散熱 — 高密度運算必需基礎設施</h2>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#7</span>
+        <span class="stock-name">奇鋐科技</span>
+        <span class="stock-code">3017 ｜ 精選標的</span>
+        <span class="tag tag-blue">法人口袋名單</span>
+      </div>
+      <ul>
+        <li>全球三大散熱廠之一，AI 伺服器熱設計功耗（TDP）700W+ 帶動散熱模組需求爆炸</li>
+        <li>液冷 + 氣冷雙線布局，客戶涵蓋 AWS、微軟、Google</li>
+        <li>法人長期配置標的，波段下跌即買機</li>
+      </ul>
+    </div>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#8</span>
+        <span class="stock-name">雙鴻科技</span>
+        <span class="stock-code">3324 ｜ 輔助標的</span>
+        <span class="tag tag-blue">液冷新勢力</span>
+      </div>
+      <ul>
+        <li>液冷系統進入量產階段，打入國際 AI 伺服器品牌</li>
+        <li>毛利率持續提升，是散熱族群中較高成長性的標的</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 族群五：高價股 -->
+  <div class="section-card">
+    <h2>🔹 族群五：股王領頭 — 信驊 (5274)</h2>
+
+    <div class="stock-card">
+      <div class="stock-card-header">
+        <span class="stock-badge">#9</span>
+        <span class="stock-name">信驊科技</span>
+        <span class="stock-code">5274 ｜ 強勢龍頭</span>
+        <span class="tag tag-red">股王 新高</span>
+      </div>
+      <ul>
+        <li>3/17 創歷史新高 <strong>12,450 元</strong>，單日漲幅 <strong>+9.5%</strong></li>
+        <li>BMC（底板管理控制器）晶片全球第一大廠，每台 AI 伺服器必備</li>
+        <li>股王創歷史新高具「領頭羊效應」，往往帶動整個高價族群跟漲</li>
+        <li>AI 伺服器出貨量暴增 → BMC 晶片需求正比例增長</li>
+      </ul>
+
+      <table class="scenario-table">
+        <thead><tr><th>情境</th><th>目標</th><th>依據</th></tr></thead>
+        <tbody>
+          <tr class="scenario-bear">
+            <td><span class="scenario-label">🐻 熊市</span></td>
+            <td><span class="scenario-target">10,500 元</span></td>
+            <td>AI 伺服器出貨不如預期，高本益比修正</td>
+          </tr>
+          <tr class="scenario-base">
+            <td><span class="scenario-label">📊 基本</span></td>
+            <td><span class="scenario-target">13,500 元</span></td>
+            <td>AI 伺服器維持高速成長，BMC 需求穩健</td>
+          </tr>
+          <tr class="scenario-bull">
+            <td><span class="scenario-label">🐂 牛市</span></td>
+            <td><span class="scenario-target">16,000 元</span></td>
+            <td>AI 伺服器超預期 + 新平台份額提升</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 催化劑與風險 -->
+  <div class="section-card">
+    <h2>🔹 催化劑 &amp; 風險評估</h2>
+
+    <h3>✅ 近期催化劑（未來 1 個月）</h3>
+    <ul>
+      <li><strong>台積電 N2 製程正式量產（2026 H1）</strong>：帶動整條先進封裝供應鏈訂單確認</li>
+      <li><strong>高盛/摩根士丹利調高目標價</strong>：機構持續上調 25 檔台廠評級，吸引外資流入</li>
+      <li><strong>記憶體景氣確認向上</strong>：Q1 法說會（4 月）將揭示全年獲利能見度</li>
+      <li><strong>CoWoS 產能路徑清晰至 2027</strong>：高盛最新報告大幅上修，帶動封裝股重估</li>
+      <li><strong>AI 伺服器 Q1 出貨旺季</strong>：美系 CSP 2026 年 Capex 創歷史高</li>
+    </ul>
+
+    <h3>⚠️ 主要風險</h3>
+    <ul>
+      <li><strong>美中科技戰升溫</strong>：出口管制擴大至先進晶片/封裝設備</li>
+      <li><strong>AI 需求不如預期</strong>：若科技廠 Capex 縮減，供應鏈估值大幅下調</li>
+      <li><strong>台幣急升</strong>：壓縮出口廠商獲利（對廣達、鴻海等影響較大）</li>
+      <li><strong>高估值壓力</strong>：記憶體、AI 伺服器族群 P/E 已在歷史高位，法說若指引不如預期修正幅度大</li>
+    </ul>
+  </div>
+
+  <!-- 結論 -->
+  <div class="section-card">
+    <h2>🔹 一個月強勢股排名總結</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>排名</th>
+          <th>股票代碼</th>
+          <th>公司名稱</th>
+          <th>族群</th>
+          <th>強勢理由</th>
+          <th>信心度</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td><strong>2337</strong></td>
+          <td>旺宏電子</td>
+          <td><span class="tag tag-red">記憶體</span></td>
+          <td>外資38,687張 + 漲停突破</td>
+          <td>⭐⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td><strong>5274</strong></td>
+          <td>信驊科技</td>
+          <td><span class="tag tag-yellow">股王</span></td>
+          <td>歷史新高12,450，領頭羊效應</td>
+          <td>⭐⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>3</strong></td>
+          <td><strong>2382</strong></td>
+          <td>廣達電腦</td>
+          <td><span class="tag tag-blue">AI伺服器</span></td>
+          <td>全球最大AI伺服器ODM，高盛必買</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td><strong>3711</strong></td>
+          <td>日月光投控</td>
+          <td><span class="tag tag-green">先進封裝</span></td>
+          <td>CoWoS 需求爆發，高盛調高目標</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td><strong>5</strong></td>
+          <td><strong>3017</strong></td>
+          <td>奇鋐科技</td>
+          <td><span class="tag tag-blue">散熱</span></td>
+          <td>AI高密度算力散熱必需品，法人口袋名單</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td>補充</td>
+          <td>2344</td>
+          <td>華邦電子</td>
+          <td><span class="tag tag-red">記憶體</span></td>
+          <td>投信第一名買超67,079張</td>
+          <td>⭐⭐⭐⭐</td>
+        </tr>
+        <tr>
+          <td>補充</td>
+          <td>3063</td>
+          <td>弘塑科技</td>
+          <td><span class="tag tag-green">先進封裝</span></td>
+          <td>高盛點名黑馬，知名度大增</td>
+          <td>⭐⭐⭐</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 資料來源 -->
+  <div class="section-card">
+    <h2>🔹 資料來源</h2>
+    <div class="sources">
+      <ul>
+        <li><a href="https://tw.stock.yahoo.com/news/%E9%AB%98%E7%9B%9B%E9%87%8D%E7%A3%85%E9%BB%9E%E5%90%8D-2026%E5%8F%B0%E8%82%A1%E4%BD%9C%E6%88%B0%E5%90%8D%E5%96%AE-25%E6%AA%94%E5%8F%B0%E5%BB%A0%E8%A2%AB%E6%8C%89%E8%AE%9A%E5%BF%85%E8%B2%B7-ai-%E5%8D%8A%E5%B0%8E%E9%AB%94%E5%85%A8%E7%B7%9A%E9%BB%9E%E7%81%AB-063000624.html" target="_blank">高盛點名 2026 台股作戰名單 25 檔 — Yahoo 財經</a></li>
+        <li><a href="https://tw.stock.yahoo.com/news/%E5%8F%B0%E8%82%A12026%E4%B8%8A%E7%9C%8B3%E8%90%AC%E9%BB%9E-ai%E4%BE%9B%E6%87%89%E9%8F%88-%E8%A8%98%E6%86%B6%E9%AB%94%E8%A1%8C%E6%83%85%E6%8C%81%E7%BA%8C%E7%99%BC%E5%A8%81" target="_blank">台股 2026 上看 3 萬點，AI 供應鏈、記憶體行情 — Yahoo 財經</a></li>
+        <li><a href="https://tw.stock.yahoo.com/news/cowos%E7%94%A2%E8%83%BD%E6%8C%81%E7%BA%8C%E7%88%86%E7%99%BC%E5%88%B0%E5%BE%8C%E5%B9%B4-%E9%AB%98%E7%9B%9B%E9%BB%9E%E5%90%8D%E5%85%88%E9%80%B2%E5%B0%81%E8%A3%9D%E6%B8%AC%E8%A9%A6%E9%BB%91%E9%A6%AC" target="_blank">CoWoS 產能持續爆發，高盛點名先進封裝測試黑馬 — Yahoo 財經</a></li>
+        <li><a href="https://stock.may.tw/2026/weekly/12/" target="_blank">2026 年第 12 週法人買賣超整理週報 — May 投資網</a></li>
+        <li>資料截止日期：2026 年 3 月 23 日</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 免責聲明 -->
+  <div class="section-card">
+    <div class="disclaimer">
+      ⚠️ <strong>免責聲明：</strong>本報告由 AI 根據公開資訊自動生成，僅供參考，不構成任何投資建議或要約。
+      投資市場存在高度風險，過去表現不代表未來績效，個股可能因基本面、技術面或市場情緒急劇變化而與預期相反。
+      請自行評估風險承受能力並諮詢專業理財顧問後再做決策。
+    </div>
+  </div>
+
+</main>
+
+<footer class="report-footer">
+  <span>🤖 Generated by Market Analyst · Claude Code (Sonnet 4.6)</span>
+  <span>最後更新：2026/03/23 (分析日期)</span>
+</footer>
+
+</body>
+</html>
