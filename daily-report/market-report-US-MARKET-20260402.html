@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>美股盤後綜合分析報告 – 2026/04/02</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── Header ── */
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1e3d6e 60%, #1a5276 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 900px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 2rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-header h1 span.ticker {
+      font-size: 1.1rem; font-weight: 400; color: #90b8d8;
+      margin-left: 10px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90b8d8; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── Price Pill ── */
+    .price-banner {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-top: 16px;
+      display: inline-flex; align-items: baseline; gap: 12px;
+    }
+    .price-banner .price { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    .price-banner .change-up { color: #4ade80; font-weight: 600; }
+    .price-banner .change-down { color: #f87171; font-weight: 600; }
+
+    /* ── Main Container ── */
+    .report-body { max-width: 900px; margin: 0 auto; padding: 32px 20px 0; }
+
+    /* ── Section Cards ── */
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #0f2744; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 {
+      font-size: 0.9rem; font-weight: 600;
+      color: #334155; margin: 18px 0 10px;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.75; margin-bottom: 10px; }
+    .section-card ul, .section-card ol {
+      padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.85;
+    }
+    .section-card li { margin-bottom: 4px; }
+
+    /* ── Data Table ── */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .data-table td strong { color: #1a2332; }
+
+    /* ── Scenario Table ── */
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.15rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+
+    /* ── Inline Tags ── */
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+
+    /* ── Key Metric Cards ── */
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; margin: 12px 0;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+    /* ── Blockquote / Disclaimer ── */
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+
+    hr { border: none; border-top: 1px solid #e8edf4; margin: 16px 0; }
+
+    .sources {
+      font-size: 0.8rem; color: #64748b; margin-top: 8px;
+    }
+    .sources a { color: #2563eb; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    .report-footer {
+      max-width: 900px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+    .report-footer a { color: #64748b; text-decoration: none; }
+
+    @media print {
+      body { background: #fff; padding: 0; }
+      .report-header { background: #0f2744 !important; -webkit-print-color-adjust: exact; }
+      .section-card { box-shadow: none; border: 1px solid #dde4ef; }
+      .report-footer { display: none; }
+    }
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.4rem; }
+      .section-card { padding: 20px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">US Market Overview</div>
+    <h1>美股盤後綜合分析報告<span class="ticker">S&P 500 / NASDAQ / DJI</span></h1>
+    <div class="report-meta">
+      <span>2026/04/02 (4/3 Good Friday 休市)</span>
+      <span>NYSE / NASDAQ</span>
+      <span>Real-time Data</span>
+    </div>
+    <div class="price-banner">
+      <span class="price">S&P 500: 6,582.69</span>
+      <span class="change-up">+7.37 (+0.11%)</span>
+    </div>
+  </div>
+</header>
+
+<main class="report-body">
+
+  <!-- 指數總覽 -->
+  <div class="section-card">
+    <h2>主要指數收盤表現</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">S&P 500</div>
+        <div class="metric-value">6,582.69</div>
+        <div class="metric-note" style="color:#16a34a;">+0.11%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">NASDAQ</div>
+        <div class="metric-value">21,879.18</div>
+        <div class="metric-note" style="color:#16a34a;">+0.18%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Dow Jones</div>
+        <div class="metric-value">46,504.67</div>
+        <div class="metric-note" style="color:#dc2626;">-0.13%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Russell 2000</div>
+        <div class="metric-value">~2,472.60</div>
+        <div class="metric-note" style="color:#dc2626;">-1.58%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">VIX 恐慌指數</div>
+        <div class="metric-value">24.54</div>
+        <div class="metric-note">偏高（長期均值~20）</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">10Y 公債殖利率</div>
+        <div class="metric-value">4.37%</div>
+        <div class="metric-note" style="color:#dc2626;">持續攀升</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Brent 原油</div>
+        <div class="metric-value">~$109</div>
+        <div class="metric-note">自 $119 高點回落</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">黃金</div>
+        <div class="metric-value">$4,702.70</div>
+        <div class="metric-note" style="color:#16a34a;">+0.49%</div>
+      </div>
+    </div>
+    <p>大型股勉強收紅，小型股（Russell 2000）遭拋售跌近 1.6%，顯示市場風險偏好仍偏保守。VIX 維持在 24.54，反映投資人避險情緒濃厚。</p>
+  </div>
+
+  <!-- 市場面 -->
+  <div class="section-card">
+    <h2>市場面：總經與地緣政治</h2>
+
+    <h3>1. 中東衝突持續升溫</h3>
+    <ul>
+      <li>美國總統川普表示伊朗軍事行動「預計再持續 2-3 週」</li>
+      <li>荷莫茲海峽 3 月初一度關閉，影響全球 20% 石油供應</li>
+      <li>Brent 原油從高峰 $119 回落至約 $109，仍處歷史高位</li>
+      <li>伊朗與阿曼正協調波斯灣油輪通行費方案，暫時緩解能源衝擊幅度</li>
+    </ul>
+
+    <h3>2. 通膨壓力再起</h3>
+    <ul>
+      <li>預估標題通膨（CPI）升至 <strong>3.5%</strong></li>
+      <li>ISM 製造業 PMI 52.7（超預期），「物價支付」分項為 2022 年來最高</li>
+      <li>核心 PCE 預估 2.7%，高於 Fed 2% 目標</li>
+      <li>油價為「最大通膨不確定因素」</li>
+    </ul>
+
+    <h3>3. 聯準會利率展望</h3>
+    <ul>
+      <li>聯邦基金利率維持 <strong>3.50%-3.75%</strong></li>
+      <li>市場降息預期從 3 次縮減至僅 <strong>1 次</strong>（2026 下半年）</li>
+      <li>10 年期公債殖利率攀至 4.37%，30 年房貸利率逼近 7.5%</li>
+      <li>新任 Fed 主席 Kevin Warsh 就任後可能尋求 1-2 次降息至 3.00-3.25%</li>
+    </ul>
+
+    <h3>4. 關稅政策</h3>
+    <ul>
+      <li>鋼鋁銅衍生品關稅調整至 25%</li>
+      <li>平均關稅水準 12-14%，持續壓縮企業利潤</li>
+    </ul>
+  </div>
+
+  <!-- 板塊輪動 -->
+  <div class="section-card">
+    <h2>板塊輪動與重點個股</h2>
+
+    <h3>領漲板塊</h3>
+    <table class="data-table">
+      <thead><tr><th>板塊</th><th>漲跌幅</th><th>代表個股</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-green">不動產</span></td><td class="num"><strong>+0.85%</strong></td><td>受惠於防禦型資金流入</td></tr>
+        <tr><td><span class="tag tag-green">能源</span></td><td class="num"><strong>+0.75%</strong></td><td>XOM、CVX 均漲超 3%</td></tr>
+        <tr><td><span class="tag tag-green">公用事業</span></td><td class="num"><strong>+0.74%</strong></td><td>穩定現金流吸引避險資金</td></tr>
+      </tbody>
+    </table>
+
+    <h3>領跌板塊</h3>
+    <table class="data-table">
+      <thead><tr><th>板塊</th><th>漲跌幅</th><th>代表個股</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-red">非必需消費</span></td><td class="num"><strong>-1.21%</strong></td><td>Estee Lauder -4.65%, TSLA -5.42%, Carnival -3.61%</td></tr>
+        <tr><td><span class="tag tag-red">通訊服務</span></td><td class="num"><strong>-0.43%</strong></td><td>—</td></tr>
+        <tr><td><span class="tag tag-red">工業</span></td><td class="num"><strong>-0.29%</strong></td><td>旅遊運輸類股遭拋售</td></tr>
+      </tbody>
+    </table>
+
+    <h3>重點個股</h3>
+    <table class="data-table">
+      <thead><tr><th>股票</th><th>收盤價</th><th>漲跌幅</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr><td><strong>NVDA</strong></td><td class="num">$177.39</td><td class="num" style="color:#16a34a;">+0.93%</td><td>P/E 36.2x, FWD P/E 21.4x, 目標 $265.97</td></tr>
+        <tr><td><strong>TSLA</strong></td><td class="num">$360.59</td><td class="num" style="color:#dc2626;">-5.42%</td><td>Q1 交付 358K 低於預期, YTD -17%, P/E 356x</td></tr>
+        <tr><td><strong>XOM</strong></td><td class="num">—</td><td class="num" style="color:#16a34a;">+3%+</td><td>油價受益龍頭</td></tr>
+        <tr><td><strong>CVX</strong></td><td class="num">—</td><td class="num" style="color:#16a34a;">+3%+</td><td>油價受益</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 技術面 -->
+  <div class="section-card">
+    <h2>技術面分析</h2>
+
+    <h3>S&P 500 技術結構</h3>
+    <ul>
+      <li><strong>趨勢</strong>：自 1/9 歷史高點 6,965.78 回落約 -5.5%，3 月底一度觸及修正區域（-10%，低點 6,310）</li>
+      <li><strong>200 日均線</strong>：~6,660（「生死線」），目前位於均線下方</li>
+      <li>3/31 曾因停火傳聞單日暴漲 2.91%，但反彈在趨勢線下方受阻</li>
+    </ul>
+
+    <table class="data-table" style="margin-top: 12px;">
+      <thead><tr><th>類型</th><th>價位</th><th>意義</th></tr></thead>
+      <tbody>
+        <tr><td style="color:#dc2626;font-weight:700;">阻力 R3</td><td class="num"><strong>7,000</strong></td><td>歷史高點 / 心理關卡</td></tr>
+        <tr><td style="color:#dc2626;font-weight:700;">阻力 R2</td><td class="num"><strong>6,660</strong></td><td>200 日均線（關鍵生死線）</td></tr>
+        <tr><td style="color:#dc2626;font-weight:700;">阻力 R1</td><td class="num"><strong>6,600</strong></td><td>正 Gamma 區域</td></tr>
+        <tr><td style="color:#2563eb;font-weight:700;">當前</td><td class="num"><strong>6,582.69</strong></td><td>—</td></tr>
+        <tr><td style="color:#16a34a;font-weight:700;">支撐 S1</td><td class="num"><strong>6,525</strong></td><td>11 月低點回收位</td></tr>
+        <tr><td style="color:#16a34a;font-weight:700;">支撐 S2</td><td class="num"><strong>6,350</strong></td><td>Morning Star 反轉型態</td></tr>
+        <tr><td style="color:#16a34a;font-weight:700;">支撐 S3</td><td class="num"><strong>6,148</strong></td><td>2025/2 前歷史高（終極支撐）</td></tr>
+      </tbody>
+    </table>
+
+    <h3>NASDAQ 100 技術結構</h3>
+    <ul>
+      <li><strong>第一防線</strong>：22,500（2025 年阻力轉支撐）</li>
+      <li><strong>終極支撐</strong>：20,000-20,224（61.8% Fibonacci 回撤位）</li>
+      <li>AI 資本支出 $7,000 億（YoY +36%）提供基本面底部</li>
+    </ul>
+  </div>
+
+  <!-- 基本面 -->
+  <div class="section-card">
+    <h2>基本面展望</h2>
+
+    <h3>正面因素</h3>
+    <ul>
+      <li>AI 基建投資持續加速，科技巨頭 2026 年資本支出 <strong>$7,000 億</strong>（YoY +36%）</li>
+      <li>NVIDIA FY2026 營收 $2,159 億（+65.5%），Forward P/E 僅 21.4x，具吸引力</li>
+      <li>ISM 製造業回到擴張區間（52.7），經濟未陷入衰退</li>
+      <li>GDP 成長預估上調至 2.4%</li>
+      <li>歷史統計：類似開年不佳的 19 個年度中，58%（11 次）全年仍收正</li>
+    </ul>
+
+    <h3>風險因素</h3>
+    <ul>
+      <li><strong>停滯性通膨風險</strong>：高油價 + 物價上漲 + 成長趨緩</li>
+      <li>Fed 降息空間被通膨壓縮，「更高更久」環境對長久期資產不利</li>
+      <li>中東衝突隨時可能惡化，油價若破 $130 將引發恐慌</li>
+      <li>關稅對企業利潤的侵蝕效應尚未完全反映於財報</li>
+      <li>若 CPI 超過 3.5%，殖利率恐衝向 4.5-5.0%</li>
+    </ul>
+  </div>
+
+  <!-- 情境分析 -->
+  <div class="section-card">
+    <h2>S&P 500 目標區間與情境分析</h2>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標區間</th><th>觸發條件</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">熊市</span></td>
+          <td><span class="scenario-target">5,800 - 6,150</span></td>
+          <td>中東全面戰爭、油價突破 $130、通膨破 4%、Fed 被迫升息</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">基本</span></td>
+          <td><span class="scenario-target">6,400 - 6,800</span></td>
+          <td>衝突逐步降溫、油價回落至 $90-100、Fed 維持觀望至 Q3</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">牛市</span></td>
+          <td><span class="scenario-target">7,000 - 7,400</span></td>
+          <td>停火協議達成、油價回落 $80 以下、Fed 降息 2 次、AI 營收超預期</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 投資建議 -->
+  <div class="section-card">
+    <h2>投資建議：防禦偏多，逢低布局</h2>
+
+    <h3>1. 整體倉位管理</h3>
+    <p>降低曝險比重至 <strong>60-70%</strong>。在 VIX 仍高、地緣政治不確定性強的環境下，保留 30-40% 現金或短期公債部位，等待更明確的進場訊號。</p>
+
+    <h3>2. 超配板塊</h3>
+    <ul>
+      <li><strong>能源</strong>（XOM、CVX）：油價高檔直接受益，股息殖利率 3-4%，兼具攻守</li>
+      <li><strong>防禦型</strong>（公用事業、必需消費）：利率敏感度低、現金流穩定</li>
+      <li><strong>AI 基建龍頭</strong>（NVDA）：Forward P/E 21x 已回到合理區間，分析師共識目標 $266（+50% 空間），但需等待技術面確認站穩 $180 以上</li>
+    </ul>
+
+    <h3>3. 減碼板塊</h3>
+    <ul>
+      <li><strong>非必需消費</strong>：油價壓縮消費者可支配收入，TSLA 基本面持續惡化（P/E 356x、EPS YoY -47%）</li>
+      <li><strong>高倍數成長股</strong>：利率「更高更久」環境對長久期資產不利</li>
+    </ul>
+
+    <h3>4. 關鍵觀察時點</h3>
+    <ul>
+      <li><strong>4/10 CPI 數據</strong>：若超過 3.5%，殖利率恐衝向 4.5-5%，為最大下行風險</li>
+      <li>中東停火談判進展</li>
+      <li>Q1 財報季（4 月中旬開始）</li>
+    </ul>
+
+    <h3>5. 技術面操作建議</h3>
+    <ul>
+      <li>S&P 500 跌至 <strong>6,350</strong> 附近可分批建倉（第一批 20%）</li>
+      <li>站穩 <strong>6,660</strong>（200DMA）以上再加碼至滿倉</li>
+      <li>嚴守 <strong>6,150</strong> 以下停損</li>
+    </ul>
+  </div>
+
+  <!-- 資料來源 -->
+  <div class="section-card">
+    <h2>資料來源</h2>
+    <div class="sources">
+      <ul>
+        <li><a href="https://www.schwab.com/learn/story/stock-market-update-open" target="_blank">Schwab Market Update</a></li>
+        <li><a href="https://www.thestreet.com/latest-news/stock-market-today-apr-2-2026-updates" target="_blank">TheStreet - Apr. 2, 2026</a></li>
+        <li><a href="https://www.marketpulse.com/markets/q2-2026-us-indices-dow-jones-sp-500-nasdaq-100-outlook-resilience-or-retracement/" target="_blank">MarketPulse Q2 2026 Outlook</a></li>
+        <li><a href="https://markets.financialcontent.com/stocks/article/marketminute-2026-4-2-s-and-p-500-teeters-on-the-brink-technical-analysis-of-the-10-correction-and-the-volatile-ceasefire-relief-rally" target="_blank">FinancialContent - S&P 500 Technical Analysis</a></li>
+        <li><a href="https://markets.financialcontent.com/stocks/article/marketminute-2026-4-2-yields-ascendant-10-year-treasury-tests-437-as-inflationary-ghosts-and-energy-costs-haunt-markets" target="_blank">FinancialContent - Treasury Yields</a></li>
+        <li><a href="https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260318.htm" target="_blank">Federal Reserve FOMC Projections (March 2026)</a></li>
+        <li><a href="https://www.usbank.com/investing/financial-perspectives/market-news/federal-reserve-interest-rate.html" target="_blank">U.S. Bank Fed Outlook</a></li>
+        <li><a href="https://stockanalysis.com/stocks/nvda/" target="_blank">StockAnalysis - NVDA</a></li>
+        <li><a href="https://stockanalysis.com/stocks/tsla/" target="_blank">StockAnalysis - TSLA</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 免責聲明 -->
+  <div class="section-card">
+    <div class="disclaimer">
+      <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議或要約。
+      投資市場存在風險，過去表現不代表未來績效，請自行評估風險承受能力並諮詢專業理財顧問後再做決策。
+    </div>
+  </div>
+
+</main>
+
+<footer class="report-footer">
+  <span>Generated by Market Analyst &middot; Claude Code</span>
+  <span>最後更新：2026/04/03 08:00</span>
+</footer>
+
+</body>
+</html>

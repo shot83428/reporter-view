@@ -132,6 +132,28 @@
     "content": "美股市場綜合分析 – 2026/03/30 US Market Overview 美股市場綜合分析 DJIA / S&P 500 / NASDAQ &#x1F4C5; 2026/03/30 &#x1F30D; NYSE / NASDAQ &#x26A1; Real-time Data S&P 500: 6,343.72 &#x25BC; 25.13 (&minus;0.39%) &#x1F4CA; 三大指數收盤 道瓊工業 (DJIA) 45,216.14 +49.50 (+0.11%) S&P 500 6,343.72 -25.13 (-0.39%) NASDAQ 綜合 20,794.64 -153.72 (-0.73%) Russell 2000 2,414.01 -1.46% &#x1F5A5;&#xFE0F; 關鍵市場指標 VIX 恐慌指數 30.61 -1.42% (仍處高檔) WTI 原油 $104.91 +5.29% (突破 $100) 10Y 美債殖利率 4.35% -8 bps (盤中低至 3.92%) 美元指數 (DXY) 100.54 連5漲 創10個月新高 黃金 "
   },
   {
+    "filename": "market-report-US-MARKET-20260402",
+    "topic": "US-MARKET",
+    "date": "2026-04-02",
+    "title": "美股盤後綜合分析報告 – 2026/04/02",
+    "badge": "US Market Overview",
+    "heading": "美股盤後綜合分析報告",
+    "category": "us",
+    "summary": "主要指數收盤表現 S&P 500 6,582.69 +0.11%",
+    "content": "美股盤後綜合分析報告 – 2026/04/02 US Market Overview 美股盤後綜合分析報告 S&P 500 / NASDAQ / DJI 2026/04/02 (4/3 Good Friday 休市) NYSE / NASDAQ Real-time Data S&P 500: 6,582.69 +7.37 (+0.11%) 主要指數收盤表現 S&P 500 6,582.69 +0.11% NASDAQ 21,879.18 +0.18% Dow Jones 46,504.67 -0.13% Russell 2000 ~2,472.60 -1.58% VIX 恐慌指數 24.54 偏高（長期均值~20） 10Y 公債殖利率 4.37% 持續攀升 Brent 原油 ~$109 自 $119 高點回落 黃金 $4,702.70 +0.49% 大型股勉強收紅，小型股（Russell 2000）遭拋售跌近 1.6%，顯示市場風險偏好仍偏保守。VIX 維持在 24.54，反映投資人避險情緒濃厚。 市場面：總經與地緣政治 1. 中東衝突持續升溫 美國總統川普表示伊朗軍事行動「預計再持續"
+  },
+  {
+    "filename": "market-report-US-PREMARKET-20260402",
+    "topic": "US-PREMARKET",
+    "date": "2026-04-02",
+    "title": "美股盤前報告 – 2026/04/02",
+    "badge": "US Market Pre-market Report",
+    "heading": "美股盤前綜合分析報告",
+    "category": "sector",
+    "summary": "📊 市場概覽 S&P 500 收盤 6,575.32 +0.72% (4/1)",
+    "content": "美股盤前報告 – 2026/04/02 US Market Pre-market Report 美股盤前綜合分析報告 S&P 500 / NASDAQ / DJI 📅 2026/04/02 🌐 NYSE / NASDAQ ⚡ Real-time Pre-market Data S&P 500: 6,575 ▼ 盤前期貨 -1.14% 📊 市場概覽 S&P 500 收盤 6,575.32 +0.72% (4/1) NASDAQ 收盤 21,840.95 +1.16% (4/1) Dow Jones 收盤 46,565.74 +0.48% (4/1) VIX 恐慌指數 25.25 高於均值，恐慌升溫 WTI 原油 ~$107 地緣風險推升 黃金 $4,640 避險需求支撐 10年期公債殖利率 4.37% 較3月初+37bp 美元指數 100.12 +0.47% 盤前期貨表現 期貨 盤前價位 變動 漲跌幅 S&P 500 (ES) ~6,500 -75 -1.14% NASDAQ 100 (NQ) ~23,837 -358 -1.48% Dow Jones (YM) ~46,351 -"
+  },
+  {
     "filename": "market-report-US10stocks-20260325",
     "topic": "US10stocks",
     "date": "2026-03-25",
