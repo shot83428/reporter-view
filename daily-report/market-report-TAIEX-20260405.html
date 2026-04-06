@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>台股盤前報告 (TAIEX) – 2026/04/05</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── Header ── */
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1e3d6e 60%, #1a5276 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 900px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 2rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-header h1 span.ticker {
+      font-size: 1.1rem; font-weight: 400; color: #90b8d8;
+      margin-left: 10px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90b8d8; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── Price Pill ── */
+    .price-banner {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-top: 16px;
+      display: inline-flex; align-items: baseline; gap: 12px;
+    }
+    .price-banner .price { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    .price-banner .change-up { color: #4ade80; font-weight: 600; }
+    .price-banner .change-down { color: #f87171; font-weight: 600; }
+
+    /* ── Main Container ── */
+    .report-body { max-width: 900px; margin: 0 auto; padding: 32px 20px 0; }
+
+    /* ── Section Cards ── */
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #0f2744; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 {
+      font-size: 0.9rem; font-weight: 600;
+      color: #334155; margin: 18px 0 10px;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.75; margin-bottom: 10px; }
+    .section-card ul, .section-card ol {
+      padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.85;
+    }
+    .section-card li { margin-bottom: 4px; }
+
+    /* ── Data Table ── */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .data-table td strong { color: #1a2332; }
+
+    /* ── Scenario Table ── */
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.15rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+
+    /* ── Inline Tags ── */
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+
+    /* ── Key Metric Cards ── */
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; margin: 12px 0;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+    /* ── Risk meter ── */
+    .risk-meter { display: flex; align-items: center; gap: 6px; margin: 4px 0; }
+    .risk-stars { color: #f59e0b; font-size: 0.85rem; letter-spacing: 1px; }
+    .risk-label { font-size: 0.8rem; color: #64748b; }
+
+    /* ── Blockquote / Disclaimer ── */
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+
+    /* ── Horizontal Rule ── */
+    hr { border: none; border-top: 1px solid #e8edf4; margin: 16px 0; }
+
+    /* ── Source Citations ── */
+    .sources {
+      font-size: 0.8rem; color: #64748b; margin-top: 8px;
+    }
+    .sources a { color: #2563eb; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    .report-footer {
+      max-width: 900px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+    .report-footer a { color: #64748b; text-decoration: none; }
+
+    /* ── Strategy Box ── */
+    .strategy-box {
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin: 12px 0;
+    }
+    .strategy-box h4 { font-size: 0.85rem; color: #1e40af; margin-bottom: 8px; font-weight: 700; }
+    .strategy-box ul { padding-left: 18px; font-size: 0.85rem; color: #374151; line-height: 1.8; }
+
+    /* ── Timeline ── */
+    .timeline { padding-left: 20px; border-left: 3px solid #e2e8f4; margin: 12px 0; }
+    .timeline-item { padding: 8px 0 8px 16px; position: relative; }
+    .timeline-item::before {
+      content: "";
+      position: absolute; left: -11px; top: 14px;
+      width: 8px; height: 8px; background: #3b82f6;
+      border-radius: 50%; border: 2px solid #fff;
+    }
+    .timeline-date { font-size: 0.78rem; color: #64748b; font-weight: 600; }
+    .timeline-text { font-size: 0.85rem; color: #374151; margin-top: 2px; }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .report-header { background: #0f2744 !important; -webkit-print-color-adjust: exact; }
+      .section-card { box-shadow: none; border: 1px solid #dde4ef; }
+      .report-footer { display: none; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.4rem; }
+      .section-card { padding: 20px 18px; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">台股大盤 &middot; 盤前分析</div>
+    <h1>台股盤前報告<span class="ticker">TAIEX ^TWII</span></h1>
+    <div class="report-meta">
+      <span>&#128197; 2026/04/05</span>
+      <span>&#127760; 臺灣證券交易所</span>
+      <span>&#9889; 下一交易日：4/7（一）</span>
+    </div>
+    <div class="price-banner">
+      <span class="price">32,572.43</span>
+      <span class="change-down">&#9660; 602.39 (&minus;1.82%)</span>
+    </div>
+  </div>
+</header>
+
+<!-- BODY -->
+<main class="report-body">
+
+  <!-- ===== 關鍵指標總覽 ===== -->
+  <div class="section-card">
+    <h2>&#128312; 關鍵指標總覽</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">加權指數</div>
+        <div class="metric-value" style="color:#dc2626;">32,572</div>
+        <div class="metric-note">4/2 收盤 -1.82%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">台積電 2330</div>
+        <div class="metric-value" style="color:#dc2626;">1,810</div>
+        <div class="metric-note">-45 (-2.43%)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">S&P 500</div>
+        <div class="metric-value" style="color:#16a34a;">~6,583</div>
+        <div class="metric-note">週漲 +3.4%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">NASDAQ</div>
+        <div class="metric-value" style="color:#16a34a;">~21,879</div>
+        <div class="metric-note">週漲 +4.4%</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">VIX 恐慌指數</div>
+        <div class="metric-value" style="color:#f59e0b;">24.54</div>
+        <div class="metric-note">高於均值，偏緊張</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">布蘭特原油</div>
+        <div class="metric-value">$112.42</div>
+        <div class="metric-note">+$0.73</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">黃金</div>
+        <div class="metric-value" style="color:#f59e0b;">$4,703</div>
+        <div class="metric-note">+$23 (+0.49%)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">USD/TWD</div>
+        <div class="metric-value">31.995</div>
+        <div class="metric-note">+0.14%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 國際市場總覽 ===== -->
+  <div class="section-card">
+    <h2>&#128312; 國際市場總覽</h2>
+
+    <h3>美股（最後交易日 4/2，4/3 耶穌受難日休市）</h3>
+    <p>美股上週受惠於穩健消費支出數據及 AI 投資樂觀情緒，三大指數均收紅。S&P 500 週漲 3.4%，NASDAQ 週漲 4.4%。然而，川普發表對伊朗「重手打擊」言論，盤中引發劇烈波動。S&P 500 自 1 月高點 7,000 回落約 6%，修正格局尚未結束。</p>
+
+    <h3>大宗商品 &amp; 匯率</h3>
+    <table class="data-table">
+      <thead><tr><th>資產</th><th>價格</th><th>變化</th><th>意義</th></tr></thead>
+      <tbody>
+        <tr><td><strong>布蘭特原油</strong></td><td>$112.42/桶</td><td>+$0.73</td><td>中東風險推升，通膨壓力</td></tr>
+        <tr><td><strong>黃金</strong></td><td>$4,702.70/盎司</td><td>+$23 (+0.49%)</td><td>避險需求強勁</td></tr>
+        <tr><td><strong>USD/TWD</strong></td><td>31.995</td><td>+0.14%</td><td>台幣小幅貶值，出口有利</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 技術面分析 ===== -->
+  <div class="section-card">
+    <h2>&#128312; 技術面分析</h2>
+    <p>加權指數 4/2 收盤 <strong>32,572.43</strong>，下跌 602.39 點（-1.82%），盤中劇烈震盪 <strong>980 點</strong>（高 33,497 &rarr; 低 32,517），顯示多空交戰極為激烈。</p>
+
+    <table class="data-table">
+      <thead><tr><th>技術指標</th><th>數值 / 區間</th><th>解讀</th></tr></thead>
+      <tbody>
+        <tr><td><strong>盤中最高</strong></td><td>33,497.58</td><td>上方壓力沉重</td></tr>
+        <tr><td><strong>盤中最低</strong></td><td>32,516.94</td><td>接近收盤價，尾盤殺低</td></tr>
+        <tr><td><strong>當日振幅</strong></td><td>~980 點</td><td>極端波動</td></tr>
+        <tr><td><strong>成交量</strong></td><td>NT$6,729 億</td><td>量能放大，有恐慌出場</td></tr>
+        <tr><td><strong>短期支撐</strong></td><td>32,000 / 31,500</td><td>心理關卡 + 前低</td></tr>
+        <tr><td><strong>短期壓力</strong></td><td>33,000 / 33,500</td><td>4/2 盤中高點</td></tr>
+      </tbody>
+    </table>
+
+    <h3>技術研判</h3>
+    <ul>
+      <li>指數自 1 月高點呈現「高檔震盪修正」格局</li>
+      <li>980 點巨幅震盪顯示市場極度不安，操作難度極高</li>
+      <li><strong>32,000</strong> 為重要心理支撐，跌破將測試 <strong>31,500</strong>（前波低點）</li>
+      <li>上方 <strong>33,500</strong> 為強壓力區，需帶量突破才有轉強可能</li>
+      <li>短線呈現「反彈 &rarr; 賣壓」的偏空結構</li>
+    </ul>
+  </div>
+
+  <!-- ===== 市場面分析 ===== -->
+  <div class="section-card">
+    <h2>&#128312; 市場面分析</h2>
+
+    <h3>資金與類股動態</h3>
+    <ul>
+      <li>成交 NT$6,729 億為大量換手，多空分歧加大</li>
+      <li>台積電單一個股拖累指數約 <strong>357 點</strong>，佔總跌幅近 60%</li>
+      <li>電子類股指數跌 <strong>2.14%</strong>，為主要拖累項</li>
+      <li>傳產類股（玻璃、造紙、塑膠、紡織、機械、電纜、汽車）全面下跌超過 1%</li>
+    </ul>
+
+    <h3>正面因素 &mdash; 除息行情啟動</h3>
+    <div class="strategy-box">
+      <h4>NT$2,275 億現金股息即將發放</h4>
+      <ul>
+        <li>台積電、光寶科等 94 家上市櫃公司將於 4 月陸續發放現金股息</li>
+        <li>合計挹注約 <strong>NT$2,275 億</strong></li>
+        <li>股息再投入效應預計為多頭增添資金動能</li>
+      </ul>
+    </div>
+
+    <h3>產業亮點</h3>
+    <ul>
+      <li>AI 資本支出持續以 <strong>+36% YoY</strong> 結構性速度增長</li>
+      <li>先進封裝（日月光、力成）及相關供應鏈表現亮眼</li>
+      <li>Touch Taiwan 智慧顯示展、VLSI TSA、台積電法說等題材即將登場</li>
+      <li>3 月營收陸續公布中，部分公司年增 &gt;25%</li>
+    </ul>
+  </div>
+
+  <!-- ===== 基本面分析 ===== -->
+  <div class="section-card">
+    <h2>&#128312; 基本面分析</h2>
+
+    <h3>台積電 (2330) &mdash; 大盤風向球</h3>
+    <table class="data-table">
+      <thead><tr><th>指標</th><th>數據</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr><td><strong>4/2 收盤</strong></td><td style="color:#dc2626;font-weight:700;">1,810 元</td><td>-45 (-2.43%)</td></tr>
+        <tr><td><strong>4/1 收盤</strong></td><td style="color:#16a34a;font-weight:700;">1,855 元</td><td>+95 (+5.4%)</td></tr>
+        <tr><td><strong>市值</strong></td><td>~NT$46.93 兆</td><td>全球前十大企業</td></tr>
+        <tr><td><strong>美國投資承諾</strong></td><td>追加 $1,000 億美元</td><td>強化關稅談判籌碼</td></tr>
+      </tbody>
+    </table>
+    <p>台積電兩日大起大落（4/1 漲 5.4%，4/2 跌 2.43%），反映市場對地緣政治的高度敏感。基本面依然強勁：CoWoS 先進封裝產能擴充中，AI 算力需求未見放緩。</p>
+
+    <h3>台美貿易協議現況</h3>
+    <ul>
+      <li>對等關稅歷程：32%（2025/04）&rarr; 20%（2025/08）&rarr; <strong>15%</strong>（2026/01 貿易協議）</li>
+      <li>半導體出口享有關稅豁免，未被納入特定晶片關稅</li>
+      <li>在美建廠的台灣半導體企業可享最高 2.5 倍規劃產能的零關稅進口</li>
+      <li>法人獲利上修趨勢自 2023H2 延續至今，尚未反轉</li>
+    </ul>
+  </div>
+
+  <!-- ===== 風險因素 ===== -->
+  <div class="section-card">
+    <h2>&#128312; 關鍵風險因素</h2>
+    <table class="data-table">
+      <thead><tr><th>風險類型</th><th>事件</th><th>影響</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>地緣政治</strong></td>
+          <td>川普對伊朗強硬言論</td>
+          <td><span class="risk-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> <span class="risk-label">高</span></td>
+        </tr>
+        <tr>
+          <td><strong>貿易政策</strong></td>
+          <td>新關稅威脅（金屬 50%、藥品 100%）</td>
+          <td><span class="risk-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> <span class="risk-label">高</span></td>
+        </tr>
+        <tr>
+          <td><strong>貨幣政策</strong></td>
+          <td>Fed 維持 higher-for-longer</td>
+          <td><span class="risk-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span> <span class="risk-label">中</span></td>
+        </tr>
+        <tr>
+          <td><strong>通膨壓力</strong></td>
+          <td>油價 $112+，輸入性通膨</td>
+          <td><span class="risk-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span> <span class="risk-label">中</span></td>
+        </tr>
+        <tr>
+          <td><strong>估值風險</strong></td>
+          <td>AI 疲勞 &mdash; 科技估值修正</td>
+          <td><span class="risk-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span> <span class="risk-label">中低</span></td>
+        </tr>
+        <tr>
+          <td><strong>台幣貶值</strong></td>
+          <td>USD/TWD 升至 32 附近</td>
+          <td><span class="risk-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span> <span class="risk-label">中低</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 催化劑 ===== -->
+  <div class="section-card">
+    <h2>&#128312; 近期催化劑（利多）</h2>
+    <ul>
+      <li><strong>除息旺季</strong>：NT$2,275 億現金股息挹注，股息再投入效應可期</li>
+      <li><strong>AI 資本支出</strong>：全球 AI capex 結構性增長 +36% YoY，半導體基本面支撐強勁</li>
+      <li><strong>3 月營收</strong>：部分公司已公布亮眼數據，有望提振信心</li>
+      <li><strong>台積電法說會</strong>：即將登場，若釋出正面展望將注入強心針</li>
+      <li><strong>歷史統計</strong>：58% 的「年初表現差」最終仍以正報酬收年</li>
+    </ul>
+  </div>
+
+  <!-- ===== 投資建議 ===== -->
+  <div class="section-card">
+    <h2>&#128312; 投資建議</h2>
+
+    <h3>總體策略：審慎偏多，分批佈局</h3>
+    <p>清明連假期間國際市場變化尚未反映在台股盤面上，4/7 開盤可能面臨跳空壓力。建議分層應對：</p>
+
+    <div class="strategy-box">
+      <h4>短線操作（1-2 週）</h4>
+      <ul>
+        <li><strong>倉位控制</strong>：維持 50-60% 持股水位，保留現金因應波動</li>
+        <li><strong>嚴設停損</strong>：個股停損 5-7%，指數跌破 32,000 應降低持股</li>
+        <li><strong>避開高波動</strong>：減少傳產出口股（受關稅及油價衝擊大）</li>
+        <li><strong>觀察重點</strong>：4/7 開盤首 30 分鐘量能方向、外資動態</li>
+      </ul>
+    </div>
+
+    <div class="strategy-box">
+      <h4>中期佈局（1-3 個月）</h4>
+      <ul>
+        <li><strong>核心持股</strong>：台積電 (2330)、AI 供應鏈（日月光、力成），回檔時分批承接</li>
+        <li><strong>防禦配置</strong>：高殖利率股（金融、電信），享受除息行情</li>
+        <li><strong>避險工具</strong>：可考慮台指期 Put 做保護性避險</li>
+      </ul>
+    </div>
+
+    <h3>目標區間（加權指數）</h3>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標區間</th><th>依據</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">&#128059; 熊市</span></td>
+          <td><span class="scenario-target">30,500 - 31,500</span></td>
+          <td>關稅全面升級 + 中東戰爭擴大 + Fed 升息</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">&#128202; 基本</span></td>
+          <td><span class="scenario-target">32,000 - 34,000</span></td>
+          <td>關稅維持現狀，AI 需求穩健，除息行情支撐</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">&#128002; 牛市</span></td>
+          <td><span class="scenario-target">34,500 - 36,000</span></td>
+          <td>關稅和緩 + AI 超預期 + Fed 轉鴿</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 重點觀察時程 ===== -->
+  <div class="section-card">
+    <h2>&#128312; 重點觀察時程</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">4/7（一）</div>
+        <div class="timeline-text">開盤反映連假消息，觀察外資動態與開盤量能方向</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">4/9 起</div>
+        <div class="timeline-text">關注是否有新一輪關稅政策落地</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">4 月中下旬</div>
+        <div class="timeline-text">台積電法說會 &mdash; 多空關鍵轉折點</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">4 月底前</div>
+        <div class="timeline-text">94 家公司發放 NT$2,275 億現金股息</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 免責聲明 ===== -->
+  <div class="section-card">
+    <div class="disclaimer">
+      &#9888;&#65039; <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議或要約。
+      投資市場存在風險，過去表現不代表未來績效，請自行評估風險承受能力並諮詢專業理財顧問後再做決策。
+    </div>
+    <div class="sources" style="margin-top:16px;">
+      <strong>資料來源：</strong><br>
+      <a href="https://tw.stock.yahoo.com/quote/%5ETWII" target="_blank">Yahoo Finance Taiwan</a> &middot;
+      <a href="https://www.marketpulse.com/markets/q2-2026-us-indices-dow-jones-sp-500-nasdaq-100-outlook-resilience-or-retracement/" target="_blank">OANDA MarketPulse</a> &middot;
+      <a href="https://taxfoundation.org/research/all/federal/trump-tariffs-trade-war/" target="_blank">Tax Foundation</a> &middot;
+      <a href="https://fortune.com/article/price-of-oil-04-03-2026/" target="_blank">Fortune</a> &middot;
+      <a href="https://tradingeconomics.com/taiwan/currency" target="_blank">Trading Economics</a>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="report-footer">
+  <span>&#129302; Generated by Market Analyst &middot; Claude Code</span>
+  <span>最後更新：2026/04/05 09:00</span>
+</footer>
+
+</body>
+</html>

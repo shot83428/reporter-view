@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>美股盤前綜合分析報告 – 2026/04/05</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+
+    /* ── Header ── */
+    .report-header {
+      background: linear-gradient(135deg, #0f2744 0%, #1e3d6e 60%, #1a5276 100%);
+      color: #fff;
+      padding: 36px 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .report-header::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .report-header-inner { position: relative; max-width: 900px; margin: 0 auto; }
+    .asset-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #a8d8f0;
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px;
+      padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 10px; text-transform: uppercase;
+    }
+    .report-header h1 {
+      font-size: 2rem; font-weight: 700; letter-spacing: -0.5px;
+      line-height: 1.2; margin-bottom: 6px;
+    }
+    .report-header h1 span.ticker {
+      font-size: 1.1rem; font-weight: 400; color: #90b8d8;
+      margin-left: 10px;
+    }
+    .report-meta {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      font-size: 13px; color: #90b8d8; margin-top: 12px;
+    }
+    .report-meta span { display: flex; align-items: center; gap: 5px; }
+
+    /* ── Price Pill (optional) ── */
+    .price-banner {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 12px 20px;
+      margin-top: 16px;
+      display: inline-flex; align-items: baseline; gap: 12px;
+    }
+    .price-banner .price { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    .price-banner .change-up { color: #4ade80; font-weight: 600; }
+    .price-banner .change-down { color: #f87171; font-weight: 600; }
+
+    /* ── Main Container ── */
+    .report-body { max-width: 900px; margin: 0 auto; padding: 32px 20px 0; }
+
+    /* ── Section Cards ── */
+    .section-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .section-card h2 {
+      font-size: 1.05rem; font-weight: 700;
+      color: #0f2744; margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e8edf4;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-card h3 {
+      font-size: 0.9rem; font-weight: 600;
+      color: #334155; margin: 18px 0 10px;
+    }
+    .section-card p { font-size: 0.9rem; color: #374151; line-height: 1.75; margin-bottom: 10px; }
+    .section-card ul, .section-card ol {
+      padding-left: 20px; font-size: 0.9rem; color: #374151; line-height: 1.85;
+    }
+    .section-card li { margin-bottom: 4px; }
+
+    /* ── Data Table ── */
+    .data-table {
+      width: 100%; border-collapse: collapse; font-size: 0.875rem;
+      margin: 8px 0;
+    }
+    .data-table th {
+      background: #f1f5fb; color: #334155;
+      font-weight: 600; font-size: 0.78rem; letter-spacing: 0.5px;
+      text-align: left; padding: 10px 14px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .data-table td {
+      padding: 10px 14px; border-bottom: 1px solid #edf0f7;
+      color: #374151; vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #f8faff; }
+    .data-table td.num { font-variant-numeric: tabular-nums; text-align: right; }
+    .data-table td strong { color: #1a2332; }
+
+    /* ── Scenario Table ── */
+    .scenario-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+    .scenario-table th {
+      background: #f1f5fb; padding: 10px 16px; text-align: left;
+      font-weight: 600; font-size: 0.78rem; color: #334155; letter-spacing: 0.5px;
+      border-bottom: 2px solid #dde4ef;
+    }
+    .scenario-table td { padding: 13px 16px; border-bottom: 1px solid #edf0f7; vertical-align: top; }
+    .scenario-table tr:last-child td { border-bottom: none; }
+    .scenario-bear td { background: #fff8f8; }
+    .scenario-bear td:first-child { border-left: 4px solid #ef4444; }
+    .scenario-bear .scenario-label { color: #dc2626; font-weight: 700; }
+    .scenario-base td { background: #f8faff; }
+    .scenario-base td:first-child { border-left: 4px solid #3b82f6; }
+    .scenario-base .scenario-label { color: #2563eb; font-weight: 700; }
+    .scenario-bull td { background: #f0fdf4; }
+    .scenario-bull td:first-child { border-left: 4px solid #22c55e; }
+    .scenario-bull .scenario-label { color: #16a34a; font-weight: 700; }
+    .scenario-target { font-size: 1.15rem; font-weight: 700; }
+    .scenario-bear .scenario-target { color: #dc2626; }
+    .scenario-base .scenario-target { color: #2563eb; }
+    .scenario-bull .scenario-target { color: #16a34a; }
+
+    /* ── Inline Tags ── */
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 20px; margin: 2px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-yellow { background: #fef9c3; color: #854d0e; }
+    .tag-gray { background: #f1f5f9; color: #475569; }
+
+    /* ── Key Metric Cards ── */
+    .metric-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px; margin: 12px 0;
+    }
+    .metric-card {
+      background: #f8faff; border: 1px solid #e2e8f4;
+      border-radius: 10px; padding: 14px 16px;
+    }
+    .metric-label { font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .metric-value { font-size: 1.1rem; font-weight: 700; color: #1a2332; }
+    .metric-note { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+    /* ── Blockquote / Disclaimer ── */
+    .disclaimer {
+      background: #fffbeb; border-left: 4px solid #f59e0b;
+      border-radius: 0 8px 8px 0; padding: 14px 18px;
+      font-size: 0.82rem; color: #78350f; margin-top: 10px;
+    }
+
+    /* ── Horizontal Rule ── */
+    hr { border: none; border-top: 1px solid #e8edf4; margin: 16px 0; }
+
+    /* ── Source Citations ── */
+    .sources {
+      font-size: 0.8rem; color: #64748b; margin-top: 8px;
+    }
+    .sources a { color: #2563eb; text-decoration: none; }
+    .sources a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    .report-footer {
+      max-width: 900px; margin: 32px auto 0;
+      padding: 0 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px;
+      font-size: 12px; color: #94a3b8;
+    }
+    .report-footer a { color: #64748b; text-decoration: none; }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .report-header { background: #0f2744 !important; -webkit-print-color-adjust: exact; }
+      .section-card { box-shadow: none; border: 1px solid #dde4ef; }
+      .report-footer { display: none; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 640px) {
+      .report-header { padding: 24px 20px 20px; }
+      .report-header h1 { font-size: 1.4rem; }
+      .section-card { padding: 20px 18px; }
+    }
+
+    /* ── Extra: Strategy card ── */
+    .strategy-card {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 1px solid #bae6fd;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 10px 0;
+    }
+    .strategy-card h4 {
+      font-size: 0.88rem; font-weight: 700; color: #0369a1; margin-bottom: 8px;
+    }
+    .strategy-card p, .strategy-card li {
+      font-size: 0.85rem; color: #0c4a6e;
+    }
+
+    .alert-card {
+      background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+      border: 1px solid #fca5a5;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 10px 0;
+    }
+    .alert-card h4 {
+      font-size: 0.88rem; font-weight: 700; color: #b91c1c; margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="report-header">
+  <div class="report-header-inner">
+    <div class="asset-badge">US Market Overview</div>
+    <h1>美股盤前綜合分析報告<span class="ticker">S&P 500 / NASDAQ / Dow Jones</span></h1>
+    <div class="report-meta">
+      <span>📅 2026/04/05（下一交易日 4/7 週一）</span>
+      <span>🌐 NYSE / NASDAQ</span>
+      <span>⚡ Real-time Data</span>
+    </div>
+    <div class="price-banner">
+      <span class="price">S&P 6,582.69</span>
+      <span class="change-up">▲ 週漲 3.4%</span>
+    </div>
+  </div>
+</header>
+
+<!-- BODY -->
+<main class="report-body">
+
+  <!-- 關鍵指標 -->
+  <div class="section-card">
+    <h2>📊 關鍵市場指標一覽</h2>
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-label">S&P 500</div>
+        <div class="metric-value">6,582.69</div>
+        <div class="metric-note">+0.11% (4/2 收盤)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">NASDAQ</div>
+        <div class="metric-value">21,879.18</div>
+        <div class="metric-note">+0.18% (4/2 收盤)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">道瓊工業</div>
+        <div class="metric-value">46,504.67</div>
+        <div class="metric-note">-0.13% (4/2 收盤)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">VIX 恐慌指數</div>
+        <div class="metric-value">23.87</div>
+        <div class="metric-note">偏高但未到恐慌</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">10Y 公債殖利率</div>
+        <div class="metric-value">4.31%</div>
+        <div class="metric-note">持續高檔壓制估值</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">美元指數 DXY</div>
+        <div class="metric-value">100.03</div>
+        <div class="metric-note">偏強</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">布蘭特原油</div>
+        <div class="metric-value">$112.42</div>
+        <div class="metric-note">地緣溢價顯著</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">黃金</div>
+        <div class="metric-value">$4,677</div>
+        <div class="metric-note">避險需求撐價</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Fed 利率</div>
+        <div class="metric-value">3.50-3.75%</div>
+        <div class="metric-note">3月維持不變</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Core CPI</div>
+        <div class="metric-value">2.5%</div>
+        <div class="metric-note">YoY，距 2% 目標仍遠</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 技術面 -->
+  <div class="section-card">
+    <h2>📈 技術面分析 — S&P 500</h2>
+    <p><strong>趨勢結構：短期偏空、中期待確認</strong></p>
+    <table class="data-table">
+      <thead><tr><th>技術指標</th><th>數值</th><th>解讀</th></tr></thead>
+      <tbody>
+        <tr><td><strong>200 日均線</strong></td><td>6,641</td><td>關鍵分水嶺 — 指數仍在其下方，空頭結構未扭轉</td></tr>
+        <tr><td><strong>50 日均線</strong></td><td>6,789</td><td>中期壓力 — 距離較遠，需大幅上漲才能收復</td></tr>
+        <tr><td><strong>RSI</strong></td><td>45.7%</td><td>中性偏弱，脫離超賣但動能不足</td></tr>
+        <tr><td><strong>即時支撐</strong></td><td>6,400-6,500</td><td>3 月低點區域，若跌破將打開更深修正空間</td></tr>
+        <tr><td><strong>即時壓力</strong></td><td>6,600-6,770</td><td>200MA + 套牢區，突破才能確認反轉</td></tr>
+      </tbody>
+    </table>
+    <p>S&P 500 從 3 月修正約 10% 後反彈，上週強漲 3.4% 屬於超跌反彈。但指數仍在 200 日線下方，若下週一無法站穩 6,600 之上並嘗試挑戰 6,660（200MA），反彈恐夭折。需觀察成交量是否放大確認。</p>
+  </div>
+
+  <!-- 市場面 -->
+  <div class="section-card">
+    <h2>🔄 市場面分析 — 板塊輪動與資金流向</h2>
+    <h3>2026 年至今板塊表現</h3>
+    <table class="data-table">
+      <thead><tr><th>板塊</th><th>YTD 表現</th><th>驅動因素</th></tr></thead>
+      <tbody>
+        <tr><td><strong>能源 (XLE)</strong></td><td style="color:#16a34a;font-weight:700;">+38.4% (Q1)</td><td>油價飆升、地緣衝突、供應緊縮</td></tr>
+        <tr><td><strong>國防</strong></td><td style="color:#16a34a;font-weight:700;">強勢</td><td>全球軍費擴張、地緣政治需求</td></tr>
+        <tr><td><strong>工業/價值股</strong></td><td style="color:#16a34a;">正報酬</td><td>資金從成長輪動至價值</td></tr>
+        <tr><td><strong>科技 (XLK)</strong></td><td style="color:#dc2626;font-weight:700;">-3% YTD</td><td>估值修正、AI 資本支出回報疑慮</td></tr>
+      </tbody>
+    </table>
+
+    <h3>七巨頭 Q1 表現（全部下跌）</h3>
+    <table class="data-table">
+      <thead><tr><th>個股</th><th>Q1 跌幅</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr><td>MSFT 微軟</td><td style="color:#dc2626;font-weight:700;">-23%</td><td>2008 年來最差季度</td></tr>
+        <tr><td>META</td><td style="color:#dc2626;font-weight:700;">-13%</td><td>2022 年來最差季度</td></tr>
+        <tr><td>NVDA 輝達</td><td style="color:#dc2626;">-6.5%</td><td>表現相對最佳</td></tr>
+        <tr><td>TSLA 特斯拉</td><td style="color:#dc2626;">深跌</td><td>4/3 單日再跌 >5%</td></tr>
+        <tr><td>AAPL 蘋果</td><td style="color:#dc2626;">下跌</td><td>目標價 $298，仍有 17% 上行空間</td></tr>
+      </tbody>
+    </table>
+    <p><strong>輪動結論：</strong>資金明確從「成長/動能」轉向「價值/防禦」。ExxonMobil Q1 漲 43.5%，與科技股形成鮮明對比。</p>
+  </div>
+
+  <!-- 基本面 -->
+  <div class="section-card">
+    <h2>💰 基本面分析 — 估值與盈利</h2>
+    <table class="data-table">
+      <thead><tr><th>指標</th><th>當前值</th><th>歷史均值</th><th>評估</th></tr></thead>
+      <tbody>
+        <tr><td>TTM P/E</td><td><strong>27.6x</strong></td><td>18-20x</td><td><span class="tag tag-red">偏貴</span></td></tr>
+        <tr><td>Shiller CAPE</td><td><strong>36.5-39.0x</strong></td><td>17.7x</td><td><span class="tag tag-red">顯著高估</span></td></tr>
+        <tr><td>2026 預估 EPS</td><td>$275-296</td><td>—</td><td>年增 12-15%</td></tr>
+        <tr><td>2025 實際 EPS</td><td>$242.25</td><td>—</td><td>基準年</td></tr>
+      </tbody>
+    </table>
+    <p>即便計入 12-15% 的盈利成長，Forward P/E 約 22-24x，仍高於歷史均值。Shiller CAPE 處於僅次於 2000 年網路泡沫的歷史高位，暗示未來 10 年報酬率可能低於平均。</p>
+
+    <h3>通膨 + 關稅雙重壓力</h3>
+    <ul>
+      <li>對中國關稅稅率已達 <strong>49%</strong></li>
+      <li>對墨西哥/加拿大非 USMCA 商品徵收 25%</li>
+      <li>Fed 預計 2% 通膨目標要到 2027-2028 年才可能達成</li>
+      <li>高油價疊加關稅 → 企業利潤率持續承壓</li>
+    </ul>
+  </div>
+
+  <!-- 地緣政治風險 -->
+  <div class="section-card">
+    <h2>🌍 地緣政治風險評估</h2>
+    <table class="data-table">
+      <thead><tr><th>風險因素</th><th>影響程度</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td>美伊衝突 / Hormuz 海峽</td><td><span class="tag tag-red">高</span></td><td>油價飆升主因，S&P 近一月跌約 5%</td></tr>
+        <tr><td>關稅戰升級</td><td><span class="tag tag-yellow">中高</span></td><td>推升通膨、壓縮企業利潤率</td></tr>
+        <tr><td>Fed 政策不確定性</td><td><span class="tag tag-yellow">中</span></td><td>降息空間受限，市場缺乏寬鬆預期</td></tr>
+        <tr><td>AI 投資回報期延長</td><td><span class="tag tag-yellow">中</span></td><td>資本支出龐大但變現速度不如預期</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 催化劑 -->
+  <div class="section-card">
+    <h2>⚡ 正面催化劑</h2>
+    <ul>
+      <li><strong>伊朗局勢緩和跡象：</strong>伊朗與阿曼合作監測 Hormuz 海峽船隻，若地緣降溫，油價回落可帶動大盤反彈</li>
+      <li><strong>科技財報季即將啟動：</strong>若 Q1 財報優於預期（尤其 NVDA、AAPL），可修復信心</li>
+      <li><strong>半導體長期趨勢：</strong>高盛預估 2026 年底全球半導體營收增 49%，AI 硬體營收突破 $7,000 億</li>
+      <li><strong>Fed 年內降息預期：</strong>若通膨數據改善，降息將提振估值</li>
+    </ul>
+  </div>
+
+  <!-- 情境分析 -->
+  <div class="section-card">
+    <h2>🎯 S&P 500 目標區間 — 情境分析</h2>
+    <table class="scenario-table">
+      <thead><tr><th>情境</th><th>目標區間</th><th>前提假設</th></tr></thead>
+      <tbody>
+        <tr class="scenario-bear">
+          <td><span class="scenario-label">🐻 熊市</span></td>
+          <td><span class="scenario-target">5,800-6,100</span></td>
+          <td>地緣衝突升級、油價破 $130、Fed 被迫不降息或升息</td>
+        </tr>
+        <tr class="scenario-base">
+          <td><span class="scenario-label">📊 基本</span></td>
+          <td><span class="scenario-target">6,500-6,900</span></td>
+          <td>地緣風險受控、盈利穩健成長、年內降息一次</td>
+        </tr>
+        <tr class="scenario-bull">
+          <td><span class="scenario-label">🐂 牛市</span></td>
+          <td><span class="scenario-target">7,200-7,500</span></td>
+          <td>中東停火、油價回落至 $80、AI 盈利加速兌現</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 投資建議 -->
+  <div class="section-card">
+    <h2>💡 投資建議</h2>
+
+    <div class="alert-card">
+      <h4>短期（1-2 週）：偏防禦，等待方向確認</h4>
+      <ul>
+        <li><strong>觀望為主：</strong>S&P 仍在 200 日線下方，反彈尚未確認為趨勢反轉。下週一開盤觀察能否站穩 6,600</li>
+        <li><strong>不宜追高科技股：</strong>上週 NASDAQ 反彈 4.4% 可能只是空頭回補，技術面尚未轉多</li>
+        <li><strong>留意油價動態：</strong>Hormuz 海峽任何新消息都可能引發劇烈波動</li>
+      </ul>
+    </div>
+
+    <div class="strategy-card">
+      <h4>中期（1-3 個月）：結構性佈局</h4>
+      <table class="data-table">
+        <thead><tr><th>策略</th><th>標的方向</th><th>理由</th></tr></thead>
+        <tbody>
+          <tr><td><strong>加碼能源</strong></td><td>XLE、XOM、CVX</td><td>油價趨勢未結束，地緣溢價持續</td></tr>
+          <tr><td><strong>配置國防</strong></td><td>LMT、RTX、GD</td><td>全球軍費結構性擴張</td></tr>
+          <tr><td><strong>逢低佈局半導體</strong></td><td>NVDA、AVGO</td><td>Q1 跌幅有限，AI 長線趨勢不變</td></tr>
+          <tr><td><strong>避險配置</strong></td><td>GLD、短債 ETF</td><td>VIX 偏高、不確定性大</td></tr>
+          <tr><td><strong>減碼高估值成長</strong></td><td>部分 Mag 7</td><td>MSFT -23%、Meta -13%，估值修正未完</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="strategy-card">
+      <h4>長期（6-12 個月）：逢低分批進場</h4>
+      <ul>
+        <li>Shiller CAPE 36-39x 暗示長期報酬偏低，但<strong>不代表短期必跌</strong></li>
+        <li>若 S&P 回測至 6,000-6,200（CAPE 降至 ~33x），可視為中長期合理進場區</li>
+        <li>AI 主題仍是未來 3-5 年核心趨勢，NVDA、AAPL 等龍頭逢跌可分批建倉</li>
+        <li>七巨頭分析師目標價普遍仍高於現價（AAPL 目標 ~$298，潛在上行 17%）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 行事曆 -->
+  <div class="section-card">
+    <h2>📅 下週關鍵行事曆</h2>
+    <ul>
+      <li><strong>4/7（一）：</strong>市場重新開盤，觀察假期間地緣發展對開盤的影響</li>
+      <li>留意 3 月非農就業數據、ISM 數據等經濟指標</li>
+      <li>Q1 財報季即將拉開序幕（銀行股率先公布）</li>
+    </ul>
+  </div>
+
+  <!-- 資料來源 -->
+  <div class="section-card">
+    <h2>📚 資料來源</h2>
+    <div class="sources">
+      <ul>
+        <li><a href="https://www.cnbc.com/pre-markets/" target="_blank">CNBC Pre-Markets</a></li>
+        <li><a href="https://www.cnbc.com/2026/04/01/stock-market-today-live-updates.html" target="_blank">CNBC Stock Market April 2 Recap</a></li>
+        <li><a href="https://www.thestreet.com/latest-news/stock-market-today-apr-2-2026-updates" target="_blank">TheStreet Apr 2 Recap</a></li>
+        <li><a href="https://www.investing.com/indices/us-spx-500-technical" target="_blank">Investing.com S&P 500 Technical</a></li>
+        <li><a href="https://articles.stockcharts.com/article/mindfulinvestor-2026-03-below-the-200-day-whats-next-for-the-s-p-500/" target="_blank">StockCharts 200-Day Analysis</a></li>
+        <li><a href="https://fortune.com/article/price-of-oil-04-03-2026/" target="_blank">Fortune Oil Prices</a></li>
+        <li><a href="https://www.ishares.com/us/insights/fed-outlook-2026-interest-rate-forecast" target="_blank">iShares Fed Outlook 2026</a></li>
+        <li><a href="https://www.morningstar.com/stocks/6-stocks-driving-2026-stock-market-rotation" target="_blank">Morningstar Sector Rotation</a></li>
+        <li><a href="https://finance.yahoo.com/news/3-sectors-crushing-tech-2026-163500903.html" target="_blank">Yahoo Finance Sector Performance</a></li>
+        <li><a href="https://www.financemagnates.com/trending/why-gold-is-going-up-goldman-gold-price-prediction-sees-5400-as-xau-rebounds/" target="_blank">Goldman Sachs Gold Forecast</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 免責聲明 -->
+  <div class="section-card">
+    <div class="disclaimer">
+      ⚠️ <strong>免責聲明：</strong>本報告由 AI 自動生成，僅供參考，不構成任何投資建議或要約。
+      投資市場存在風險，過去表現不代表未來績效，請自行評估風險承受能力並諮詢專業理財顧問後再做決策。
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="report-footer">
+  <span>🤖 Generated by Market Analyst &middot; Claude Code</span>
+  <span>最後更新：2026/04/05 08:00</span>
+</footer>
+
+</body>
+</html>
